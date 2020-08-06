@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 @Value
 public class User {
 
-    @Id long id;
+    @Id Long id;
     String firstName;
     String lastName;
     String logoColor;

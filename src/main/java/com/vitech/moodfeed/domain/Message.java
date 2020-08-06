@@ -1,16 +1,15 @@
 package com.vitech.moodfeed.domain;
-
-import lombok.Value;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
-@Value
+@Data
 public class Message {
 
-    @Id long id;
+    @Id Long id;
     String message;
-    long creatorId;
+    Long creatorId;
     Date createdAt;
 
 }
