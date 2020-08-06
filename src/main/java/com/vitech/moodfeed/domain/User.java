@@ -1,13 +1,12 @@
 package com.vitech.moodfeed.domain;
 
 import lombok.Value;
-
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
 
 @Value
 public class User {
 
-    UUID id;
+    @Id long id;
     String firstName;
     String lastName;
     String logoColor;
