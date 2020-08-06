@@ -1,5 +1,6 @@
 package com.vitech.moodfeed.service.impl;
 
+import com.google.common.collect.Lists;
 import com.vitech.moodfeed.domain.Message;
 import com.vitech.moodfeed.repo.MessageRepository;
 import com.vitech.moodfeed.service.MessageService;
@@ -16,7 +17,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessages(int limit) {
-        return null;
+        // TODO: join user information
+        // TODO: add limit to query
+        return Lists.newArrayList(messageRepository.findAll());
     }
 
     @Override
