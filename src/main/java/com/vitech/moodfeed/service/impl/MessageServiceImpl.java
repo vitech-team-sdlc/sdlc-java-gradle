@@ -23,10 +23,10 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message createMessage(Message message) {
+    public void createMessage(Message message) {
         message.setId(null);
         message.setCreatedAt(null);
-        return messageRepository.save(message);
+        messageRepository.save(message);
     }
 
 }

@@ -25,8 +25,8 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message createMessage(@RequestBody Message message) {
-        return messageService.createMessage(message);
+    public void createMessage(@RequestBody Message message) {
+        messageService.createMessage(message);
     }
 
 }

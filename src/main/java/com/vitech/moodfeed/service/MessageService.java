@@ -18,8 +18,7 @@ public interface MessageService {
      * Create new message
      *
      * @param message message to create
-     * @return created message
      */
-    Message createMessage(Message message);
+    void createMessage(Message message);
 
 }
