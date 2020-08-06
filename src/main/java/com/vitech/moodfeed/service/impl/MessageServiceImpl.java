@@ -1,7 +1,8 @@
-package com.vitech.moodfeed.service;
+package com.vitech.moodfeed.service.impl;
 
 import com.vitech.moodfeed.domain.Message;
 import com.vitech.moodfeed.repo.MessageRepository;
+import com.vitech.moodfeed.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
