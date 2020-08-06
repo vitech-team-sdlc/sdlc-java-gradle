@@ -15,5 +15,8 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.liquibase:liquibase-core:4.0.0'
+    runtimeOnly 'mysql:mysql-connector-java'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

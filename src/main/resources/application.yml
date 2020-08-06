@@ -4,6 +4,8 @@ spring:
     url: jdbc:mysql://localhost:3306/mood_feed
     username: root
     password: root
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.xml
 
 server:
   port: 8088
