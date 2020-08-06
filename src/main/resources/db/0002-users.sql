@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 -- changeSet users failOnError:true
 
-INSERT INTO User (FirstName, LastName, LogoColor) VALUES
+INSERT INTO user (first_name, last_name, logo_color) VALUES
     ('Homer', 'Simpson', '#faf7af'),
     ('Marge', 'Simpson', '#b167e3'),
     ('Bart', 'Simpson', '#fad8af'),

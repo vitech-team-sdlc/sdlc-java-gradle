@@ -1,19 +1,19 @@
 -- liquibase formatted sql
 -- changeSet schema failOnError:true
 
-CREATE TABLE User
+CREATE TABLE user
 (
-    Id          BIGINT         PRIMARY KEY AUTO_INCREMENT,
-    FirstName   VARCHAR(64)    NOT NULL,
-    LastName    VARCHAR(64)    NOT NULL,
-    LogoColor   VARCHAR(7)     NOT NULL DEFAULT '#000000'
+    id          BIGINT         PRIMARY KEY AUTO_INCREMENT,
+    first_name  VARCHAR(64)    NOT NULL,
+    last_name   VARCHAR(64)    NOT NULL,
+    logo_color  VARCHAR(7)     NOT NULL DEFAULT '#000000'
 );
 
-CREATE TABLE Message
+CREATE TABLE message
 (
-    Id          BIGINT      PRIMARY KEY AUTO_INCREMENT,
-    Message     LONGTEXT    NOT NULL,
-    CreatorId   BIGINT      NOT NULL,
-    CreatedAt   TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (CreatorId) REFERENCES User(Id)
+    id          BIGINT      PRIMARY KEY AUTO_INCREMENT,
+    message     LONGTEXT    NOT NULL,
+    creator_id  BIGINT      NOT NULL,
+    created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (creator_id) REFERENCES user(id)
 );
