@@ -1,7 +1,7 @@
 package com.vitech.moodfeed.repo;
 
 import com.vitech.moodfeed.domain.Message;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface MessageRepository extends CrudRepository<Message, Integer> {
+public interface MessageRepository extends PagingAndSortingRepository<Message, Long> {
 }
