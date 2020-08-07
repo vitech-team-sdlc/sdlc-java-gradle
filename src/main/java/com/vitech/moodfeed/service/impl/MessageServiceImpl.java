@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageResponse> getMessages(int limit) {
         // query messages
-        PageRequest pageRequest = PageRequest.of(0, limit, Sort.by("createdAt"));
+        PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<Message> messages = Lists.newArrayList(messageRepository.findAll(pageRequest));
         // query messages creators
         List<Long> creatorIds = messages.stream().map(Message::getCreatorId).collect(Collectors.toList());
