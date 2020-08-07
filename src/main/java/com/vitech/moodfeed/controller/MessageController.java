@@ -1,6 +1,7 @@
 package com.vitech.moodfeed.controller;
 
-import com.vitech.moodfeed.domain.Message;
+import com.vitech.moodfeed.dto.MessageRequest;
+import com.vitech.moodfeed.dto.MessageResponse;
 import com.vitech.moodfeed.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,13 @@ public class MessageController {
     private final MessageService messageService;
 
     @GetMapping
-    public List<Message> getMessages(@RequestParam(defaultValue = "10") int limit) {
+    public List<MessageResponse> getMessages(@RequestParam(defaultValue = "10") int limit) {
         return messageService.getMessages(limit);
     }
 
     @PostMapping
-    public void createMessage(@RequestBody Message message) {
-        messageService.createMessage(message);
+    public void createMessage(@RequestBody MessageRequest messageRequest) {
+        messageService.createMessage(messageRequest.toMessage());
     }
 
 }

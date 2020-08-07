@@ -1,7 +1,7 @@
 package com.vitech.moodfeed.service.impl;
 
-import com.google.common.collect.Lists;
 import com.vitech.moodfeed.domain.Message;
+import com.vitech.moodfeed.dto.MessageResponse;
 import com.vitech.moodfeed.repo.MessageRepository;
 import com.vitech.moodfeed.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +16,14 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
 
     @Override
-    public List<Message> getMessages(int limit) {
+    public List<MessageResponse> getMessages(int limit) {
         // TODO: join user information
         // TODO: add limit to query
-        return Lists.newArrayList(messageRepository.findAll());
+        return null;
     }
 
     @Override
     public void createMessage(Message message) {
-        message.setId(null);
-        message.setCreatedAt(null);
         messageRepository.save(message);
     }
 

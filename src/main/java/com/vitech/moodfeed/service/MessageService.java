@@ -1,6 +1,7 @@
 package com.vitech.moodfeed.service;
 
 import com.vitech.moodfeed.domain.Message;
+import com.vitech.moodfeed.dto.MessageResponse;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface MessageService {
      * @param limit maximum number of messages
      * @return limited list of messages posted by users
      */
-    List<Message> getMessages(int limit);
+    List<MessageResponse> getMessages(int limit);
 
     /**
      * Create new message

@@ -1,10 +1,12 @@
 package com.vitech.moodfeed.domain;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
-@Data
+@Value
+@Builder
 public class Message {
 
     @Id Long id;
