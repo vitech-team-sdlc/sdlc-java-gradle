@@ -15,7 +15,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/auth")
-    public User geLoggedUser() {
+    public User getLoggedUser() {
         return userService.getLoggedUser();
     }
 
