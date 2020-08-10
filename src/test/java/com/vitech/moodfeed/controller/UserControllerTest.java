@@ -21,12 +21,7 @@ class UserControllerTest extends SmallTest {
     @Test
     void testGetLoggedUser() {
         // mock
-        User expectedUser = User.builder()
-                .id(123L)
-                .firstName("f-name")
-                .lastName("l-name")
-                .logoColor("#000000")
-                .build();
+        User expectedUser = testUser();
         when(userServiceMock.getLoggedUser()).thenReturn(expectedUser);
         // test
         User actualUser = userController.getLoggedUser();
