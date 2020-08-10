@@ -2,7 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id "io.freefair.lombok" version "5.1.0"
+    id 'io.freefair.lombok' version '5.1.0'
+    id 'org.unbroken-dome.test-sets' version '3.0.1'
 }
 
 group 'com.vitech'
@@ -13,8 +14,12 @@ repositories {
     mavenCentral()
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
+}
+
+testSets {
+    integrationTest
 }
 
 dependencies {
