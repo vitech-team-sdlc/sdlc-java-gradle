@@ -31,13 +31,18 @@ public class SmallTest {
         return testUsers().get(0);
     }
 
+    public List<Message> testMessages() {
+        return Arrays.asList(
+                Message.builder().id(101L).message("test-message-1").creatorId(1L).createdAt(new Date()).build(),
+                Message.builder().id(102L).message("test-message-2").creatorId(2L).createdAt(new Date()).build(),
+                Message.builder().id(103L).message("test-message-3").creatorId(3L).createdAt(new Date()).build(),
+                Message.builder().id(104L).message("test-message-4").creatorId(4L).createdAt(new Date()).build(),
+                Message.builder().id(105L).message("test-message-5").creatorId(5L).createdAt(new Date()).build()
+        );
+    }
+
     public Message testMessage() {
-        return Message.builder()
-                .id(100L)
-                .message("test-message")
-                .createdAt(new Date())
-                .creatorId(1L)
-                .build();
+        return testMessages().get(0);
     }
 
 }
