@@ -10,13 +10,10 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.concurrent.TimeUnit;
 
 @Tag("mediumTest")
-@Testcontainers
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Timeout(value = 5000, unit = TimeUnit.MILLISECONDS)
@@ -27,8 +24,12 @@ public class MediumTest {
 
     private static final TestRestTemplate REST_TEMPLATE = new TestRestTemplate();
 
-    @Container
-    private static final MySQLContainer MY_SQL_CONTAINER = new MySQLContainer("mysql:8");
+    private static final MySQLContainer MY_SQL_CONTAINER;
+
+    static {
+        MY_SQL_CONTAINER = new MySQLContainer("mysql:8");
+        MY_SQL_CONTAINER.start();
+    }
 
     @DynamicPropertySource
     static void mySqlProperties(DynamicPropertyRegistry registry) {
