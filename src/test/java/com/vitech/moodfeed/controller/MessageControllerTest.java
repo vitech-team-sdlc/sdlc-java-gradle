@@ -28,7 +28,7 @@ public class MessageControllerTest extends SmallTest {
     @Test
     void testGetMessages() {
         // mock
-        List<MessageResponse> expectedResponse = Collections.singletonList(new MessageResponse());
+        List<MessageResponse> expectedResponse = Collections.singletonList(MessageResponse.builder().build());
         when(messageServiceMock.getMessages(anyInt())).thenReturn(expectedResponse);
         // test
         List<MessageResponse> actualResponse = messageController.getMessages(10);
@@ -39,7 +39,7 @@ public class MessageControllerTest extends SmallTest {
     @Test
     void testCreateMessage() {
         // mock
-        MessageRequest messageRequest = new MessageRequest("test-message", 123L);
+        MessageRequest messageRequest = MessageRequest.builder().message("test-message").creatorId(123L).build();
         // test
         messageController.createMessage(messageRequest);
         // verify

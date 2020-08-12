@@ -38,7 +38,7 @@ public class MessageControllerIT extends MediumTest {
 
         // generate messages
         List<MessageRequest> messageRequests = LongStream.range(1, 5)
-                .mapToObj(num -> new MessageRequest("test-message" + num, num))
+                .mapToObj(num -> MessageRequest.builder().message("test-message" + num).creatorId(num).build())
                 .collect(Collectors.toList());
 
         // create generated messages by REST API and verify response is OK

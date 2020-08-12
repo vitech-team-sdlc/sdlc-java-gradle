@@ -2,11 +2,13 @@ package com.vitech.moodfeed.dto;
 
 import com.vitech.moodfeed.domain.Message;
 import com.vitech.moodfeed.domain.User;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 
 import java.util.Date;
 
-@Data
+@Value
+@Builder
 public class MessageResponse {
 
     Long id;
@@ -15,12 +17,12 @@ public class MessageResponse {
     Date createdAt;
 
     public static MessageResponse from(User creator, Message message) {
-        MessageResponse messageResponse = new MessageResponse();
-        messageResponse.setId(message.getId());
-        messageResponse.setMessage(message.getMessage());
-        messageResponse.setCreatedAt(message.getCreatedAt());
-        messageResponse.setCreator(creator);
-        return messageResponse;
+        return MessageResponse.builder()
+                .id(message.getId())
+                .message(message.getMessage())
+                .createdAt(message.getCreatedAt())
+                .creator(creator)
+                .build();
     }
 
 }

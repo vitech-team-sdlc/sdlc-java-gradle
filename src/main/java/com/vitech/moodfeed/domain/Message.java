@@ -1,4 +1,5 @@
 package com.vitech.moodfeed.domain;
+
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;

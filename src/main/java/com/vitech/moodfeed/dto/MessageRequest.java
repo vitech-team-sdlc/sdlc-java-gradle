@@ -1,13 +1,11 @@
 package com.vitech.moodfeed.dto;
 
 import com.vitech.moodfeed.domain.Message;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
+@Builder
 public class MessageRequest {
 
     String message;
