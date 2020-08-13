@@ -1,7 +1,6 @@
-package com.vitech.moodfeed.controller;
+package com.vitech.moodfeed.user;
 
 import com.vitech.moodfeed.MediumTest;
-import com.vitech.moodfeed.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

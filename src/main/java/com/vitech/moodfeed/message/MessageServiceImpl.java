@@ -1,13 +1,10 @@
-package com.vitech.moodfeed.service.impl;
+package com.vitech.moodfeed.message;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.vitech.moodfeed.domain.Message;
-import com.vitech.moodfeed.domain.User;
-import com.vitech.moodfeed.dto.MessageResponse;
-import com.vitech.moodfeed.repo.MessageRepository;
-import com.vitech.moodfeed.repo.UserRepository;
-import com.vitech.moodfeed.service.MessageService;
+import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.user.User;
+import com.vitech.moodfeed.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

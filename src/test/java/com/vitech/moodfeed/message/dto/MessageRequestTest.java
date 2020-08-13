@@ -1,7 +1,7 @@
-package com.vitech.moodfeed.dto;
+package com.vitech.moodfeed.message.dto;
 
 import com.vitech.moodfeed.SmallTest;
-import com.vitech.moodfeed.domain.Message;
+import com.vitech.moodfeed.message.Message;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,7 +1,7 @@
 package com.vitech.moodfeed;
 
-import com.vitech.moodfeed.domain.Message;
-import com.vitech.moodfeed.domain.User;
+import com.vitech.moodfeed.message.Message;
+import com.vitech.moodfeed.user.User;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;

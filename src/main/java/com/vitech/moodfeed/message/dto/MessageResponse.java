@@ -1,10 +1,10 @@
-package com.vitech.moodfeed.dto;
+package com.vitech.moodfeed.message.dto;
 
-import com.vitech.moodfeed.domain.Message;
-import com.vitech.moodfeed.domain.User;
+import com.vitech.moodfeed.message.Message;
+import com.vitech.moodfeed.user.User;
 import lombok.Builder;
 import lombok.Value;
-import utils.ModelMapperFactory;
+import com.vitech.moodfeed.utils.ModelMapperFactory;
 
 import java.util.Date;
 

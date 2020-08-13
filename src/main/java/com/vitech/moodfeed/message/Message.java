@@ -1,4 +1,4 @@
-package com.vitech.moodfeed.domain;
+package com.vitech.moodfeed.message;
 
 import lombok.Builder;
 import lombok.Value;

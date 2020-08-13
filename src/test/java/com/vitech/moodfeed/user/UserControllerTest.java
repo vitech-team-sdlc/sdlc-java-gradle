@@ -1,8 +1,6 @@
-package com.vitech.moodfeed.controller;
+package com.vitech.moodfeed.user;
 
 import com.vitech.moodfeed.SmallTest;
-import com.vitech.moodfeed.domain.User;
-import com.vitech.moodfeed.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

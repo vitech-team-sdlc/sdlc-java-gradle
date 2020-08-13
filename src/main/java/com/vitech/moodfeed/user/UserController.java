@@ -1,7 +1,5 @@
-package com.vitech.moodfeed.controller;
+package com.vitech.moodfeed.user;
 
-import com.vitech.moodfeed.domain.User;
-import com.vitech.moodfeed.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

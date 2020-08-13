@@ -1,9 +1,6 @@
-package com.vitech.moodfeed.service.impl;
+package com.vitech.moodfeed.user;
 
 import com.google.common.collect.Lists;
-import com.vitech.moodfeed.domain.User;
-import com.vitech.moodfeed.repo.UserRepository;
-import com.vitech.moodfeed.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

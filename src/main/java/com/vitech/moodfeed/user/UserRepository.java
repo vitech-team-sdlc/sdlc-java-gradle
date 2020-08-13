@@ -1,6 +1,5 @@
-package com.vitech.moodfeed.repo;
+package com.vitech.moodfeed.user;
 
-import com.vitech.moodfeed.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {

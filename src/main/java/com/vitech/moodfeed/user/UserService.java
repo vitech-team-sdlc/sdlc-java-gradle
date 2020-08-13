@@ -1,6 +1,4 @@
-package com.vitech.moodfeed.service;
-
-import com.vitech.moodfeed.domain.User;
+package com.vitech.moodfeed.user;
 
 public interface UserService {
 

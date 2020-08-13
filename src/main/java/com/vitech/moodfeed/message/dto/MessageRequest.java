@@ -1,9 +1,9 @@
-package com.vitech.moodfeed.dto;
+package com.vitech.moodfeed.message.dto;
 
-import com.vitech.moodfeed.domain.Message;
+import com.vitech.moodfeed.message.Message;
 import lombok.Builder;
 import lombok.Value;
-import utils.ModelMapperFactory;
+import com.vitech.moodfeed.utils.ModelMapperFactory;
 
 @Value
 @Builder

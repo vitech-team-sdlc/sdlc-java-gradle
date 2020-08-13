@@ -1,9 +1,8 @@
-package com.vitech.moodfeed.controller;
+package com.vitech.moodfeed.message;
 
 import com.vitech.moodfeed.MediumTest;
-import com.vitech.moodfeed.dto.MessageRequest;
-import com.vitech.moodfeed.dto.MessageResponse;
-import com.vitech.moodfeed.repo.MessageRepository;
+import com.vitech.moodfeed.message.dto.MessageRequest;
+import com.vitech.moodfeed.message.dto.MessageResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

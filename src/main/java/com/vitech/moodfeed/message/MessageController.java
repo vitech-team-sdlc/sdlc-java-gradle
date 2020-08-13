@@ -1,8 +1,7 @@
-package com.vitech.moodfeed.controller;
+package com.vitech.moodfeed.message;
 
-import com.vitech.moodfeed.dto.MessageRequest;
-import com.vitech.moodfeed.dto.MessageResponse;
-import com.vitech.moodfeed.service.MessageService;
+import com.vitech.moodfeed.message.dto.MessageRequest;
+import com.vitech.moodfeed.message.dto.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

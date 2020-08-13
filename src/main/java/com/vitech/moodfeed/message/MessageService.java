@@ -1,7 +1,6 @@
-package com.vitech.moodfeed.service;
+package com.vitech.moodfeed.message;
 
-import com.vitech.moodfeed.domain.Message;
-import com.vitech.moodfeed.dto.MessageResponse;
+import com.vitech.moodfeed.message.dto.MessageResponse;
 
 import java.util.List;
 
