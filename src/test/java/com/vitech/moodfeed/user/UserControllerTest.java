@@ -1,29 +1,30 @@
 package com.vitech.moodfeed.user;
 
-import com.vitech.moodfeed.SmallTest;
+import com.vitech.moodfeed.WebSmallTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class UserControllerTest extends SmallTest {
+@WebMvcTest(UserController.class)
+class UserControllerTest extends WebSmallTest {
 
-    @Mock
+    @MockBean
     private UserService userServiceMock;
 
-    @InjectMocks
-    private UserController userController;
-
     @Test
-    void testGetLoggedUser() {
+    void testGetLoggedUser() throws Exception {
         // mock
         User expectedUser = testUser();
         when(userServiceMock.getLoggedUser()).thenReturn(expectedUser);
-        // test
-        User actualUser = userController.getLoggedUser();
-        // verify
-        assertSame(expectedUser, actualUser);
+        // test and verify
+        mockMvc()
+                .perform(get("/users/auth"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(toJson(expectedUser)));
     }
 }
