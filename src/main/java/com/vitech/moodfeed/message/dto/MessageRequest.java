@@ -1,19 +1,13 @@
 package com.vitech.moodfeed.message.dto;
 
-import com.vitech.moodfeed.message.Message;
 import lombok.Builder;
 import lombok.Value;
-import com.vitech.moodfeed.utils.ModelMapperFactory;
 
 @Value
 @Builder
 public class MessageRequest {
 
-    String message;
+    String body;
     Long creatorId;
-
-    public Message toMessage() {
-        return ModelMapperFactory.getInstance().map(this, Message.MessageBuilder.class).build();
-    }
 
 }

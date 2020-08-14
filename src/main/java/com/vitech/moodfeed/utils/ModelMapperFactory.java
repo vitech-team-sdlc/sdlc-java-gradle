@@ -17,7 +17,7 @@ public class ModelMapperFactory {
                 .setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
-    public static ModelMapper getInstance() {
+    public static ModelMapper mapper() {
         return MODEL_MAPPER;
     }
 

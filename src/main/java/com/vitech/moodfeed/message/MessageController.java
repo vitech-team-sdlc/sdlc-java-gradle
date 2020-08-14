@@ -2,6 +2,7 @@ package com.vitech.moodfeed.message;
 
 import com.vitech.moodfeed.message.dto.MessageRequest;
 import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,16 +18,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final MessageService messageService;
+    private final MessageRepository messageRepo;
+    private final UserRepository userRepo;
 
     @GetMapping
     public List<MessageResponse> getMessages(@RequestParam(defaultValue = "10") int limit) {
-        return messageService.getMessages(limit);
+        return Message.getNewest(limit, messageRepo, userRepo);
     }
 
     @PostMapping
-    public void createMessage(@RequestBody MessageRequest messageRequest) {
-        messageService.createMessage(messageRequest.toMessage());
+    public void createMessage(@RequestBody MessageRequest request) {
+        messageRepo.save(Message.fromRequest(request));
     }
 
 }
