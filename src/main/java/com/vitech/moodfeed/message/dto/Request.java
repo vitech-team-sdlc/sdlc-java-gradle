@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class MessageRequest {
+public class Request {
 
     String body;
     Long creatorId;

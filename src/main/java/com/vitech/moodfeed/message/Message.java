@@ -1,13 +1,12 @@
 package com.vitech.moodfeed.message;
 
-import com.vitech.moodfeed.message.dto.MessageRequest;
-import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.message.dto.Request;
+import com.vitech.moodfeed.message.dto.Response;
 import com.vitech.moodfeed.user.UserRepository;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.Date;
@@ -27,22 +26,18 @@ public class Message {
     Long creatorId;
     Date createdAt;
 
-    public static Message fromRequest(MessageRequest request) {
+    public static Message fromRequest(Request request) {
         return mapper().map(request, Message.MessageBuilder.class).build();
     }
 
-    public MessageResponse toResponse(UserRepository repo) {
-        return repo.findById(creatorId)
-                .map(
-                        u -> mapper().map(this, MessageResponse.MessageResponseBuilder.class).creator(u).build()
-                ).orElseThrow(() -> new RuntimeException("User by id=" + creatorId + " not found!"));
+    public Response toResponse(UserRepository uRepo) {
+        return uRepo.findById(creatorId)
+                .map(u -> mapper().map(this, Response.ResponseBuilder.class).creator(u).build())
+                .orElseThrow(() -> new RuntimeException("User by id = " + creatorId + " not found!"));
     }
 
-    public static List<MessageResponse> getNewest(int limit, MessageRepository mRepo, UserRepository uRepo) {
-        // query messages
-        PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return mRepo.findAll(pageRequest).stream()
-                .map(m -> m.toResponse(uRepo)).collect(Collectors.toList());
+    public static List<Response> getNewest(PageRequest pageReq, MessageRepository mRepo, UserRepository uRepo) {
+        return mRepo.findAll(pageReq).stream().map(m -> m.toResponse(uRepo)).collect(Collectors.toList());
     }
 
     public void save(MessageRepository repo) {

@@ -1,7 +1,7 @@
 package com.vitech.moodfeed.message;
 
 import com.vitech.moodfeed.WebSmallTest;
-import com.vitech.moodfeed.message.dto.MessageRequest;
+import com.vitech.moodfeed.message.dto.Request;
 import com.vitech.moodfeed.user.User;
 import com.vitech.moodfeed.user.UserRepository;
 import lombok.SneakyThrows;
@@ -52,15 +52,15 @@ public class MessageControllerTest extends WebSmallTest {
     @Test
     void testCreateMessage() {
         // mock
-        MessageRequest messageRequest = MessageRequest.builder().body("test-message").creatorId(123L).build();
+        Request request = Request.builder().body("test-message").creatorId(123L).build();
         // test
         mockMvc()
                 .perform(post("/messages")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(messageRequest)))
+                        .content(toJson(request)))
                 .andExpect(status().isOk());
         // verify
-        verify(messageRepo).save(eq(Message.fromRequest(messageRequest)));
+        verify(messageRepo).save(eq(Message.fromRequest(request)));
     }
 
 }

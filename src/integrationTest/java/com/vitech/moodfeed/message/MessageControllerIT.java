@@ -1,8 +1,8 @@
 package com.vitech.moodfeed.message;
 
 import com.vitech.moodfeed.WebMediumTest;
-import com.vitech.moodfeed.message.dto.MessageRequest;
-import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.message.dto.Request;
+import com.vitech.moodfeed.message.dto.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -36,24 +36,24 @@ public class MessageControllerIT extends WebMediumTest {
     void testCreateAndGetMessages(int limit) {
 
         // generate messages
-        List<MessageRequest> messageRequests = LongStream.range(1, 5)
-                .mapToObj(num -> MessageRequest.builder().body("test-message" + num).creatorId(num).build())
+        List<Request> requests = LongStream.range(1, 5)
+                .mapToObj(num -> Request.builder().body("test-message" + num).creatorId(num).build())
                 .collect(Collectors.toList());
 
         // create generated messages by REST API and verify response is OK
-        messageRequests.forEach(messageRequest -> assertEquals(
+        requests.forEach(messageRequest -> assertEquals(
                 HttpStatus.OK,
                 restTemplate().postForEntity(messagesUri(), messageRequest, Void.class).getStatusCode()));
 
         // get all messages by REST API
-        ResponseEntity<List<MessageResponse>> createdMessages = restTemplate().exchange(
+        ResponseEntity<List<Response>> createdMessages = restTemplate().exchange(
                 RequestEntity.get(messagesUriWithLimit(limit)).build(),
-                new ParameterizedTypeReference<List<MessageResponse>>() {});
+                new ParameterizedTypeReference<List<Response>>() {});
 
         // verify previously created messages are present and limit is working as expected
         assertEquals(HttpStatus.OK, createdMessages.getStatusCode());
         assertNotNull(createdMessages.getBody());
-        assertEquals(Math.min(limit, messageRequests.size()), createdMessages.getBody().size());
+        assertEquals(Math.min(limit, requests.size()), createdMessages.getBody().size());
     }
 
     private URI messagesUri() {

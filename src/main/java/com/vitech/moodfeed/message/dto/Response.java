@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Value
 @Builder
-public class MessageResponse {
+public class Response {
 
     Long id;
     String body;

@@ -1,7 +1,7 @@
 package com.vitech.moodfeed.message;
 
-import com.vitech.moodfeed.message.dto.MessageRequest;
-import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.message.dto.Request;
+import com.vitech.moodfeed.message.dto.Response;
 import com.vitech.moodfeed.user.UserRepository;
 import com.vitech.moodfeed.user.UserTest;
 import org.junit.jupiter.api.Tag;
@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -63,7 +64,11 @@ public class MessageTest {
         List<Message> expectedMessages = messages().subList(0, expectedNumberOfMessages);
         when(messageRepo.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
         // test
-        List<MessageResponse> actualMessages = Message.getNewest(messagesLimit, messageRepo, userRepo);
+        List<Response> actualMessages = Message.getNewest(
+                PageRequest.of(0, messagesLimit, Sort.by(Sort.Direction.DESC, "createdAt")),
+                messageRepo,
+                userRepo
+        );
         // verify
         assertEquals(expectedNumberOfMessages, actualMessages.size());
         actualMessages.forEach(msg -> assertNotNull(msg.getCreator()));
@@ -72,13 +77,13 @@ public class MessageTest {
     @Test
     void testFromRequest() {
         // mock
-        MessageRequest messageRequest = MessageRequest.builder().body("test-message").creatorId(123L).build();
+        Request request = Request.builder().body("test-message").creatorId(123L).build();
         // test
-        Message message = Message.fromRequest(messageRequest);
+        Message message = Message.fromRequest(request);
         // verify
         assertNull(message.getId());
         assertNull(message.getCreatedAt());
-        assertEquals(messageRequest.getBody(), message.getBody());
+        assertEquals(request.getBody(), message.getBody());
         assertEquals(message.getCreatorId(), message.getCreatorId());
     }
 
@@ -88,12 +93,12 @@ public class MessageTest {
         initUserMocks();
         Message message = messages().get(0);
         // test
-        MessageResponse messageResponse = message.toResponse(userRepo);
+        Response response = message.toResponse(userRepo);
         // verify
-        assertEquals(message.getId(), messageResponse.getId());
-        assertEquals(message.getBody(), messageResponse.getBody());
-        assertEquals(message.getCreatedAt(), messageResponse.getCreatedAt());
-        assertNotNull(messageResponse.getCreator());
+        assertEquals(message.getId(), response.getId());
+        assertEquals(message.getBody(), response.getBody());
+        assertEquals(message.getCreatedAt(), response.getCreatedAt());
+        assertNotNull(response.getCreator());
     }
 
     @Test
