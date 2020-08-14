@@ -54,7 +54,7 @@ public class MessageTest {
 
     @ParameterizedTest
     @ValueSource(ints = {MESSAGES_LIMIT_LOWER, MESSAGES_LIMIT_HIGHER})
-    void testGetMessages(int messagesLimit) {
+    void testGetNewest(int messagesLimit) {
         // mock
         initUserMocks();
         int expectedNumberOfMessages = Math.min(messagesLimit, NUMBER_OF_MESSAGES);
@@ -68,7 +68,7 @@ public class MessageTest {
     }
 
     @Test
-    void testToMessage() {
+    void testFromRequest() {
         // mock
         MessageRequest messageRequest = MessageRequest.builder().body("test-message").creatorId(123L).build();
         // test
@@ -81,7 +81,7 @@ public class MessageTest {
     }
 
     @Test
-    void testFromMessage() {
+    void testToResponse() {
         // mock
         initUserMocks();
         Message message = messages().get(0);
