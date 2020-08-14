@@ -1,6 +1,6 @@
 package com.vitech.moodfeed.message;
 
-import com.vitech.moodfeed.MediumTest;
+import com.vitech.moodfeed.WebMediumTest;
 import com.vitech.moodfeed.message.dto.MessageRequest;
 import com.vitech.moodfeed.message.dto.MessageResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import java.util.stream.LongStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MessageControllerIT extends MediumTest {
+public class MessageControllerIT extends WebMediumTest {
 
     @Autowired
     private MessageRepository messageRepository;

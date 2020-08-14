@@ -1,6 +1,6 @@
 package com.vitech.moodfeed.user;
 
-import com.vitech.moodfeed.MediumTest;
+import com.vitech.moodfeed.WebMediumTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class UserControllerIT extends MediumTest {
+public class UserControllerIT extends WebMediumTest {
 
     @Test
     void testGetLoggedUser() {
