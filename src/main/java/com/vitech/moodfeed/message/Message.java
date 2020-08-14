@@ -44,4 +44,8 @@ public class Message {
         return mRepo.findAll(pageRequest).stream()
                 .map(m -> m.toResponse(uRepo)).collect(Collectors.toList());
     }
+
+    public void save(MessageRepository repo) {
+        repo.save(this);
+    }
 }

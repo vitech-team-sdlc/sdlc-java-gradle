@@ -28,7 +28,7 @@ public class MessageController {
 
     @PostMapping
     public void createMessage(@RequestBody MessageRequest request) {
-        messageRepo.save(Message.fromRequest(request));
+        Message.fromRequest(request).save(messageRepo);
     }
 
 }
