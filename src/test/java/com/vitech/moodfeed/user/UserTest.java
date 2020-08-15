@@ -1,9 +1,11 @@
 package com.vitech.moodfeed.user;
 
+import com.vitech.moodfeed.RepoRegistry;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -11,7 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @Tag("smallTest")
@@ -20,7 +23,10 @@ import static org.mockito.Mockito.when;
 public class UserTest {
 
     @Mock
-    private UserRepository repoMock;
+    private UserRepo repoMock;
+
+    @InjectMocks
+    private RepoRegistry registry;
 
     public static List<User> users() {
         return Arrays.asList(
@@ -38,11 +44,9 @@ public class UserTest {
         List<User> testUsers = users();
         when(repoMock.findAll()).thenReturn(testUsers);
         // test
-        User loggedUser = User.getRandom(repoMock);
+        User loggedUser = User.getRandom(registry);
         // verify
         assertNotNull(loggedUser);
         assertTrue(testUsers.contains(loggedUser));
     }
-
-
 }

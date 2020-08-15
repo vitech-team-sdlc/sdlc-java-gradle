@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserRepositoryIT extends RepoMediumTest {
+public class UserRepoIT extends RepoMediumTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepository;
 
     @Test
     void testCreateAndGet() {

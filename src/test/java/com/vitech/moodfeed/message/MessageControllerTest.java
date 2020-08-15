@@ -3,11 +3,9 @@ package com.vitech.moodfeed.message;
 import com.vitech.moodfeed.WebSmallTest;
 import com.vitech.moodfeed.message.dto.Request;
 import com.vitech.moodfeed.user.User;
-import com.vitech.moodfeed.user.UserRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
@@ -27,12 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MessageController.class)
 public class MessageControllerTest extends WebSmallTest {
 
-    @MockBean
-    private MessageRepository messageRepo;
-
-    @MockBean
-    private UserRepository userRepository;
-
     @SneakyThrows
     @Test
     void testGetMessages() {
@@ -45,13 +37,14 @@ public class MessageControllerTest extends WebSmallTest {
         mockMvc()
                 .perform(get("/messages"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(toJson(Collections.singletonList(message.toResponse(userRepository)))));
+                .andExpect(content().string(toJson(Collections.singletonList(message.toResponse(registry)))));
     }
 
     @SneakyThrows
     @Test
     void testCreateMessage() {
         // mock
+        when(messageRepo.save(any())).thenAnswer(i -> i.getArgument(0));
         Request request = Request.builder().body("test-message").creatorId(123L).build();
         // test
         mockMvc()
@@ -60,7 +53,7 @@ public class MessageControllerTest extends WebSmallTest {
                         .content(toJson(request)))
                 .andExpect(status().isOk());
         // verify
-        verify(messageRepo).save(eq(Message.fromRequest(request)));
+        verify(messageRepo).save(eq(Message.builder().body("test-message").creatorId(123L).build()));
     }
 
 }

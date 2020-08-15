@@ -1,8 +1,10 @@
 package com.vitech.moodfeed.message;
 
+import com.vitech.moodfeed.RepoRegistry;
+import com.vitech.moodfeed.hashtag.HashtagRepo;
 import com.vitech.moodfeed.message.dto.Request;
 import com.vitech.moodfeed.message.dto.Response;
-import com.vitech.moodfeed.user.UserRepository;
+import com.vitech.moodfeed.user.UserRepo;
 import com.vitech.moodfeed.user.UserTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
@@ -23,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
@@ -40,10 +42,16 @@ public class MessageTest {
     private static final int MESSAGES_LIMIT_HIGHER = 10;
 
     @Mock
-    private UserRepository userRepo;
+    private UserRepo userRepo;
 
     @Mock
-    private MessageRepository messageRepo;
+    private MessageRepo messageRepo;
+
+    @Mock
+    private HashtagRepo hashtagRepo;
+
+    @InjectMocks
+    private RepoRegistry repoRegistry;
 
     public List<Message> messages() {
         return Arrays.asList(
@@ -66,25 +74,11 @@ public class MessageTest {
         // test
         List<Response> actualMessages = Message.getNewest(
                 PageRequest.of(0, messagesLimit, Sort.by(Sort.Direction.DESC, "createdAt")),
-                messageRepo,
-                userRepo
+                repoRegistry
         );
         // verify
         assertEquals(expectedNumberOfMessages, actualMessages.size());
         actualMessages.forEach(msg -> assertNotNull(msg.getCreator()));
-    }
-
-    @Test
-    void testFromRequest() {
-        // mock
-        Request request = Request.builder().body("test-message").creatorId(123L).build();
-        // test
-        Message message = Message.fromRequest(request);
-        // verify
-        assertNull(message.getId());
-        assertNull(message.getCreatedAt());
-        assertEquals(request.getBody(), message.getBody());
-        assertEquals(message.getCreatorId(), message.getCreatorId());
     }
 
     @Test
@@ -93,7 +87,7 @@ public class MessageTest {
         initUserMocks();
         Message message = messages().get(0);
         // test
-        Response response = message.toResponse(userRepo);
+        Response response = message.toResponse(repoRegistry);
         // verify
         assertEquals(message.getId(), response.getId());
         assertEquals(message.getBody(), response.getBody());
@@ -103,9 +97,15 @@ public class MessageTest {
 
     @Test
     public void testSave() {
-        Message m = Message.builder().body("-test-").creatorId(1L).build();
-        m.save(messageRepo);
-        verify(messageRepo, times(1)).save(m);
+        when(messageRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(hashtagRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+        String body = "-test- #tag1 and #tag2";
+        long creatorId = 1L;
+        Request request = Request.builder().body(body).creatorId(creatorId).build();
+        Message.save(request, repoRegistry);
+        verify(messageRepo, times(1))
+                .save(Message.builder().body(body).creatorId(creatorId).build());
+        verify(hashtagRepo, times(2)).save(any());
     }
 
     private void initUserMocks() {

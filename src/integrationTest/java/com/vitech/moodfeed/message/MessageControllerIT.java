@@ -24,11 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class MessageControllerIT extends WebMediumTest {
 
     @Autowired
-    private MessageRepository messageRepository;
+    private MessageRepo messageRepo;
 
     @BeforeEach
     public void beforeEach() {
-        messageRepository.deleteAll();
+        messageRepo.deleteAll();
     }
 
     @ParameterizedTest
@@ -37,7 +37,7 @@ public class MessageControllerIT extends WebMediumTest {
 
         // generate messages
         List<Request> requests = LongStream.range(1, 5)
-                .mapToObj(num -> Request.builder().body("test-message" + num).creatorId(num).build())
+                .mapToObj(num -> Request.builder().body("Test message #cool #stuff!" + num).creatorId(num).build())
                 .collect(Collectors.toList());
 
         // create generated messages by REST API and verify response is OK

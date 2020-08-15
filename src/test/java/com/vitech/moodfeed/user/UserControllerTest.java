@@ -5,7 +5,6 @@ import lombok.SneakyThrows;
 import org.hamcrest.collection.IsIn;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
@@ -18,15 +17,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 class UserControllerTest extends WebSmallTest {
 
-    @MockBean
-    private UserRepository repoMock;
-
     @SneakyThrows
     @Test
     void testGetLoggedUser() {
         // mock
         List<User> users = UserTest.users();
-        when(repoMock.findAll()).thenReturn(users);
+        when(userRepository.findAll()).thenReturn(users);
         // test and verify
         mockMvc()
                 .perform(get("/users/auth"))
