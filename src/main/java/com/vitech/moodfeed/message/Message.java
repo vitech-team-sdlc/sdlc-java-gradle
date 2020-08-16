@@ -31,7 +31,7 @@ public class Message {
     Long creatorId;
     Date createdAt;
 
-    public static void save(Request request, RepoRegistry registry) {
+    public static Message save(Request request, RepoRegistry registry) {
         Validate.notNull(request, "message must be set!");
         Validate.notEmpty(request.getBody(), "message.body must be set!");
         Validate.notNull(request.getCreatorId(), "message.creatorId must be set!");
@@ -40,6 +40,7 @@ public class Message {
         log.info("{} has been saved", saved);
         //save tags referencing to saved message
         Hashtag.saveTags(saved.getId(), request, registry);
+        return saved;
     }
 
     public static List<Response> getNewest(PageRequest pageReq, RepoRegistry registry) {
@@ -48,8 +49,8 @@ public class Message {
 
     public Response toResponse(RepoRegistry registry) {
         return mapper().map(this, Response.ResponseBuilder.class)
-                .creator(User.findById(getCreatorId(), registry))
-                .hashtags(Hashtag.findAllByMessageId(getId(), registry))
+                .creator(User.findById(creatorId, registry))
+                .hashtags(Hashtag.findAllByMessageId(id, registry))
                 .build();
     }
 }

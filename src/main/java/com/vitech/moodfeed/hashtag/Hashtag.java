@@ -7,6 +7,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -32,5 +33,9 @@ public class Hashtag {
 
     public static Set<String> findAllByMessageId(Long messageId, RepoRegistry registry) {
         return registry.getHashtagRepo().findAllByMessageId(messageId).stream().map(Hashtag::getTag).collect(toSet());
+    }
+
+    public static List<String> findTopUsed(int limit, RepoRegistry registry) {
+        return registry.getHashtagRepo().findTopUsed(limit);
     }
 }

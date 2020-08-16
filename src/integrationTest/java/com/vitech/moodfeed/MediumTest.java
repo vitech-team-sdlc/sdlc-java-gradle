@@ -1,15 +1,11 @@
 package com.vitech.moodfeed;
 
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Timeout;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 
-import java.util.concurrent.TimeUnit;
-
 @Tag("mediumTest")
-@Timeout(value = 5000, unit = TimeUnit.MILLISECONDS)
 public class MediumTest {
 
     private static final MySQLContainer MY_SQL_CONTAINER;

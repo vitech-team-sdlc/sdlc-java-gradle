@@ -3,7 +3,6 @@ package com.vitech.moodfeed.user;
 import com.vitech.moodfeed.RepoRegistry;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -11,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +17,6 @@ import static org.mockito.Mockito.when;
 
 @Tag("smallTest")
 @ExtendWith(MockitoExtension.class)
-@Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
 public class UserTest {
 
     @Mock

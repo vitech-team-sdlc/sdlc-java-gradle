@@ -8,7 +8,6 @@ import com.vitech.moodfeed.user.UserRepo;
 import com.vitech.moodfeed.user.UserTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +32,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @Tag("smallTest")
 @ExtendWith(MockitoExtension.class)
-@Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
 public class MessageTest {
 
     private static final int NUMBER_OF_MESSAGES = 5;
@@ -65,7 +62,7 @@ public class MessageTest {
 
     @ParameterizedTest
     @ValueSource(ints = {MESSAGES_LIMIT_LOWER, MESSAGES_LIMIT_HIGHER})
-    void testGetNewest(int messagesLimit) {
+    void getNewest(int messagesLimit) {
         // mock
         initUserMocks();
         int expectedNumberOfMessages = Math.min(messagesLimit, NUMBER_OF_MESSAGES);
@@ -82,7 +79,7 @@ public class MessageTest {
     }
 
     @Test
-    void testToResponse() {
+    void toResponse() {
         // mock
         initUserMocks();
         Message message = messages().get(0);
@@ -96,7 +93,7 @@ public class MessageTest {
     }
 
     @Test
-    public void testSave() {
+    public void save() {
         when(messageRepo.save(any())).thenAnswer(i -> i.getArgument(0));
         when(hashtagRepo.save(any())).thenAnswer(i -> i.getArgument(0));
         String body = "-test- #tag1 and #tag2";
