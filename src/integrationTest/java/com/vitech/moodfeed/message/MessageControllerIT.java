@@ -3,10 +3,8 @@ package com.vitech.moodfeed.message;
 import com.vitech.moodfeed.WebMediumTest;
 import com.vitech.moodfeed.message.dto.Request;
 import com.vitech.moodfeed.message.dto.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -22,14 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MessageControllerIT extends WebMediumTest {
-
-    @Autowired
-    private MessageRepo messageRepo;
-
-    @BeforeEach
-    public void beforeEach() {
-        messageRepo.deleteAll();
-    }
 
     @ParameterizedTest
     @ValueSource(ints = {3, 7})
@@ -48,7 +38,8 @@ public class MessageControllerIT extends WebMediumTest {
         // get all messages by REST API
         ResponseEntity<List<Response>> createdMessages = restTemplate().exchange(
                 RequestEntity.get(messagesUriWithLimit(limit)).build(),
-                new ParameterizedTypeReference<List<Response>>() {});
+                new ParameterizedTypeReference<List<Response>>() {
+                });
 
         // verify previously created messages are present and limit is working as expected
         assertEquals(HttpStatus.OK, createdMessages.getStatusCode());

@@ -1,23 +1,18 @@
 package com.vitech.moodfeed.hashtag;
 
-import com.vitech.moodfeed.RepoRegistry;
 import com.vitech.moodfeed.WebMediumTest;
 import com.vitech.moodfeed.message.Message;
-import com.vitech.moodfeed.message.MessageRepo;
 import com.vitech.moodfeed.message.dto.Request;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -28,29 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HashtagControllerIT extends WebMediumTest {
 
-    @Autowired
-    private MessageRepo messageRepo;
-
-    @Autowired
-    private RepoRegistry registry;
-
-    private List<Long> createdMessageIds = new ArrayList<>();
-
     @BeforeEach
     public void before() {
         //tag3 tag2 tag1 - order
-        createdMessageIds.addAll(
-                asList(
-                        Message.save(Request.builder().body("#tag1 #tag2 #tag3").creatorId(1L).build(), registry).getId(),
-                        Message.save(Request.builder().body("#tag2 #tag3").creatorId(1L).build(), registry).getId(),
-                        Message.save(Request.builder().body("#tag3").creatorId(1L).build(), registry).getId()
-                )
-        );
-    }
-
-    @AfterEach
-    public void after() {
-        createdMessageIds.forEach(id -> messageRepo.deleteById(id));
+        Message.save(Request.builder().body("#tag1 #tag2 #tag3").creatorId(1L).build(), registry);
+        Message.save(Request.builder().body("#tag2 #tag3").creatorId(1L).build(), registry);
+        Message.save(Request.builder().body("#tag3").creatorId(1L).build(), registry);
     }
 
     @ParameterizedTest
