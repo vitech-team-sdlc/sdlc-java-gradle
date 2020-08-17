@@ -35,7 +35,7 @@ public class MessageServiceTest extends SmallTest {
     private MessageServiceImpl messageService;
 
     @Test
-    void testGetMessages(int messagesLimit) {
+    void testGetMessages() {
         // mock
         List<Message> expectedMessages = TestData.messages();
         Map<Long, User> users = Maps.uniqueIndex(TestData.users(), User::getId);
@@ -43,7 +43,7 @@ public class MessageServiceTest extends SmallTest {
                 .thenReturn(Optional.of(users.get(msg.getCreatorId()))));
         when(messageRepositoryMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
         // test
-        List<MessageResponse> actualMessages = messageService.getMessages(messagesLimit);
+        List<MessageResponse> actualMessages = messageService.getMessages(10);
         // verify
         assertEquals(expectedMessages.size(), actualMessages.size());
         actualMessages.forEach(msg -> assertNotNull(msg.getCreator()));
