@@ -1,7 +1,9 @@
 package com.vitech.moodfeed.message;
 
+import com.google.common.collect.Maps;
 import com.vitech.moodfeed.SmallTest;
 import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.user.User;
 import com.vitech.moodfeed.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,11 +14,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,7 +45,9 @@ public class MessageServiceTest extends SmallTest {
         // mock
         int expectedNumberOfMessages = Math.min(messagesLimit, NUMBER_OF_MESSAGES);
         List<Message> expectedMessages = testMessages().subList(0, expectedNumberOfMessages);
-        when(userRepositoryMock.findAllById(anyList())).thenReturn(testUsers());
+        Map<Long, User> users = Maps.uniqueIndex(testUsers(), User::getId);
+        expectedMessages.forEach(msg -> when(userRepositoryMock.findById(msg.getCreatorId()))
+                .thenReturn(Optional.of(users.get(msg.getCreatorId()))));
         when(messageRepositoryMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
         // test
         List<MessageResponse> actualMessages = messageService.getMessages(messagesLimit);
