@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,11 +33,11 @@ public class SmallTest {
 
     public List<Message> testMessages() {
         return Arrays.asList(
-                Message.builder().id(101L).message("test-message-1").creatorId(1L).createdAt(new Date()).build(),
-                Message.builder().id(102L).message("test-message-2").creatorId(2L).createdAt(new Date()).build(),
-                Message.builder().id(103L).message("test-message-3").creatorId(3L).createdAt(new Date()).build(),
-                Message.builder().id(104L).message("test-message-4").creatorId(4L).createdAt(new Date()).build(),
-                Message.builder().id(105L).message("test-message-5").creatorId(5L).createdAt(new Date()).build()
+                Message.builder().id(101L).message("message-1").creatorId(1L).createdAt(LocalDateTime.now()).build(),
+                Message.builder().id(102L).message("message-2").creatorId(2L).createdAt(LocalDateTime.now()).build(),
+                Message.builder().id(103L).message("message-3").creatorId(3L).createdAt(LocalDateTime.now()).build(),
+                Message.builder().id(104L).message("message-4").creatorId(4L).createdAt(LocalDateTime.now()).build(),
+                Message.builder().id(105L).message("message-5").creatorId(5L).createdAt(LocalDateTime.now()).build()
         );
     }
 
