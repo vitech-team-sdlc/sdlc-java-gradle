@@ -13,7 +13,7 @@ public class UserControllerIT extends WebMediumTest {
     @Test
     void testGetLoggedUser() {
         // test
-        ResponseEntity<User> response = restTemplate().getForEntity(baseUrl() + "/users/auth", User.class);
+        ResponseEntity<User> response = restTemplate().getForEntity("/users/auth", User.class);
         // verify
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
