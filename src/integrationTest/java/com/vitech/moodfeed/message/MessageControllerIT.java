@@ -34,7 +34,7 @@ public class MessageControllerIT extends WebMediumTest {
         // get all messages by REST API
         ResponseEntity<List<MessageResponse>> createdMessages = restTemplate().exchange(
                 RequestEntity.get(URI.create("/messages")).build(),
-                new ParameterizedTypeReference<>() {});
+                new ParameterizedTypeReference<List<MessageResponse>>() {});
 
         // verify previously created messages are present
         assertEquals(HttpStatus.OK, createdMessages.getStatusCode());
