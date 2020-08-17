@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest extends SmallTest {
 
     @Mock
-    private UserRepository userRepositoryMock;
+    private UserRepository userRepoMock;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -24,7 +24,7 @@ public class UserServiceTest extends SmallTest {
     void testGetLoggedUser() {
         // mock
         List<User> allUsers = TestData.users();
-        when(userRepositoryMock.findAll()).thenReturn(allUsers);
+        when(userRepoMock.findAll()).thenReturn(allUsers);
         // test
         User loggedUser = userService.getLoggedUser();
         // verify

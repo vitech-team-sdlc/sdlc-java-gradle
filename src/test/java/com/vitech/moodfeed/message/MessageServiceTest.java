@@ -26,10 +26,10 @@ import static org.mockito.Mockito.when;
 public class MessageServiceTest extends SmallTest {
 
     @Mock
-    private UserRepository userRepositoryMock;
+    private UserRepository userRepoMock;
 
     @Mock
-    private MessageRepository messageRepositoryMock;
+    private MessageRepository messageRepoMock;
 
     @InjectMocks
     private MessageServiceImpl messageService;
@@ -39,9 +39,9 @@ public class MessageServiceTest extends SmallTest {
         // mock
         List<Message> expectedMessages = TestData.messages();
         Map<Long, User> users = Maps.uniqueIndex(TestData.users(), User::getId);
-        expectedMessages.forEach(msg -> when(userRepositoryMock.findById(msg.getCreatorId()))
+        expectedMessages.forEach(msg -> when(userRepoMock.findById(msg.getCreatorId()))
                 .thenReturn(Optional.of(users.get(msg.getCreatorId()))));
-        when(messageRepositoryMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
+        when(messageRepoMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
         // test
         List<MessageResponse> actualMessages = messageService.getMessages(10);
         // verify
@@ -56,7 +56,7 @@ public class MessageServiceTest extends SmallTest {
         // test
         messageService.createMessage(message);
         // verify
-        verify(messageRepositoryMock).save(same(message));
+        verify(messageRepoMock).save(same(message));
     }
 
 }

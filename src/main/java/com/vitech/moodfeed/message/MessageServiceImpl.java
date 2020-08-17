@@ -15,23 +15,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
-    private final UserRepository userRepository;
-    private final MessageRepository messageRepository;
+    private final UserRepository userRepo;
+    private final MessageRepository messageRepo;
 
     @Override
     public List<MessageResponse> getMessages(int limit) {
         // query messages
         PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-        List<Message> messages = Lists.newArrayList(messageRepository.findAll(pageRequest));
+        List<Message> messages = Lists.newArrayList(messageRepo.findAll(pageRequest));
         // return messages enhanced with information about it's creators
         return messages.stream()
-                .map(msg -> MessageResponse.from(userRepository.findById(msg.getCreatorId()).orElse(null), msg))
+                .map(msg -> MessageResponse.from(userRepo.findById(msg.getCreatorId()).orElse(null), msg))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void createMessage(Message message) {
-        messageRepository.save(message);
+        messageRepo.save(message);
     }
 
 }

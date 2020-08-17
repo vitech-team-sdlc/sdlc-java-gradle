@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class MessageRepositoryIT extends RepoMediumTest<Message> {
 
     @Autowired
-    public MessageRepositoryIT(MessageRepository messageRepository) {
-        super(messageRepository, new CrudTestDataProvider<>(
+    public MessageRepositoryIT(MessageRepository messageRepo) {
+        super(messageRepo, new CrudTestDataProvider<>(
                 Message::getId,
                 () -> Message.builder().message("msg").creatorId(1L).createdAt(currentDateTime()).build(),
                 (id) -> Message.builder().id(id).message("u-msg").creatorId(1L).createdAt(currentDateTime()).build()

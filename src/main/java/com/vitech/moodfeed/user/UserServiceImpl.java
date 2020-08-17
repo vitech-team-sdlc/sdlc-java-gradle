@@ -7,20 +7,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Implementation of {@link UserService} interface
- */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private static final Random RANDOM = new Random();
-    private final UserRepository userRepository;
+    private final UserRepository userRepo;
 
     @Override
     public User getLoggedUser() {
         // get all users
-        List<User> allUsers = Lists.newArrayList(userRepository.findAll());
+        List<User> allUsers = Lists.newArrayList(userRepo.findAll());
         // return random one
         return allUsers.get(RANDOM.nextInt(allUsers.size()));
     }
