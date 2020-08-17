@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 @Tag("mediumTest")
 @Timeout(value = 5000, unit = TimeUnit.MILLISECONDS)
-public class MediumTest {
+public abstract class MediumTest {
 
     private static final MySQLContainer MY_SQL_CONTAINER;
 
