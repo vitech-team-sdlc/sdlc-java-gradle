@@ -1,11 +1,13 @@
 package com.vitech.moodfeed;
 
+import com.google.common.collect.Sets;
 import com.vitech.moodfeed.message.Message;
 import com.vitech.moodfeed.user.User;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class TestData {
 
@@ -35,6 +37,10 @@ public class TestData {
 
     public static Message message() {
         return messages().get(0);
+    }
+
+    public static Set<String> hashtags() {
+        return Sets.newHashSet("tag1", "tag2", "tag3", "tag4", "tag5");
     }
 
 }

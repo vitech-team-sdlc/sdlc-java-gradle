@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Value
 @Builder
@@ -16,9 +17,14 @@ public class MessageResponse {
     String message;
     User creator;
     LocalDateTime createdAt;
+    Set<String> hashtags;
 
-    public static MessageResponse from(User creator, Message message) {
-        return ModelMapperFactory.getInstance().map(message, MessageResponseBuilder.class).creator(creator).build();
+    public static MessageResponse from(Message message, User creator, Set<String> hashtags) {
+        return ModelMapperFactory.getInstance()
+                .map(message, MessageResponseBuilder.class)
+                .creator(creator)
+                .hashtags(hashtags)
+                .build();
     }
 
 }

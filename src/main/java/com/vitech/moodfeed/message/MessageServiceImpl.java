@@ -1,8 +1,8 @@
 package com.vitech.moodfeed.message;
 
-import com.google.common.collect.Lists;
+import com.vitech.moodfeed.hashtag.HashtagService;
 import com.vitech.moodfeed.message.dto.MessageResponse;
-import com.vitech.moodfeed.user.UserRepository;
+import com.vitech.moodfeed.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,23 +15,25 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
-    private final UserRepository userRepo;
+    private final UserService userService;
+    private final HashtagService hashtagService;
     private final MessageRepository messageRepo;
 
     @Override
     public List<MessageResponse> getMessages(int limit) {
-        // query messages
         PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
-        List<Message> messages = Lists.newArrayList(messageRepo.findAll(pageRequest));
-        // return messages enhanced with information about it's creators
-        return messages.stream()
-                .map(msg -> MessageResponse.from(userRepo.findById(msg.getCreatorId()).orElse(null), msg))
+        return messageRepo.findAll(pageRequest).stream()
+                .map(msg -> MessageResponse.from(
+                        msg,
+                        userService.findById(msg.getCreatorId()),
+                        hashtagService.findAllByMessageId(msg.getId())))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void createMessage(Message message) {
         messageRepo.save(message);
+        hashtagService.saveTags(message);
     }
 
 }

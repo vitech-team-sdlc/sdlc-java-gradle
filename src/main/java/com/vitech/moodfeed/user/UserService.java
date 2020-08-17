@@ -9,4 +9,12 @@ public interface UserService {
      */
     User getLoggedUser();
 
+    /**
+     * Find user by id
+     *
+     * @param id user identifier
+     * @return user found by provided id
+     */
+    User findById(Long id);
+
 }

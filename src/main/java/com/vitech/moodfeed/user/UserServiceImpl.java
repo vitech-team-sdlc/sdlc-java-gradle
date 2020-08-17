@@ -22,4 +22,8 @@ public class UserServiceImpl implements UserService {
         return allUsers.get(RANDOM.nextInt(allUsers.size()));
     }
 
+    @Override
+    public User findById(Long id) {
+        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User by id = " + id + "not found!"));
+    }
 }
