@@ -2,6 +2,7 @@ package com.vitech.moodfeed.message;
 
 import com.google.common.collect.Maps;
 import com.vitech.moodfeed.SmallTest;
+import com.vitech.moodfeed.TestData;
 import com.vitech.moodfeed.message.dto.MessageResponse;
 import com.vitech.moodfeed.user.User;
 import com.vitech.moodfeed.user.UserRepository;
@@ -44,8 +45,8 @@ public class MessageServiceTest extends SmallTest {
     void testGetMessages(int messagesLimit) {
         // mock
         int expectedNumberOfMessages = Math.min(messagesLimit, NUMBER_OF_MESSAGES);
-        List<Message> expectedMessages = testMessages().subList(0, expectedNumberOfMessages);
-        Map<Long, User> users = Maps.uniqueIndex(testUsers(), User::getId);
+        List<Message> expectedMessages = TestData.messages().subList(0, expectedNumberOfMessages);
+        Map<Long, User> users = Maps.uniqueIndex(TestData.users(), User::getId);
         expectedMessages.forEach(msg -> when(userRepositoryMock.findById(msg.getCreatorId()))
                 .thenReturn(Optional.of(users.get(msg.getCreatorId()))));
         when(messageRepositoryMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
@@ -59,7 +60,7 @@ public class MessageServiceTest extends SmallTest {
     @Test
     void testCreateMessage() {
         // mock
-        Message message = testMessage();
+        Message message = TestData.message();
         // test
         messageService.createMessage(message);
         // verify

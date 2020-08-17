@@ -1,5 +1,6 @@
 package com.vitech.moodfeed.user;
 
+import com.vitech.moodfeed.TestData;
 import com.vitech.moodfeed.WebSmallTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,7 +20,7 @@ class UserControllerTest extends WebSmallTest {
     @Test
     void testGetLoggedUser() throws Exception {
         // mock
-        User expectedUser = testUser();
+        User expectedUser = TestData.user();
         when(userServiceMock.getLoggedUser()).thenReturn(expectedUser);
         // test and verify
         mockMvc()

@@ -1,6 +1,7 @@
 package com.vitech.moodfeed.user;
 
 import com.vitech.moodfeed.SmallTest;
+import com.vitech.moodfeed.TestData;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,7 +23,7 @@ public class UserServiceTest extends SmallTest {
     @Test
     void testGetLoggedUser() {
         // mock
-        List<User> allUsers = testUsers();
+        List<User> allUsers = TestData.users();
         when(userRepositoryMock.findAll()).thenReturn(allUsers);
         // test
         User loggedUser = userService.getLoggedUser();
