@@ -4,7 +4,7 @@ import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ public class WebMediumTest extends MediumTest {
 
     private Liquibase liquibase;
 
-    @BeforeEach
+    @AfterEach
     public void beforeEach(
             @Autowired DataSource dataSource,
             @Value("${spring.liquibase.change-log}") String sqlChangeLog) throws Exception {
