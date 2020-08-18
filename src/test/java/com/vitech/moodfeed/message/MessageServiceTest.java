@@ -1,11 +1,10 @@
 package com.vitech.moodfeed.message;
 
-import com.google.common.collect.Maps;
 import com.vitech.moodfeed.SmallTest;
 import com.vitech.moodfeed.TestData;
+import com.vitech.moodfeed.hashtag.HashtagService;
 import com.vitech.moodfeed.message.dto.MessageResponse;
-import com.vitech.moodfeed.user.User;
-import com.vitech.moodfeed.user.UserRepository;
+import com.vitech.moodfeed.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,11 +12,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
@@ -26,7 +22,10 @@ import static org.mockito.Mockito.when;
 public class MessageServiceTest extends SmallTest {
 
     @Mock
-    private UserRepository userRepoMock;
+    private UserService userServiceMock;
+
+    @Mock
+    private HashtagService hashtagServiceMock;
 
     @Mock
     private MessageRepository messageRepoMock;
@@ -38,15 +37,19 @@ public class MessageServiceTest extends SmallTest {
     void testGetMessages() {
         // mock
         List<Message> expectedMessages = TestData.messages();
-        Map<Long, User> users = Maps.uniqueIndex(TestData.users(), User::getId);
-        expectedMessages.forEach(msg -> when(userRepoMock.findById(msg.getCreatorId()))
-                .thenReturn(Optional.of(users.get(msg.getCreatorId()))));
         when(messageRepoMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
+        expectedMessages.forEach(msg -> {
+            when(userServiceMock.findById(msg.getCreatorId())).thenReturn(TestData.usersMap().get(msg.getCreatorId()));
+            when(hashtagServiceMock.findAllByMessageId(msg.getId())).thenReturn(TestData.hashtags());
+        });
         // test
         List<MessageResponse> actualMessages = messageService.getMessages(10);
         // verify
         assertEquals(expectedMessages.size(), actualMessages.size());
-        actualMessages.forEach(msg -> assertNotNull(msg.getCreator()));
+        actualMessages.forEach(msg -> {
+            assertEquals(TestData.usersMap().get(msg.getCreator().getId()), msg.getCreator());
+            assertEquals(TestData.hashtags(), msg.getHashtags());
+        });
     }
 
     @Test
@@ -57,6 +60,7 @@ public class MessageServiceTest extends SmallTest {
         messageService.createMessage(message);
         // verify
         verify(messageRepoMock).save(same(message));
+        verify(hashtagServiceMock).saveTags(same(message));
     }
 
 }

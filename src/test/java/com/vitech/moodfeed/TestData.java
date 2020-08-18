@@ -1,5 +1,6 @@
 package com.vitech.moodfeed;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.vitech.moodfeed.message.Message;
 import com.vitech.moodfeed.user.User;
@@ -7,6 +8,7 @@ import com.vitech.moodfeed.user.User;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class TestData {
@@ -19,6 +21,10 @@ public class TestData {
                 User.builder().id(4L).firstName("Lisa").lastName("Simpson").logoColor("#f0c5eb").build(),
                 User.builder().id(5L).firstName("Ned").lastName("Flanders").logoColor("#afe0fa").build()
         );
+    }
+
+    public static Map<Long, User> usersMap() {
+        return Maps.uniqueIndex(users(), User::getId);
     }
 
     public static User user() {
