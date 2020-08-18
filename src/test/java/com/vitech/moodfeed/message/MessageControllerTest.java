@@ -31,7 +31,7 @@ public class MessageControllerTest extends WebSmallTest {
     private MessageService messageServiceMock;
 
     @ParameterizedTest
-    @MethodSource("messagesLimitOptions")
+    @MethodSource("sourceGetMessages")
     void testGetMessages(String limitQuery, int expectedLimit) throws Exception {
         // mock
         List<MessageResponse> expectedResponse = Collections.singletonList(MessageResponse.builder().build());
@@ -44,7 +44,7 @@ public class MessageControllerTest extends WebSmallTest {
         verify(messageServiceMock).getMessages(eq(expectedLimit));
     }
 
-    private static Stream<Arguments> messagesLimitOptions() {
+    private static Stream<Arguments> sourceGetMessages() {
         return Stream.of(
                 Arguments.of("", 10),
                 Arguments.of("?limit=5", 5));
