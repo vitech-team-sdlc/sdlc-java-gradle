@@ -40,7 +40,7 @@ public class MessageServiceTest extends SmallTest {
         when(messageRepoMock.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(expectedMessages));
         expectedMessages.forEach(msg -> {
             when(userServiceMock.findById(msg.getCreatorId())).thenReturn(TestData.usersMap().get(msg.getCreatorId()));
-            when(hashtagServiceMock.findAllByMessageId(msg.getId())).thenReturn(TestData.hashtags());
+            when(hashtagServiceMock.findAllByMessageId(msg.getId())).thenReturn(TestData.hashtagsSet());
         });
         // test
         List<MessageResponse> actualMessages = messageService.getMessages(10);
@@ -48,7 +48,7 @@ public class MessageServiceTest extends SmallTest {
         assertEquals(expectedMessages.size(), actualMessages.size());
         actualMessages.forEach(msg -> {
             assertEquals(TestData.usersMap().get(msg.getCreator().getId()), msg.getCreator());
-            assertEquals(TestData.hashtags(), msg.getHashtags());
+            assertEquals(TestData.hashtagsSet(), msg.getHashtags());
         });
     }
 

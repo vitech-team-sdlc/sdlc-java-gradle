@@ -1,7 +1,9 @@
 package com.vitech.moodfeed;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.vitech.moodfeed.hashtag.Hashtag;
 import com.vitech.moodfeed.message.Message;
 import com.vitech.moodfeed.user.User;
 
@@ -10,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TestData {
 
@@ -45,8 +48,22 @@ public class TestData {
         return messages().get(0);
     }
 
-    public static Set<String> hashtags() {
-        return Sets.newHashSet("tag1", "tag2", "tag3", "tag4", "tag5");
+    public static Set<Hashtag> hashtags() {
+        return Sets.newHashSet(
+                Hashtag.builder().id(1L).messageId(1L).tag("tag1").build(),
+                Hashtag.builder().id(2L).messageId(2L).tag("tag2").build(),
+                Hashtag.builder().id(3L).messageId(3L).tag("tag3").build(),
+                Hashtag.builder().id(4L).messageId(4L).tag("tag4").build(),
+                Hashtag.builder().id(5L).messageId(5L).tag("tag5").build()
+        );
+    }
+
+    public static Set<String> hashtagsSet() {
+        return hashtags().stream().map(Hashtag::getTag).collect(Collectors.toSet());
+    }
+
+    public static List<String> hashtagsList() {
+        return Lists.newArrayList(hashtagsSet());
     }
 
 }

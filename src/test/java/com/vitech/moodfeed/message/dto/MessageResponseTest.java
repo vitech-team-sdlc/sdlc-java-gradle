@@ -18,7 +18,7 @@ public class MessageResponseTest extends SmallTest {
         // mock
         User user = TestData.user();
         Message message = TestData.message();
-        Set<String> hashtags = TestData.hashtags();
+        Set<String> hashtags = TestData.hashtagsSet();
         // test
         MessageResponse messageResponse = MessageResponse.from(message, user, hashtags);
         // verify
