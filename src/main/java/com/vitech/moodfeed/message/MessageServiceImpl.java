@@ -32,8 +32,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void createMessage(Message message) {
-        messageRepo.save(message);
-        hashtagService.saveTags(message);
+        Message savedMessage = messageRepo.save(message);
+        hashtagService.saveTags(savedMessage);
     }
 
 }

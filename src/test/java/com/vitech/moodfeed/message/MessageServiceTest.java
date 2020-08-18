@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,6 +57,7 @@ public class MessageServiceTest extends SmallTest {
     void testCreateMessage() {
         // mock
         Message message = TestData.message();
+        when(messageRepoMock.save(eq(message))).thenReturn(message);
         // test
         messageService.createMessage(message);
         // verify
