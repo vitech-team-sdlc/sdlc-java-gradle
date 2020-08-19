@@ -26,7 +26,7 @@ public class HashtagServiceTest extends SmallTest {
     private HashtagRepository hashtagRepoMock;
 
     @InjectMocks
-    private HashtagServiceImpl hashtagService;
+    private HashtagService hashtagService;
 
     @ParameterizedTest
     @MethodSource("sourceSaveTags")

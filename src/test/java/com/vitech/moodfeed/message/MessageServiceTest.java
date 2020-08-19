@@ -32,7 +32,7 @@ public class MessageServiceTest extends SmallTest {
     private MessageRepository messageRepoMock;
 
     @InjectMocks
-    private MessageServiceImpl messageService;
+    private MessageService messageService;
 
     @Test
     void testGetMessages() {

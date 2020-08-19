@@ -1,24 +1,37 @@
 package com.vitech.moodfeed.message;
 
+import com.vitech.moodfeed.hashtag.HashtagService;
 import com.vitech.moodfeed.message.dto.MessageResponse;
+import com.vitech.moodfeed.user.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public interface MessageService {
+@Service
+@RequiredArgsConstructor
+public class MessageService {
 
-    /**
-     * Get messages posted by users
-     *
-     * @param limit maximum number of messages
-     * @return limited list of messages posted by users
-     */
-    List<MessageResponse> getMessages(int limit);
+    private final UserService userService;
+    private final HashtagService hashtagService;
+    private final MessageRepository messageRepo;
 
-    /**
-     * Create new message
-     *
-     * @param message message to create
-     */
-    void createMessage(Message message);
+    public List<MessageResponse> getMessages(int limit) {
+        PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return messageRepo.findAll(pageRequest).stream()
+                .map(msg -> MessageResponse.from(
+                        msg,
+                        userService.findById(msg.getCreatorId()),
+                        hashtagService.findAllByMessageId(msg.getId())))
+                .collect(Collectors.toList());
+    }
+
+    public void createMessage(Message message) {
+        Message savedMessage = messageRepo.save(message);
+        hashtagService.saveTags(savedMessage);
+    }
 
 }
