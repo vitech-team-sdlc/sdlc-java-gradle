@@ -1,27 +1,17 @@
 package com.vitech.moodfeed.user;
 
-import com.google.common.collect.Lists;
+import com.vitech.moodfeed.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private static final Random RANDOM = new Random();
     private final UserRepository userRepo;
 
     public User getLoggedUser() {
-        // get all users
-        List<User> allUsers = Lists.newArrayList(userRepo.findAll());
-        // return random one
-        return allUsers.get(RANDOM.nextInt(allUsers.size()));
+        return Utils.getRandom(userRepo.findAll());
     }
 
-    public User findById(Long id) {
-        return userRepo.findById(id).orElseThrow(() -> new RuntimeException("User by id = " + id + "not found!"));
-    }
 }

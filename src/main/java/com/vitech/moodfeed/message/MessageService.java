@@ -1,8 +1,8 @@
 package com.vitech.moodfeed.message;
 
-import com.vitech.moodfeed.hashtag.HashtagService;
+import com.vitech.moodfeed.hashtag.HashtagRepository;
 import com.vitech.moodfeed.message.dto.MessageResponse;
-import com.vitech.moodfeed.user.UserService;
+import com.vitech.moodfeed.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,23 +15,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MessageService {
 
-    private final UserService userService;
-    private final HashtagService hashtagService;
+    private final UserRepository userRepo;
     private final MessageRepository messageRepo;
+    private final HashtagRepository hashtagRepo;
 
     public List<MessageResponse> getMessages(int limit) {
-        PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Sort sort = Sort.by(Sort.Direction.fromString(Message.SORT_ORDER), Message.SORT_FIELD);
+        PageRequest pageRequest = PageRequest.of(0, limit, sort);
         return messageRepo.findAll(pageRequest).stream()
                 .map(msg -> MessageResponse.from(
                         msg,
-                        userService.findById(msg.getCreatorId()),
-                        hashtagService.findAllByMessageId(msg.getId())))
+                        userRepo.findById(msg.getCreatorId()).orElse(null),
+                        hashtagRepo.findAllByMessageId(msg.getId())))
                 .collect(Collectors.toList());
     }
 
     public void createMessage(Message message) {
         Message savedMessage = messageRepo.save(message);
-        hashtagService.saveTags(savedMessage);
+        savedMessage.extractHashTags().forEach(hashtagRepo::save);
     }
 
 }
