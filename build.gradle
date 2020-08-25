@@ -5,6 +5,7 @@ plugins {
     id 'io.freefair.lombok' version '5.1.0'
     id 'org.unbroken-dome.test-sets' version '3.0.1'
     id 'jacoco'
+    id "org.sonarqube" version "3.0"
 }
 
 group 'com.vitech'
@@ -22,6 +23,15 @@ tasks.withType(Test) {
 testSets {
     integrationTest
 }
+
+tasks.withType(JacocoReport) {
+    reports {
+        html.enabled = true
+        xml.enabled true
+    }
+}
+test.finalizedBy jacocoTestReport
+integrationTest.finalizedBy jacocoIntegrationTestReport
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
