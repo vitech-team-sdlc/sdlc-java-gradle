@@ -16,12 +16,33 @@ repositories {
     mavenCentral()
 }
 
+testSets {
+    integrationTest
+}
+
 tasks.withType(Test) {
     useJUnitPlatform()
 }
 
-testSets {
-    integrationTest
+def checkTestsExecutionTime = { TestDescriptor descriptor, TestResult result, String timeLimitProperty ->
+    if (descriptor.parent == null) {
+        def limitMinutes = project.findProperty(timeLimitProperty) as Integer
+        def limitMs = limitMinutes * 60 * 1000
+        def execTimeMs = result.endTime - result.startTime
+        if (execTimeMs > limitMs) {
+            throw new GradleException("Tests execution time [${execTimeMs}ms] exceeded configured limit [${limitMs}ms]")
+        }
+    }
+}
+
+test {
+    afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.small.execution.time.limit.minutes") }
+    finalizedBy jacocoTestReport
+}
+
+integrationTest {
+    afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.medium.execution.time.limit.minutes") }
+    finalizedBy jacocoIntegrationTestReport
 }
 
 tasks.withType(JacocoReport) {
@@ -30,8 +51,6 @@ tasks.withType(JacocoReport) {
         xml.enabled true
     }
 }
-test.finalizedBy jacocoTestReport
-integrationTest.finalizedBy jacocoIntegrationTestReport
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
