@@ -18,7 +18,7 @@ public class UserServiceTest extends SmallTest {
     private UserRepository userRepoMock;
 
     @InjectMocks
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Test
     void testGetLoggedUser() {

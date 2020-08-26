@@ -1,20 +1,17 @@
 package com.vitech.moodfeed.user;
 
-public interface UserService {
+import com.vitech.moodfeed.utils.Utils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-    /**
-     * Get currently logged user
-     *
-     * @return currently logged user
-     */
-    User getLoggedUser();
+@Service
+@RequiredArgsConstructor
+public class UserService {
 
-    /**
-     * Find user by id
-     *
-     * @param id user identifier
-     * @return user found by provided id
-     */
-    User findById(Long id);
+    private final UserRepository userRepo;
+
+    public User getLoggedUser() {
+        return Utils.getRandom(userRepo.findAll());
+    }
 
 }
