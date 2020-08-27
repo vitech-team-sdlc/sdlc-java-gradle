@@ -26,22 +26,21 @@ tasks.withType(Test) {
 
 def checkTestsExecutionTime = { TestDescriptor descriptor, TestResult result, String timeLimitProperty ->
     if (descriptor.parent == null) {
-        def limitMinutes = project.findProperty(timeLimitProperty) as Integer
-        def limitMs = limitMinutes * 60 * 1000
-        def execTimeMs = result.endTime - result.startTime
-        if (execTimeMs > limitMs) {
-            throw new GradleException("Tests execution time [${execTimeMs}ms] exceeded configured limit [${limitMs}ms]")
+        def limit = project.findProperty(timeLimitProperty) as Integer
+        def execTime = (result.endTime - result.startTime) / 1000
+        if (execTime > limit) {
+            throw new GradleException("Tests execution time [${execTime}sec] exceeded configured limit [${limit}sec]")
         }
     }
 }
 
 test {
-    afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.small.execution.time.limit.minutes") }
+    afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.small.execution.time.limit.seconds") }
     finalizedBy jacocoTestReport
 }
 
 integrationTest {
-    afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.medium.execution.time.limit.minutes") }
+    afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.medium.execution.time.limit.seconds") }
     finalizedBy jacocoIntegrationTestReport
 }
 
