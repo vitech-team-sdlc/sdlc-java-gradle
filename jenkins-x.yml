@@ -2,3 +2,20 @@ buildPack: gradle
 pipelineConfig:
   agent:
     image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+  pipelines:
+    pullRequest:
+      promote:
+        replace: true
+        steps:
+          - dir: ./charts/preview
+            steps:
+              - sh: make preview
+                env:
+                  - value: gcr.io
+                    name: DOCKER_REGISTRY
+                name: make-preview
+              - sh: jx preview --app $APP_NAME --dir ../..
+                env:
+                  - value: gcr.io
+                    name: DOCKER_REGISTRY
+                name: jx-preview
