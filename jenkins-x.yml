@@ -1,1 +1,4 @@
 buildPack: gradle
+pipelineConfig:
+  agent:
+    image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
