@@ -19,3 +19,4 @@ pipelineConfig:
                   - value: gcr.io
                     name: DOCKER_REGISTRY
                 name: jx-preview
+ 
