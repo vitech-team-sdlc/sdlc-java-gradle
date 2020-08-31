@@ -12,3 +12,4 @@ pipelineConfig:
             env:
               - value: gcr.io
                 name: DOCKER_REGISTRY
+
