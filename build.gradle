@@ -61,4 +61,5 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.testcontainers:mysql:1.14.3"
+    testImplementation 'com.tngtech.archunit:archunit-junit5:0.14.1'
 }
