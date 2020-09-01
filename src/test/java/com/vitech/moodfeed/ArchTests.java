@@ -4,6 +4,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import com.vitech.moodfeed.domain.DomainEntity;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packages = ArchTests.APP_BASE_PACKAGE, importOptions = ImportOption.DoNotIncludeTests.class)
@@ -69,5 +71,16 @@ public class ArchTests {
     @ArchTest
     static final ArchRule forbidden_packages = noClasses()
             .should().resideInAnyPackage("..controller..", "..service..", "..repository..", "..repo..");
+
+    @ArchTest
+    static final ArchRule domain_model_rules = fields()
+            .that().areDeclaredInClassesThat().areAssignableTo(DomainEntity.class)
+            .should().beFinal();
+
+    @ArchTest
+    static final ArchRule dto_rules = fields()
+            .that().areDeclaredInClassesThat().resideInAPackage("..dto..")
+            .and().areDeclaredInClassesThat().haveSimpleNameNotEndingWith("Builder")
+            .should().beFinal();
 
 }
