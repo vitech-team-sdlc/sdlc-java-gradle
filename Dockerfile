@@ -13,12 +13,16 @@ WORKDIR application
 
 RUN java -Djarmode=layertools -jar /app/application.jar extract
 
+RUN pwd
+
+RUN ls -l
+
+
 COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/resources/ ./
 COPY --from=builder application/application/ ./
 
-ENV JAVA_OPTS='-Xmx1g -Xms512m'
 EXPOSE 8080
 
-ENTRYPOINT ["java", "$JAVA_OPTS", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
