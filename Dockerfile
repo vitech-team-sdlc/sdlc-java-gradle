@@ -1,7 +1,7 @@
 FROM gradle:6.6.1-jdk11 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle clean bootJar --no-daemon
+RUN gradle clean jar --no-daemon
 
 FROM openjdk:11-jre-slim
 
