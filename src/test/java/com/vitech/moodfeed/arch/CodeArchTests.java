@@ -38,7 +38,8 @@ public class CodeArchTests {
     static final ArchRule controller_rules = classes()
             .that().areAnnotatedWith(Controller.class).or().areAnnotatedWith(RestController.class)
             .should().haveSimpleNameEndingWith("Controller")
-            .andShould().resideInAPackage("..domain.*..");
+            .andShould().resideInAPackage("..domain.*..")
+            .andShould().haveOnlyFinalFields();
 
     @ArchTest
     static final ArchRule controllers_dependencies_rules = noClasses()
@@ -49,7 +50,8 @@ public class CodeArchTests {
     static final ArchRule service_rules = classes()
             .that().areAnnotatedWith(Service.class)
             .should().haveSimpleNameEndingWith("Service")
-            .andShould().resideInAPackage("..domain.*..");
+            .andShould().resideInAPackage("..domain.*..")
+            .andShould().haveOnlyFinalFields();
 
     @ArchTest
     static final ArchRule services_dependencies_rules = classes()
@@ -61,7 +63,8 @@ public class CodeArchTests {
     static final ArchRule repository_rules = classes()
             .that().areAnnotatedWith(Repository.class).or().areAssignableTo(CrudRepository.class)
             .should().haveSimpleNameEndingWith("Repository")
-            .andShould().resideInAPackage("..domain.*..");
+            .andShould().resideInAPackage("..domain.*..")
+            .andShould().haveOnlyFinalFields();
 
     @ArchTest
     static final ArchRule repositories_dependencies_rules = classes()
