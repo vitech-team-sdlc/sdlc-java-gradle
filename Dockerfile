@@ -1,19 +1,13 @@
-FROM openjdk:11.0.8-jdk-slim
-ENV PORT 8080
-EXPOSE 8080
-COPY build/libs/*.jar /opt/app.jar
-
+FROM adoptopenjdk:11-jre-hotspot as builder
 WORKDIR application
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
 
-RUN java -Djarmode=layertools -jar /opt/app.jar extract
-
-RUN pwd
-
-RUN ls -l
-
-COPY dependencies/ ./
-COPY snapshot-dependencies/ ./
-COPY resources/ ./
-COPY application/ ./
-
+FROM adoptopenjdk:11-jre-hotspot
+WORKDIR application
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
