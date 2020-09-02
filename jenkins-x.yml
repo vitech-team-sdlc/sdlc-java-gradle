@@ -5,6 +5,7 @@ pipelineConfig:
   pipelines:
     pullRequest:
       build:
+        replace: true
         steps:
           - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
             name: container-build
@@ -14,6 +15,7 @@ pipelineConfig:
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: ''
       postBuild:
+        replace: true
         steps:
           - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION
             name: post-build
@@ -23,6 +25,7 @@ pipelineConfig:
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: ''
       promote:
+        replace: true
         steps:
           - dir: ./charts/preview
             steps:
@@ -33,6 +36,7 @@ pipelineConfig:
 
     release:
       build:
+        replace: true
         steps:
           - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
             name: container-build
@@ -49,6 +53,7 @@ pipelineConfig:
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: ''
       promote:
+        replace: true
         steps:
           - dir: ./charts/REPLACE_ME_APP_NAME
             steps:
