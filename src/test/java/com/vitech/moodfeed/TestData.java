@@ -3,9 +3,9 @@ package com.vitech.moodfeed;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.vitech.moodfeed.hashtag.Hashtag;
-import com.vitech.moodfeed.message.Message;
-import com.vitech.moodfeed.user.User;
+import com.vitech.moodfeed.domain.hashtag.Hashtag;
+import com.vitech.moodfeed.domain.message.Message;
+import com.vitech.moodfeed.domain.user.User;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
