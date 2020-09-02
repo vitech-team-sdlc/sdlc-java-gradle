@@ -30,16 +30,6 @@ pipelineConfig:
           - sh: gradle clean bootJar
             name: gradle-build
 
-          - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
-            name: skaffold-container-build
-            env:
-              - valueFrom:
-                  configMapKeyRef:
-                    name: jenkins-x-docker-registry
-                    key: docker.registry
-              - name: GOOGLE_APPLICATION_CREDENTIALS
-                value: ''
-
           - sh: /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
             name: container-build
             image: 'gcr.io/kaniko-project/executor:debug-v0.19.0'
