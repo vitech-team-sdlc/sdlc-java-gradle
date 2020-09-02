@@ -38,7 +38,7 @@ pipelineConfig:
                 env:
                   - name: DOCKER_REGISTRY
                     value: gcr.io
-              - sh: jx preview --app $APP_NAME --dir ../..
+              - sh: jx preview --preview-health-timeout 5m --app $APP_NAME --dir ../..
                 name: jx-preview
                 env:
                   - name: DOCKER_REGISTRY
