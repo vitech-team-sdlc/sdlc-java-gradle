@@ -6,7 +6,6 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
@@ -17,23 +16,23 @@ import java.util.Objects;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WebMediumTest extends MediumTest {
 
+    private static final String CHANGE_LOG = "db/db.changelog-master.xml";
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     private Liquibase liquibase;
 
     @AfterEach
-    public void beforeEach(
-            @Autowired DataSource dataSource,
-            @Value("${spring.liquibase.change-log}") String sqlChangeLog) throws Exception {
-        initLiquibase(dataSource.getConnection(), sqlChangeLog);
+    public void beforeEach(@Autowired DataSource dataSource) throws Exception {
+        initLiquibase(dataSource.getConnection());
         liquibase.dropAll();
         liquibase.update((String) null);
     }
 
-    private void initLiquibase(Connection connection, String sqlChangeLog) throws LiquibaseException {
+    private void initLiquibase(Connection connection) throws LiquibaseException {
         if (Objects.isNull(liquibase)) {
-            liquibase = new Liquibase(sqlChangeLog, new ClassLoaderResourceAccessor(), new JdbcConnection(connection));
+            liquibase = new Liquibase(CHANGE_LOG, new ClassLoaderResourceAccessor(), new JdbcConnection(connection));
         }
     }
 
