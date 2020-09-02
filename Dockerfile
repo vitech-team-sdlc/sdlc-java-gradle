@@ -11,9 +11,9 @@ RUN pwd
 
 RUN ls -l
 
-COPY --from=builder application/dependencies/ ./
-COPY --from=builder application/snapshot-dependencies/ ./
-COPY --from=builder application/resources/ ./
-COPY --from=builder application/application/ ./
+COPY application/dependencies/ ./
+COPY application/snapshot-dependencies/ ./
+COPY application/resources/ ./
+COPY application/application/ ./
 
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
