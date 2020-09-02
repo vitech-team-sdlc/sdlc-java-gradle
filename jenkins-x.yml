@@ -7,7 +7,7 @@ pipelineConfig:
       build:
         replace: true
         steps:
-          - sh: gradle clean bootJar
+          - sh: gradle clean build
             name: gradle-build
 
           #          - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml

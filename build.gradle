@@ -44,10 +44,6 @@ integrationTest {
     finalizedBy jacocoIntegrationTestReport
 }
 
-bootJar {
-    layered()
-}
-
 tasks.withType(JacocoReport) {
     reports {
         html.enabled = true
