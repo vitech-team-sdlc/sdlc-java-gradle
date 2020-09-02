@@ -3,9 +3,12 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mood_feed
     username: root
-    password: root
+    password: 123qweasd
+    hikari:
+      data-source-properties:
+        serverTimezone: UTC
   liquibase:
     change-log: classpath:/db/db.changelog-master.xml
 
 server:
-  port: 8088
+  port: 8080
