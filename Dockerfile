@@ -6,6 +6,7 @@ COPY ${JAR_FILE} application/application.jar
 
 WORKDIR application
 RUN java -Djarmode=layertools -jar application.jar extract
+RUN ls -la
 
 FROM adoptopenjdk:11-jre-hotspot
 WORKDIR application
