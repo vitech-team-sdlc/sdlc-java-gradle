@@ -20,3 +20,14 @@ preview:
     repository:
     tag:
     pullPolicy: IfNotPresent
+  env:
+    SPRING_PROFILES_ACTIVE: preview
+
+mysql:
+  mysqlPassword: 123QWEasd
+  mysqlDatabase: moodfeed
+  mysqlUser: moodfeed
+  mysqlRootPassword: 123QWEasd
+  initializationFiles:
+    mood_feed_db.sql: |-
+      CREATE DATABASE IF NOT EXISTS mood_feed DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;

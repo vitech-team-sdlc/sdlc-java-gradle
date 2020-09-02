@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://preview-mysql:3306/mood_feed
+    username: root
+    password: 123QWEasd
