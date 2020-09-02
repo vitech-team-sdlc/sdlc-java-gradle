@@ -1,4 +1,4 @@
-package com.vitech.moodfeed;
+package com.vitech.moodfeed.arch;
 
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
@@ -17,8 +17,8 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-@AnalyzeClasses(packages = ArchTests.APP_BASE_PACKAGE, importOptions = ImportOption.DoNotIncludeTests.class)
-public class ArchTests {
+@AnalyzeClasses(packages = CodeArchTests.APP_BASE_PACKAGE, importOptions = ImportOption.DoNotIncludeTests.class)
+public class CodeArchTests {
 
     static final String APP_BASE_PACKAGE = "com.vitech.moodfeed";
 
