@@ -20,6 +20,8 @@ preview:
     repository:
     tag:
     pullPolicy: IfNotPresent
+  livenessProbe:
+    initialDelaySeconds: 120
   env:
     SPRING_PROFILES_ACTIVE: preview
 
