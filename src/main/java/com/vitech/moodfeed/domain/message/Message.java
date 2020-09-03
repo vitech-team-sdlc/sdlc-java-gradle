@@ -2,6 +2,10 @@ package com.vitech.moodfeed.domain.message;
 
 import com.vitech.moodfeed.domain.DomainEntity;
 import com.vitech.moodfeed.domain.hashtag.Hashtag;
+import com.vitech.moodfeed.domain.message.dto.MessageRequest;
+import com.vitech.moodfeed.domain.message.dto.MessageResponse;
+import com.vitech.moodfeed.domain.user.User;
+import com.vitech.moodfeed.utils.ModelMapperFactory;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -11,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
@@ -39,6 +44,18 @@ public class Message extends DomainEntity {
 
     public Set<Hashtag> extractMentionedUsers() {
         return extractByPattern('@');
+    }
+
+    public static Message fromRequest(MessageRequest request) {
+        return ModelMapperFactory.getInstance().map(request, Message.MessageBuilder.class).build();
+    }
+
+    public MessageResponse toResponse(User creator, Set<Hashtag> hashtags) {
+        return ModelMapperFactory.getInstance()
+                .map(this, MessageResponse.MessageResponseBuilder.class)
+                .creator(creator)
+                .hashtags(hashtags.stream().map(Hashtag::getTag).collect(Collectors.toSet()))
+                .build();
     }
 
     private Set<Hashtag> extractByPattern(char start) {

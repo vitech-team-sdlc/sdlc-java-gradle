@@ -61,7 +61,7 @@ public class MessageControllerTest extends WebSmallTest {
                         .content(toJson(messageRequest)))
                 .andExpect(status().isOk());
         // verify
-        verify(messageServiceMock).createMessage(eq(messageRequest.toMessage()));
+        verify(messageServiceMock).createMessage(eq(Message.fromRequest(messageRequest)));
     }
 
 }

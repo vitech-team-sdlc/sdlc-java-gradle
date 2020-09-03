@@ -23,8 +23,7 @@ public class MessageService {
         Sort sort = Sort.by(Sort.Direction.fromString(Message.SORT_ORDER), Message.SORT_FIELD);
         PageRequest pageRequest = PageRequest.of(0, limit, sort);
         return messageRepo.findAll(pageRequest).stream()
-                .map(msg -> MessageResponse.from(
-                        msg,
+                .map(msg -> msg.toResponse(
                         userRepo.findById(msg.getCreatorId()).orElse(null),
                         hashtagRepo.findAllByMessageId(msg.getId())))
                 .collect(Collectors.toList());
