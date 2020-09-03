@@ -38,7 +38,7 @@ pipelineConfig:
                     value: gcr.io
                   - name: GOOGLE_APPLICATION_CREDENTIALS
                     value: ''
-              - sh: jx preview --app --timeout 2m $APP_NAME --dir ../..
+              - sh: jx preview --timeout 2m --app  $APP_NAME --dir ../..
                 name: jx-preview
                 env:
                   - name: DOCKER_REGISTRY
