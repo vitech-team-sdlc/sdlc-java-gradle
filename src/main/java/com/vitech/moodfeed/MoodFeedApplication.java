@@ -13,13 +13,4 @@ public class MoodFeedApplication {
         SpringApplication.run(MoodFeedApplication.class, args);
     }
 
-    @RestController
-    @RequestMapping("/")
-    class IndexController{
-
-        @GetMapping
-        public String get(){
-            return "Mood";
-        }
-    }
 }
