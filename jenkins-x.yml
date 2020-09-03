@@ -33,8 +33,18 @@ pipelineConfig:
             steps:
               - sh: make preview
                 name: make-preview
-              - sh: jx preview --app $APP_NAME --dir ../..
+                env:
+                  - name: DOCKER_REGISTRY
+                    value: gcr.io
+                  - name: GOOGLE_APPLICATION_CREDENTIALS
+                    value: ''
+              - sh: jx preview --app --timeout 2m $APP_NAME --dir ../..
                 name: jx-preview
+                env:
+                  - name: DOCKER_REGISTRY
+                    value: gcr.io
+                  - name: GOOGLE_APPLICATION_CREDENTIALS
+                    value: ''
 
 
     release:
@@ -57,6 +67,7 @@ pipelineConfig:
                 value: gcr.io
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: ''
+
       promote:
         replace: true
         steps:
@@ -72,6 +83,11 @@ pipelineConfig:
               - comment: release the helm chart
                 sh: jx step helm release
                 name: helm-release
+                env:
+                  - name: DOCKER_REGISTRY
+                    value: gcr.io
+                  - name: GOOGLE_APPLICATION_CREDENTIALS
+                    value: ''
               - comment: promote through all 'Auto' promotion Environments
                 sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
                 name: jx-promote
