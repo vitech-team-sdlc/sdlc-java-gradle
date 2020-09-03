@@ -17,8 +17,8 @@ knativeDeploy: false
 # HorizontalPodAutoscaler
 hpa:
   enabled: false
-  minReplicas: 2
-  maxReplicas: 6
+  minReplicas: 1
+  maxReplicas: 1
   cpuTargetAverageUtilization: 80
   memoryTargetAverageUtilization: 80
 
@@ -80,7 +80,7 @@ jxRequirements:
   ingress:
     domain: "35.224.13.149.nip.io"
     externalDNS: false
-    namespaceSubDomain: -jx.
+    namespaceSubDomain: -preview-jx.
     serviceType: ""
     tls:
       email: ""
