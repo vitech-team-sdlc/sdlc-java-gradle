@@ -1,7 +1,7 @@
 buildPack: gradle
 pipelineConfig:
   agent:
-    image: gcr.io/jenkinsxio/builder-gradle5-java11:2.1.138-757
+    image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
   pipelines:
     pullRequest:
       build:
@@ -35,6 +35,7 @@ pipelineConfig:
                 name: make-preview
               - sh: jx preview --app $APP_NAME --dir ../..
                 name: jx-preview
+
 
     release:
       build:
