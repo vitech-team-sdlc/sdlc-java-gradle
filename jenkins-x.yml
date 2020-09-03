@@ -68,31 +68,31 @@ pipelineConfig:
               - name: GOOGLE_APPLICATION_CREDENTIALS
                 value: ''
 
-      promote:
-        replace: true
-        steps:
-          - dir: ./charts/REPLACE_ME_APP_NAME
-            steps:
-              - sh: jx step changelog --version v\$(cat ../../VERSION)
-                name: changelog
-                env:
-                  - name: DOCKER_REGISTRY
-                    value: gcr.io
-                  - name: GOOGLE_APPLICATION_CREDENTIALS
-                    value: ''
-              - comment: release the helm chart
-                sh: jx step helm release
-                name: helm-release
-                env:
-                  - name: DOCKER_REGISTRY
-                    value: gcr.io
-                  - name: GOOGLE_APPLICATION_CREDENTIALS
-                    value: ''
-              - comment: promote through all 'Auto' promotion Environments
-                sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-                name: jx-promote
-                env:
-                  - name: DOCKER_REGISTRY
-                    value: gcr.io
-                  - name: GOOGLE_APPLICATION_CREDENTIALS
-                    value: ''
+#      promote:
+#        replace: true
+#        steps:
+#          - dir: ./charts/REPLACE_ME_APP_NAME
+#            steps:
+#              - sh: jx step changelog --version v\$(cat ../../VERSION)
+#                name: changelog
+#                env:
+#                  - name: DOCKER_REGISTRY
+#                    value: gcr.io
+#                  - name: GOOGLE_APPLICATION_CREDENTIALS
+#                    value: ''
+#              - comment: release the helm chart
+#                sh: jx step helm release
+#                name: helm-release
+#                env:
+#                  - name: DOCKER_REGISTRY
+#                    value: gcr.io
+#                  - name: GOOGLE_APPLICATION_CREDENTIALS
+#                    value: ''
+#              - comment: promote through all 'Auto' promotion Environments
+#                sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+#                name: jx-promote
+#                env:
+#                  - name: DOCKER_REGISTRY
+#                    value: gcr.io
+#                  - name: GOOGLE_APPLICATION_CREDENTIALS
+#                    value: ''
