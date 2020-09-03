@@ -7,6 +7,8 @@ pipelineConfig:
       build:
         replace: true
         steps:
+          - sh: gradle clean bootJar
+            name: gradle-build
           - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
             name: container-build
             env:
@@ -38,6 +40,8 @@ pipelineConfig:
       build:
         replace: true
         steps:
+          - sh: gradle clean bootJar
+            name: gradle-build
           - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
             name: container-build
             env:
