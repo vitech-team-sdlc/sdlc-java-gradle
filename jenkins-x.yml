@@ -7,5 +7,4 @@ pipelineConfig:
       value: gcr.io
     - name: GOOGLE_APPLICATION_CREDENTIALS
       value: ''
-  pipelines:
 
