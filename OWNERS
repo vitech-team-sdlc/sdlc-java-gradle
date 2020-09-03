@@ -1,4 +1,10 @@
 approvers:
-- vitech-sdlc
+  - vitech-sdlc
+  - serhiy-krupka-vitech
+  - oleg-ilechko
+  - oleh-kovaliuk
 reviewers:
-- vitech-sdlc
+  - vitech-sdlc
+  - serhiy-krupka-vitech
+  - oleg-ilechko
+  - oleh-kovaliuk

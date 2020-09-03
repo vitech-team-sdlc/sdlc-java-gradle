@@ -2,6 +2,10 @@
 dependencies:
   # !! "alias: preview" must be last entry in dependencies array !!
   # !! Place custom dependencies above !!
+- name: mysql
+  version: 1.6.6
+  repository: https://kubernetes-charts.storage.googleapis.com
+
 - alias: preview
   name: mood-feed-backend
   repository: file://../mood-feed-backend
