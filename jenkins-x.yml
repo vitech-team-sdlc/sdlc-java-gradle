@@ -1,7 +1,7 @@
 buildPack: gradle
 pipelineConfig:
   agent:
-    image: gcr.io/jenkinsxio/builder-gradle5-java11:2.1.138-757
+    image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
   pipelines:
     pullRequest:
       build:
