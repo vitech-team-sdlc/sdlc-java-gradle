@@ -4,6 +4,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import com.vitech.moodfeed.SmallTest;
 import com.vitech.moodfeed.domain.DomainEntity;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +18,8 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-@AnalyzeClasses(packages = CodeArchTests.APP_BASE_PACKAGE, importOptions = ImportOption.DoNotIncludeTests.class)
-public class CodeArchTests {
+@AnalyzeClasses(packages = CodeArchTest.APP_BASE_PACKAGE, importOptions = ImportOption.DoNotIncludeTests.class)
+public class CodeArchTest extends SmallTest {
 
     static final String APP_BASE_PACKAGE = "com.vitech.moodfeed";
 

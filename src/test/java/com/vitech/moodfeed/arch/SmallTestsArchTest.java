@@ -15,8 +15,8 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 
-@AnalyzeClasses(packages = CodeArchTests.APP_BASE_PACKAGE)
-public class SmallTestsArchTest {
+@AnalyzeClasses(packages = CodeArchTest.APP_BASE_PACKAGE)
+public class SmallTestsArchTest extends SmallTest {
 
     @ArchTest
     static final ArchRule methods_naming_convention = methods()
@@ -33,7 +33,6 @@ public class SmallTestsArchTest {
     @ArchTest
     static final ArchRule small_test_rules = classes()
             .that().haveSimpleNameEndingWith("Test")
-            .and().haveSimpleNameNotEndingWith("ArchTest")
             .should().beAssignableTo(SmallTest.class);
 
     @ArchTest

@@ -1,11 +1,14 @@
 package com.vitech.moodfeed;
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 
 @Tag("mediumTest")
+@TestMethodOrder(MethodOrderer.Random.class)
 public abstract class MediumTest {
 
     private static final MySQLContainer MY_SQL_CONTAINER;
