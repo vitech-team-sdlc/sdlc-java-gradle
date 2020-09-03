@@ -17,7 +17,6 @@ public class UserControllerIT extends WebMediumTest {
         // verify
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-
     }
 
 }
