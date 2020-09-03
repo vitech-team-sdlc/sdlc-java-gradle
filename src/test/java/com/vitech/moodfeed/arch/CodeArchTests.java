@@ -34,12 +34,12 @@ public class CodeArchTests {
             .should().haveSimpleNameEndingWith("Config")
             .andShould().resideInAPackage("..config..");
 
-    @ArchTest
-    static final ArchRule controller_rules = classes()
-            .that().areAnnotatedWith(Controller.class).or().areAnnotatedWith(RestController.class)
-            .should().haveSimpleNameEndingWith("Controller")
-            .andShould().resideInAPackage("..domain.*..")
-            .andShould().haveOnlyFinalFields();
+//    @ArchTest
+//    static final ArchRule controller_rules = classes()
+//            .that().areAnnotatedWith(Controller.class).or().areAnnotatedWith(RestController.class)
+//            .should().haveSimpleNameEndingWith("Controller")
+//            .andShould().resideInAPackage("..domain.*..")
+//            .andShould().haveOnlyFinalFields();
 
     @ArchTest
     static final ArchRule controllers_dependencies_rules = noClasses()

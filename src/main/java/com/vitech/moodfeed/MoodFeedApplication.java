@@ -2,6 +2,9 @@ package com.vitech.moodfeed;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 public class MoodFeedApplication {
@@ -10,4 +13,13 @@ public class MoodFeedApplication {
         SpringApplication.run(MoodFeedApplication.class, args);
     }
 
+    @RestController
+    @RequestMapping("/")
+    class IndexController{
+
+        @GetMapping
+        public String get(){
+            return "Mood";
+        }
+    }
 }
