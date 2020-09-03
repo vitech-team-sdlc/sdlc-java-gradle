@@ -2,20 +2,16 @@ package com.vitech.moodfeed.domain.hashtag;
 
 import com.vitech.moodfeed.domain.DomainEntity;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
+import org.springframework.data.annotation.Id;
 
 @Value
-@EqualsAndHashCode(callSuper = true)
-public class Hashtag extends DomainEntity {
+@Builder
+@DomainEntity
+public class Hashtag {
 
+    @Id Long id;
     Long messageId;
     String tag;
 
-    @Builder
-    public Hashtag(Long id, Long messageId, String tag) {
-        super(id);
-        this.messageId = messageId;
-        this.tag = tag;
-    }
 }

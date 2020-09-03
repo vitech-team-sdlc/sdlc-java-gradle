@@ -77,7 +77,7 @@ public class CodeArchTests {
 
     @ArchTest
     static final ArchRule domain_model_rules = fields()
-            .that().areDeclaredInClassesThat().areAssignableTo(DomainEntity.class)
+            .that().areDeclaredInClassesThat().areAnnotatedWith(DomainEntity.class)
             .should().beFinal();
 
     @ArchTest
