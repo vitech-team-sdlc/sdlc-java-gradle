@@ -9,6 +9,7 @@ image:
 
 # define environment variables here as a map of key: value
 env:
+  SPRING_PROFILES_ACTIVE: production
 
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
@@ -16,8 +17,8 @@ knativeDeploy: false
 # HorizontalPodAutoscaler
 hpa:
   enabled: false
-  minReplicas: 2
-  maxReplicas: 6
+  minReplicas: 1
+  maxReplicas: 1
   cpuTargetAverageUtilization: 80
   memoryTargetAverageUtilization: 80
 
@@ -50,10 +51,10 @@ service:
     fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
 resources:
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 800m
+    memory: 1000Mi
   requests:
-    cpu: 400m
+    cpu: 500m
     memory: 512Mi
 probePath: /actuator/health
 livenessProbe:
@@ -77,9 +78,9 @@ ingress:
 # values we use from the `jx-requirements.yml` file if we are using helmfile and helm 3
 jxRequirements:
   ingress:
-    domain: ""
+    domain: "35.224.13.149.nip.io"
     externalDNS: false
-    namespaceSubDomain: -jx.
+    namespaceSubDomain: -preview-jx.
     serviceType: ""
     tls:
       email: ""
