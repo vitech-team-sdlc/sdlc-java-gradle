@@ -18,9 +18,9 @@ pipelineConfig:
           - agent:
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
             dir: /workspace/source
-            name: from-build-pack
+            name: Test
             steps:
-              - command: gradle clean build
+              - command: echo TEST
                 dir: /workspace/source
                 image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
                 name: build-gradle-build
