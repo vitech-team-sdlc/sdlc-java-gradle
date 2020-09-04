@@ -1,0 +1,26 @@
+buildPack: none
+pipelineConfig:
+  agent:
+    image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+    label: jenkins-gradle
+  env:
+    - name: DOCKER_REGISTRY
+      value: gcr.io
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+  pipelines:
+    pullRequest:
+      pipeline:
+        env:
+          - name: DOCKER_REGISTRY
+            value: gcr.io
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+        stages:
+          - agent:
+              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            dir: /workspace/source
+            name: Test
+            steps:
+              - command: echo TEST
+                dir: /workspace/source
+                image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+                name: build-gradle-build
