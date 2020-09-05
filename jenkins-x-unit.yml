@@ -20,7 +20,7 @@ pipelineConfig:
             dir: /workspace/source
             name: Test
             steps:
-              - command: echo TEST
+              - command: echo TEST2
                 dir: /workspace/source
                 image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
                 name: build-gradle-build
