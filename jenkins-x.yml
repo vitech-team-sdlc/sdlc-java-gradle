@@ -35,11 +35,6 @@ pipelineConfig:
                 memory: 512Mi
             securityContext:
               privileged: true
-            volumeMounts:
-              - mountPath: /home/jenkins
-                name: workspace-volume
-              - mountPath: /home/jenkins/.gnupg
-                name: volume-0
         stages:
           - agent:
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
@@ -93,11 +88,6 @@ pipelineConfig:
                 memory: 512Mi
             securityContext:
               privileged: true
-            volumeMounts:
-              - mountPath: /home/jenkins
-                name: workspace-volume
-              - mountPath: /home/jenkins/.gnupg
-                name: volume-0
         stages:
           - agent:
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
