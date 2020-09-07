@@ -2,16 +2,133 @@ buildPack: gradle
 pipelineConfig:
   agent:
     image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
-  env:
-    - name: GOOGLE_APPLICATION_CREDENTIALS
-      value: ''
-    - name: DOCKER_REGISTRY
-      value: gcr.io
-    - name: GIT_AUTHOR_EMAIL
-      value: jenkins-x@googlegroups.com
-    - name: GIT_AUTHOR_NAME
-      value: jenkins-x-bot
-    - name: GIT_COMMITTER_EMAIL
-      value: jenkins-x@googlegroups.com
-    - name: GIT_COMMITTER_NAME
-      value: jenkins-x-bot
+    label: jenkins-gradle
+  extends:
+    file: gradle/pipeline.yaml
+    import: classic
+  pipelines:
+    post: {}
+    pullRequest:
+      pipeline:
+        options:
+          containerOptions:
+            env:
+              - name: DOCKER_REGISTRY
+                valueFrom:
+                  configMapKeyRef:
+                    key: docker.registry
+                    name: jenkins-x-docker-registry
+              - name: GIT_AUTHOR_EMAIL
+                value: jenkins-x@googlegroups.com
+              - name: GIT_AUTHOR_NAME
+                value: jenkins-x-bot
+              - name: GIT_COMMITTER_EMAIL
+                value: jenkins-x@googlegroups.com
+              - name: GIT_COMMITTER_NAME
+                value: jenkins-x-bot
+              - name: XDG_CONFIG_HOME
+                value: /home/jenkins
+            name: ""
+            resources:
+              requests:
+                cpu: 400m
+                memory: 512Mi
+            securityContext:
+              privileged: true
+        stages:
+          - agent:
+              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            dir: /workspace/source
+            name: from-build-pack
+            steps:
+              - command: gradle clean build
+                dir: /workspace/source
+                image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+                name: build-gradle-build
+              - command: /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+                dir: /workspace/source
+                env:
+                  - name: NO_GOOGLE_APPLICATION_CREDENTIALS
+                    value: "true"
+                  - name: GOOGLE_APPLICATION_CREDENTIALS
+                image: gcr.io/kaniko-project/executor
+                name: build-container-build
+              - command: make preview
+                dir: /workspace/source/charts/preview
+                image: gcr.io/jenkinsxio/builder-go
+                name: promote-make-preview
+              - command: jx preview --app $APP_NAME --dir ../..
+                dir: /workspace/source/charts/preview
+                image: gcr.io/jenkinsxio/jx-cli
+                name: promote-jx-preview
+    release:
+      pipeline:
+        options:
+          containerOptions:
+            env:
+              - name: DOCKER_REGISTRY
+                valueFrom:
+                  configMapKeyRef:
+                    key: docker.registry
+                    name: jenkins-x-docker-registry
+              - name: GIT_AUTHOR_EMAIL
+                value: jenkins-x@googlegroups.com
+              - name: GIT_AUTHOR_NAME
+                value: jenkins-x-bot
+              - name: GIT_COMMITTER_EMAIL
+                value: jenkins-x@googlegroups.com
+              - name: GIT_COMMITTER_NAME
+                value: jenkins-x-bot
+              - name: XDG_CONFIG_HOME
+                value: /home/jenkins
+            name: ""
+            resources:
+              requests:
+                cpu: 400m
+                memory: 512Mi
+            securityContext:
+              privileged: true
+        stages:
+          - agent:
+              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            dir: /workspace/source
+            name: from-build-pack
+            steps:
+              - command: jx step git credentials
+                dir: /workspace/source
+                image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+                name: setup-jx-git-credentials
+              - command: gradle clean build
+                dir: /workspace/source
+                image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+                name: build-gradle-build
+              - command: /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+                dir: /workspace/source
+                env:
+                  - name: NO_GOOGLE_APPLICATION_CREDENTIALS
+                    value: "true"
+                  - name: GOOGLE_APPLICATION_CREDENTIALS
+                image: gcr.io/kaniko-project/executor
+                name: build-container-build
+              - command: jx step changelog --version v${VERSION}
+                dir: /workspace/source/charts/mood-feed-backend
+                image: gcr.io/jenkinsxio/builder-go
+                name: promote-changelog
+              - command: jx step helm release
+                dir: /workspace/source/charts/mood-feed-backend
+                image: gcr.io/jenkinsxio/builder-go
+                name: promote-helm-release
+              - command: jx promote -b --all-auto --timeout 1h
+                dir: /workspace/source/charts/mood-feed-backend
+                image: gcr.io/jenkinsxio/jx-cli
+                name: promote-jx-promote
+      setVersion:
+        steps:
+          - image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            steps:
+              - comment: so we can retrieve the version in later steps
+                name: next-version
+                sh: jx step next-version --use-git-tag-only
+              - name: tag-version
+                sh: jx step tag --version \$(cat VERSION)
+
