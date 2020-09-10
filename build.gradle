@@ -23,6 +23,7 @@ testSets {
 compileJava {
     options.compilerArgs << "-Werror" << "-Xlint:all"
 }
+
 tasks.withType(Test) {
     useJUnitPlatform()   // use JUnit 5
     maxParallelForks = 1 // increase this value to run tests in parallel
