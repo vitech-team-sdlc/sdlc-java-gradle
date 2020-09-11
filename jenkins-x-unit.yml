@@ -30,7 +30,7 @@ pipelineConfig:
               - name: git-log
                 command: git log -n 2
               - name: print-target-branch
-                command:  git branch --contains $PULL_PULL_SHA | grep -v master >> target.branch
+                command:  "git branch --contains $PULL_PULL_SHA | grep -v master >> target.branch"
               - name: print-branch
                 command: cat target.branch
               - name: sonar-file-enrich
