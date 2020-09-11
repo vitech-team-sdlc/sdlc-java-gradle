@@ -27,7 +27,7 @@ pipelineConfig:
               - -Dsonar.login=${SONAR_TOKEN}
 
               - -Dsonar.pullrequest.branch=$(git name-rev ${PULL_PULL_SHA} --name-only)
-              - -Dssonar.pullrequest.base=${PULL_BASE_REF}
+              - -Dsonar.pullrequest.base=${PULL_BASE_REF}
               - -Dsonar.pullrequest.key=${PULL_NUMBER}
               - -Dsonar.pullrequest.github.repository=${REPO_OWNER}/${REPO_NAME}
 
