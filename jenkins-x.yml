@@ -15,3 +15,5 @@ pipelineConfig:
       value: jenkins-x-bot
     - name: XDG_CONFIG_HOME
       value: /home/jenkins
+
+
