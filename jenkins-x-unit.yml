@@ -27,6 +27,8 @@ pipelineConfig:
             steps:
               - name: git-update
                 command: git fetch
+              - name: git-log
+                command: git log -n 5
               - name: print-target-branch
                 command:  git name-rev $PULL_PULL_SHA --name-only >> target.branch
               - name: print-branch
