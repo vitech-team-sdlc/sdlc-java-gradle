@@ -21,7 +21,7 @@ pipelineConfig:
             name: Test
             steps:
               - name: sonar-file-enrich
-                command: echo "\nsonar.host=$SONAR_HOST\nsonar.login=$SONAR_TOKEN\nsonar.pullrequest.branch=$(git name-rev $PULL_PULL_SHA --name-only)\nsonar.pullrequest.base=$PULL_BASE_REF\nsonar.pullrequest.key=$PULL_NUMBER\nsonar.pullrequest.github.repository=$REPO_OWNER/$REPO_NAME\nsonar.projectKey=$REPO_OWNER:$REPO_NAME\nsonar.organization=$SONAR_ORG\nsonar.projectName=$REPO_NAME\nsonar.scm.provider=$SONAR_SCM\n$SONAR_OPT" >> sonar-project.properties
+                command: echo "\nsonar.host=$SONAR_HOST\nsonar.login=$SONAR_TOKEN\nsonar.pullrequest.branch=$(git name-rev $PULL_PULL_SHA --name-only)\nsonar.pullrequest.base=$PULL_BASE_REF\nsonar.pullrequest.key=$PULL_NUMBER\nsonar.pullrequest.github.repository=$REPO_OWNER/$REPO_NAME\nsonar.projectKey=$REPO_OWNER:$REPO_NAME\nsonar.organization=$SONAR_ORG\nsonar.projectName=$REPO_NAME\nsonar.scm.provider=$SONAR_SCM\n$SONAR_OPT" >> sonar-project.properties && echo sonar-project.properties
                 env:
                   - name: SONAR_TOKEN
                     valueFrom:
