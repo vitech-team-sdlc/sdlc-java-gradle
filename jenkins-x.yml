@@ -20,7 +20,7 @@ pipelineConfig:
       postBuild:
         steps:
           - name: sonar
-            image: sonarsource/sonar-scanner-cli
+            image: sonarsource/sonar-scanner-cli:4.4
             command: sonar-scanner
             args:
               - -Dsonar.host=${SONAR_HOST}
@@ -50,7 +50,7 @@ pipelineConfig:
                 valueFrom:
                   secretKeyRef:
                     name: sonar
-                    key: sonar.host
+                    key: sonar.host.url
               - name: SONAR_SCM
                 valueFrom:
                   secretKeyRef:
