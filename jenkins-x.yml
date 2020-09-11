@@ -15,3 +15,17 @@ pipelineConfig:
       value: jenkins-x-bot
     - name: XDG_CONFIG_HOME
       value: /home/jenkins
+  pipelines:
+    pullRequest:
+      postBuild:
+        steps:
+          - name: sonar
+            image: sonarsource/sonar-scanner-cli
+            command:
+            env:
+              - name: SONAR_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: sonar
+                    key: token
+
