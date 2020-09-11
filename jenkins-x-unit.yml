@@ -25,6 +25,8 @@ pipelineConfig:
             name: Test
 
             steps:
+              - name: print-folder
+                command:  pwd && ls -l
               - name: print-target-branch
                 command:  git branch --contains $PULL_PULL_SHA >> target.branch && cat target.branch
               - name: sonar-file-enrich
