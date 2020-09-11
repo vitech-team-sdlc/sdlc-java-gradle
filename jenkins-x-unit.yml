@@ -43,31 +43,3 @@ pipelineConfig:
                       secretKeyRef:
                         name: sonar
                         key: sonar.scm.provider
-              - name: sonar-file-enrich2
-                loop:
-                  variable: SONAR_OPT
-                  values:
-                    - sonar.host=$SONAR_HOST
-                    - sonar.host2=host2
-                command: echo "$SONAR_OPT"
-                env:
-                  - name: SONAR_TOKEN
-                    valueFrom:
-                      secretKeyRef:
-                        name: sonar
-                        key: sonar.login
-                  - name: SONAR_ORG
-                    valueFrom:
-                      secretKeyRef:
-                        name: sonar
-                        key: sonar.organization
-                  - name: SONAR_HOST
-                    valueFrom:
-                      secretKeyRef:
-                        name: sonar
-                        key: sonar.host.url
-                  - name: SONAR_SCM
-                    valueFrom:
-                      secretKeyRef:
-                        name: sonar
-                        key: sonar.scm.provider
