@@ -9,6 +9,10 @@ pipelineConfig:
     - name: GOOGLE_APPLICATION_CREDENTIALS
   pipelines:
     pullRequest:
+      preBuild:
+        steps:
+          - name: generate-target-branch
+            command: echo "$(git name-rev $PULL_PULL_SHA --name-only)" > target.branch
       setup:
         steps:
           - name: generate-target-branch
