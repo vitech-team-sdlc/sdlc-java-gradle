@@ -10,8 +10,8 @@ pipelineConfig:
   pipelines:
     pullRequest:
       setup:
-        preSteps:
-          - name: tartget-branch
+        steps:
+          - name: generate-target-branch
             command: echo "$(git name-rev $PULL_PULL_SHA --name-only)" > target.branch
       pipeline:
         env:
