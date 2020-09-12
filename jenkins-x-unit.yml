@@ -36,7 +36,7 @@ pipelineConfig:
                         key: password
               - name: save-source-branch
                 image: mikefarah/yq
-                command: cat pr.yaml | yq .Source > target.branch
+                command: yq r pr.yaml Source > target.branch
               - name: sonar-file-enrich
                 command: echo -e "\nsonar.host=$SONAR_HOST\nsonar.login=$SONAR_TOKEN\nsonar.pullrequest.branch=$(cat target.branch)\nsonar.pullrequest.base=$PULL_BASE_REF\nsonar.pullrequest.key=$PULL_NUMBER\nsonar.pullrequest.github.repository=$REPO_OWNER/$REPO_NAME\nsonar.projectKey=$REPO_OWNER:$REPO_NAME\nsonar.organization=$SONAR_ORG\nsonar.projectName=$REPO_NAME\nsonar.scm.provider=$SONAR_SCM\n$SONAR_OPT" >> sonar-project.properties && cat sonar-project.properties
                 env:
