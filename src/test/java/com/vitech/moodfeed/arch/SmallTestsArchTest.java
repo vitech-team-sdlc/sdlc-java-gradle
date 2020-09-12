@@ -30,10 +30,10 @@ public class SmallTestsArchTest extends SmallTest {
             .should().beAnnotatedWith(Test.class)
             .orShould().beAnnotatedWith(ParameterizedTest.class);
 
-    @ArchTest
-    static final ArchRule small_test_rules = classes()
-            .that().haveSimpleNameEndingWith("Test")
-            .should().beAssignableTo(SmallTest.class);
+//    @ArchTest
+//    static final ArchRule small_test_rules = classes()
+//            .that().haveSimpleNameEndingWith("Test")
+//            .should().beAssignableTo(SmallTest.class);
 
     @ArchTest
     static final ArchRule small_test_rules_reversed = classes()
