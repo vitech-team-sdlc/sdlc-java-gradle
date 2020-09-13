@@ -1,0 +1,7 @@
+organization=vitech
+projectKey=vitech-team:mood-feed-backend
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.11869
+dashboardUrl=https://sonarcloud.io/dashboard?id=vitech-team%3Amood-feed-backend&pullRequest=21
+ceTaskId=AXSGUiC-wMwqXqXD61Bk
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AXSGUiC-wMwqXqXD61Bk

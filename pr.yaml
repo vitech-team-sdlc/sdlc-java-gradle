@@ -1,0 +1,82 @@
+Assignees: null
+Author:
+  Avatar: https://avatars0.githubusercontent.com/u/56821503?v=4
+  Created: "0001-01-01T00:00:00Z"
+  Email: ""
+  ID: 56821503
+  Link: https://github.com/serhiy-krupka-vitech
+  Login: serhiy-krupka-vitech
+  Name: ""
+  Updated: "0001-01-01T00:00:00Z"
+Base:
+  Ref: master
+  Repo:
+    Branch: master
+    Clone: https://github.com/vitech-team/mood-feed-backend.git
+    CloneSSH: git@github.com:vitech-team/mood-feed-backend.git
+    Created: "2020-08-05T10:17:06Z"
+    FullName: vitech-team/mood-feed-backend
+    ID: "285253146"
+    Link: https://github.com/vitech-team/mood-feed-backend
+    Name: mood-feed-backend
+    Namespace: vitech-team
+    Perm:
+      Admin: false
+      Pull: false
+      Push: false
+    Private: true
+    Updated: "2020-09-10T13:01:19Z"
+  Sha: 732949ff3a18a191dbb7283ea7b1487b304a07e0
+Body: ""
+Closed: false
+Created: "2020-09-13T07:10:53Z"
+DiffLink: https://github.com/vitech-team/mood-feed-backend/pull/21.diff
+Draft: false
+Fork: vitech-team/mood-feed-backend
+Head:
+  Ref: sonar_pr
+  Repo:
+    Branch: master
+    Clone: https://github.com/vitech-team/mood-feed-backend.git
+    CloneSSH: git@github.com:vitech-team/mood-feed-backend.git
+    Created: "2020-08-05T10:17:06Z"
+    FullName: vitech-team/mood-feed-backend
+    ID: "285253146"
+    Link: https://github.com/vitech-team/mood-feed-backend
+    Name: mood-feed-backend
+    Namespace: vitech-team
+    Perm:
+      Admin: false
+      Pull: false
+      Push: false
+    Private: true
+    Updated: "2020-09-10T13:01:19Z"
+  Sha: fe3032ef82d5daa49c7ab95ec035a937f9abc94d
+Labels:
+- Color: ededed
+  Description: ""
+  ID: 0
+  Name: size/M
+  URL: https://api.github.com/repos/vitech-team/mood-feed-backend/labels/size/M
+Link: https://github.com/vitech-team/mood-feed-backend/pull/21
+MergeSha: a73b1e3a207c88064574b52c8754b63b553cb235
+Mergeable: true
+MergeableState: ""
+Merged: false
+Milestone:
+  Description: ""
+  ID: 0
+  Link: ""
+  Number: 0
+  State: ""
+  Title: ""
+Number: 21
+Rebaseable: true
+Ref: refs/pull/21/head
+Reviewers: null
+Sha: fe3032ef82d5daa49c7ab95ec035a937f9abc94d
+Source: sonar_pr
+State: open
+Target: master
+Title: 'chore: sonar'
+Updated: "2020-09-13T07:10:57Z"
