@@ -59,7 +59,7 @@ pipelineConfig:
                     name: sonar
                     key: sonar.scm.provider
           - name: sonar-result-file
-            command: cat sonar-project.properties
+            command: cat sonar-project.properties && rm target.branch && pr.yaml
           - name: sonar
             image: sonarsource/sonar-scanner-cli:4.4
             command: sonar-scanner
