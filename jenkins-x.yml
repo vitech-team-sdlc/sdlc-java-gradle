@@ -35,7 +35,7 @@ pipelineConfig:
             command: git status && git fetch && git checkout $(cat target.branch)
           - name: command
             image: sonarsource/sonar-scanner-cli:4.4
-            command: sonar-scanner
+            command: cat target.branch && sonar-scanner
             args:
               - "-Dsonar.host.url=${SONAR_HOST}"
               - "-Dsonar.login=${SONAR_TOKEN}"
