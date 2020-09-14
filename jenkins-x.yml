@@ -70,5 +70,5 @@ pipelineConfig:
                   secretKeyRef:
                     name: sonar
                     key: sonar.scm.provider
-          - name: swith-back-branch
+          - name: back-branch
             command: git checkout master
