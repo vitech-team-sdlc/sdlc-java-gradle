@@ -36,7 +36,7 @@ pipelineConfig:
             image: mikefarah/yq
             command: yq r pr.yaml Source > target.branch
           - name: sonar-file-enrich
-            command: echo -e "\nsonar.host.url=$SONAR_HOST\nsonar.login=$SONAR_TOKEN\nsonar.pullrequest.branch=$(cat target.branch)\nsonar.pullrequest.base=$PULL_BASE_REF\nsonar.pullrequest.key=$PULL_NUMBER\nsonar.pullrequest.github.repository=$REPO_OWNER/$REPO_NAME\nsonar.projectKey=$REPO_OWNER:$REPO_NAME\nsonar.organization=$SONAR_ORG\nsonar.projectName=$REPO_NAME\nsonar.scm.provider=$SONAR_SCM\n$SONAR_OPT" >> sonar-project.properties
+            command: echo -e "\nsonar.host.url=$SONAR_HOST\nsonar.login=$SONAR_TOKEN\nsonar.pullrequest.branch=$(cat target.branch)\nsonar.pullrequest.base=$PULL_BASE_REF\nsonar.pullrequest.key=$PULL_NUMBER\nsonar.pullrequest.github.repository=$REPO_OWNER/$REPO_NAME\nsonar.projectKey=$REPO_OWNER:$REPO_NAME\nsonar.organization=$SONAR_ORG\nsonar.projectName=$REPO_NAME\nsonar.scm.provider=$SONAR_SCM\n" >> sonar-project.properties
             env:
               - name: SONAR_TOKEN
                 valueFrom:
@@ -59,7 +59,7 @@ pipelineConfig:
                     name: sonar
                     key: sonar.scm.provider
           - name: sonar-result-file
-            command: cat sonar-project.properties && rm target.branch && rm pr.yaml
+            command: cat sonar-project.properties && rm pr.yaml
           - name: sonar
             image: sonarsource/sonar-scanner-cli:4.4
-            command: sonar-scanner
+            command: git fetch && git checkout -b $(cat target.branch) && sonar-scanner && rm target.branch && git checkout master
