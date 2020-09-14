@@ -13,7 +13,7 @@ public class MoodFeedApplication {
         SpringApplication.run(MoodFeedApplication.class, args);
     }
 
-    void YYYY(){
+    void doSomething2(){
         String str = "";
         Pattern.compile("([");
         str.matches("([");
