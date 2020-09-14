@@ -1,5 +1,6 @@
 releases:
-- name: mysql
+- chart: mysql
+  name: mysql
   version: 1.6.6
   repository: https://kubernetes-charts.storage.googleapis.com
 - chart: '../charts/{{ requiredEnv "APP_NAME" }}'
