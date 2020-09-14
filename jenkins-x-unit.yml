@@ -35,16 +35,16 @@ pipelineConfig:
             image: sonarsource/sonar-scanner-cli:4.4
             command: sonar-scanner
             args:
-              - -Dnsonar.host.url=$SONAR_HOST
-              - -Dsonar.login=$SONAR_TOKEN
+              - -Dnsonar.host.url=${SONAR_HOST}
+              - -Dsonar.login=${SONAR_TOKEN}
               - -Dnsonar.pullrequest.branch=$(cat target.branch)
-              - -Dsonar.pullrequest.base=$PULL_BASE_REF
-              - -Dsonar.pullrequest.key=$PULL_NUMBER
-              - -Dsonar.pullrequest.github.repository=$REPO_OWNER/$REPO_NAME
-              - -Dsonar.projectKey=$REPO_OWNER:$REPO_NAME
-              - -Dsonar.organization=$SONAR_ORG
-              - -Dsonar.projectName=$REPO_NAME
-              - -Dsonar.scm.provider=$SONAR_SCM
+              - -Dsonar.pullrequest.base=${PULL_BASE_REF}
+              - -Dsonar.pullrequest.key=${PULL_NUMBER}
+              - -Dsonar.pullrequest.github.repository=${REPO_OWNER/${REPO_NAME}
+              - -Dsonar.projectKey=${REPO_OWNER:${REPO_NAME}
+              - -Dsonar.organization=${SONAR_ORG}
+              - -Dsonar.projectName=${REPO_NAME}
+              - -Dsonar.scm.provider=${SONAR_SCM}
             env:
               - name: SONAR_TOKEN
                 valueFrom:
