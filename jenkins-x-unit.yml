@@ -16,6 +16,11 @@ pipelineConfig:
           - name: gradle-buid
             dir: /workspace/source2
             command: gradle clean build --no-daemon
+            options:
+              resources:
+                requests:
+                  cpu: 0.5
+                  memory: 512Mi
           - name: get-pr-info
             image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
             command: jx gitops pr get --git-token=$GIT_TOKEN > pr.yaml
