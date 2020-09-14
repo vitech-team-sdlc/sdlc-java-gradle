@@ -1,5 +1,5 @@
 spring:
   datasource:
     url: jdbc:mysql://mysql:3306/mood_feed
-    username: root
-    password: 123QWEasd
+    username: ${mysq-user:moodfeed}
+    password: ${mysql-password:fake}

@@ -40,8 +40,10 @@ def checkTestsExecutionTime = { TestDescriptor descriptor, TestResult result, St
 }
 
 test {
+    useJUnitPlatform()   // use JUnit 5
     afterSuite { desc, res -> checkTestsExecutionTime(desc, res, "tests.small.execution.time.limit.seconds") }
     finalizedBy jacocoTestReport
+    ignoreFailures = true
 }
 
 integrationTest {
