@@ -17,10 +17,6 @@ pipelineConfig:
       value: /home/jenkins
   pipelines:
     pullRequest:
-      setup:
-        preSteps:
-          - name: save-version
-            command: git name-rev $PULL_PULL_SHA --name-only >> target.branch
       postBuild:
         steps:
           - name: get-pr-info
@@ -59,7 +55,8 @@ pipelineConfig:
                     name: sonar
                     key: sonar.scm.provider
           - name: sonar-result-file
-            command: cat sonar-project.properties && rm target.branch && rm pr.yaml
+            command: cat sonar-project.properties && rm pr.yaml
           - name: sonar
             image: sonarsource/sonar-scanner-cli:4.4
-            command: git fetch && sonar-scanner
+            command: git fetch && git checkout $(cat target.branch) && sonar-scanner && git checkout master && rm target.branch
+
