@@ -8,12 +8,10 @@ pipelineConfig:
       value: gcr.io
     - name: GOOGLE_APPLICATION_CREDENTIALS
   containerOptions:
-    options:
-      containerOptions:
-        resources:
-          requests:
-            cpu: 0.4
-            memory: 256Mi
+    resources:
+      requests:
+        cpu: 0.4
+        memory: 256Mi
   pipelines:
     pullRequest:
       postBuild:
