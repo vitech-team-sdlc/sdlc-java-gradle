@@ -70,5 +70,5 @@ pipelineConfig:
                   secretKeyRef:
                     name: sonar
                     key: sonar.scm.provider
-          - name: back-branch
+          - name: sonar-analysis-finish
             command: git checkout master
