@@ -28,7 +28,7 @@ pipelineConfig:
             dir: /workspace/source2
             command: yq r pr.yaml Source > target.branch
           - name: swithc-branch
-            command: git status && git fetch && git checkout $(cat target.branch)
+            command: pwd && git status && git fetch && git checkout $(cat target.branch)
           - name: gradle-buid
             dir: /workspace/source2
             image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
