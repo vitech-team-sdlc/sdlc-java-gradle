@@ -70,4 +70,3 @@ pipelineConfig:
                     key: sonar.scm.provider
           - name: swith-back-branch
             command: rm target.branch && git checkout master
-
