@@ -38,7 +38,7 @@ pipelineConfig:
             command: git status && git fetch && git checkout $(cat target.branch)
           - name: gradle-buid
             dir: /workspace/source2
-            image: docker pull gradle:6.3.0-jdk11
+            image: gradle:6.3.0-jdk11
             command: gradle clean build --no-daemon
           - name: sonar
             dir: /workspace/source2
