@@ -54,6 +54,10 @@ pipelineConfig:
 #                  secretKeyRef:
 #                    name: sonar
 #                    key: sonar.scm.provider
+          - name: gradle-buid
+            dir: /workspace/source2
+            image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            command: gradle clean build --no-daemon
           - name: sonar
             dir: /workspace/source2
             image: sonarsource/sonar-scanner-cli:4.4
