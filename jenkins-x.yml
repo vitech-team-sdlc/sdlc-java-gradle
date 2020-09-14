@@ -62,4 +62,4 @@ pipelineConfig:
             command: cat sonar-project.properties && rm pr.yaml
           - name: sonar
             image: sonarsource/sonar-scanner-cli:4.4
-            command: git fetch && git checkout -b $(cat target.branch) && sonar-scanner && rm target.branch && git checkout master
+            command: git fetch && git checkout $(cat target.branch) && sonar-scanner && rm target.branch && git checkout master
