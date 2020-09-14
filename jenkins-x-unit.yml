@@ -28,6 +28,7 @@ pipelineConfig:
             dir: /workspace/source2
             command: yq r pr.yaml Source > target.branch
           - name: swithc-branch
+            dir: /workspace/source2
             command: pwd && git status && git fetch && git checkout $(cat target.branch)
           - name: gradle-buid
             dir: /workspace/source2
