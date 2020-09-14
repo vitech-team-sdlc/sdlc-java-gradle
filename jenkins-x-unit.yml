@@ -7,21 +7,12 @@ pipelineConfig:
     - name: DOCKER_REGISTRY
       value: gcr.io
     - name: GOOGLE_APPLICATION_CREDENTIALS
-  containerOptions:
-    resources:
-      requests:
-        cpu: 0.4
-        memory: 256Mi
   pipelines:
     pullRequest:
       postBuild:
         steps:
           - name: git-clone
             command: mkdir /workspace/source2 && git clone $SOURCE_URL /workspace/source2
-          - name: gradle-buid
-            dir: /workspace/source2
-            image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
-            command: gradle clean build --no-daemon
           - name: get-pr-info
             image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
             command: jx gitops pr get --git-token=$GIT_TOKEN > pr.yaml
@@ -32,6 +23,12 @@ pipelineConfig:
                   secretKeyRef:
                     name: jx-pipeline-git-github-github
                     key: password
+          - name: swithc-branch
+            command: git status && git fetch && git checkout $(cat target.branch)
+          - name: gradle-buid
+            dir: /workspace/source2
+            image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            command: gradle clean build --no-daemon
           - name: save-source-branch
             image: mikefarah/yq
             dir: /workspace/source2
@@ -66,5 +63,5 @@ pipelineConfig:
           - name: sonar
             dir: /workspace/source2
             image: sonarsource/sonar-scanner-cli:4.4
-            command: git status && git fetch && git checkout $(cat target.branch) && sonar-scanner && git checkout master && rm target.branch
+            command: sonar-scanner && git checkout master && rm target.branch
 
