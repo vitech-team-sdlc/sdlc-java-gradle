@@ -13,7 +13,48 @@ public class MoodFeedApplication {
         SpringApplication.run(MoodFeedApplication.class, args);
     }
 
-    void YYYY(){
+    void doSomething2(){
+        String str = "";
+        Pattern.compile("([");
+        str.matches("([");
+        str.replaceAll("([", "{");
+
+        str.matches("(\\w+-(\\d+)");
+        str.matches("(?<name>\\w+)-\\k<nae>");
+
+        AtomicInteger aInt1 = new AtomicInteger(0);
+        AtomicInteger aInt2 = new AtomicInteger(0);
+
+        if (aInt1.equals(aInt2)) {
+
+        }
+    }
+
+    void doSomething3(){
+        String str = "";
+        Pattern.compile("([");
+        str.matches("([");
+        str.replaceAll("([", "{");
+
+        str.matches("(\\w+-(\\d+)");
+        str.matches("(?<name>\\w+)-\\k<nae>");
+
+        AtomicInteger aInt1 = new AtomicInteger(0);
+        AtomicInteger aInt2 = new AtomicInteger(0);
+
+        if (aInt1.equals(aInt2)) {
+
+        }
+    }
+
+    void doSomething4(){
+        String str = "";
+        Pattern.compile("([");
+        str.matches("([");
+        str.replaceAll("([", "{");
+
+        str.matches("(\\w+-(\\d+)");
+        str.matches("(?<name>\\w+)-\\k<nae>");
 
         AtomicInteger aInt1 = new AtomicInteger(0);
         AtomicInteger aInt2 = new AtomicInteger(0);
