@@ -4,3 +4,8 @@ image:
 
 env:
     SPRING_PROFILES_ACTIVE: production
+
+envFrom:
+    - secretRef:
+        name: mysql
+        optional: false
