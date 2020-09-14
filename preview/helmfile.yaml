@@ -1,5 +1,8 @@
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
 releases:
-- chart: mysql
+- chart: stable/mysql
   name: mysql
   version: 1.6.6
   repository: https://kubernetes-charts.storage.googleapis.com
