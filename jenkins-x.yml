@@ -33,9 +33,11 @@ pipelineConfig:
             command: yq r pr.yaml Source > target.branch && rm pr.yaml
           - name: swith-branch
             command: git status && git fetch && git checkout $(cat target.branch)
+          - name: source-branch
+            command: cat target.branch
           - name: sonar-analysis
             image: sonarsource/sonar-scanner-cli:4.4
-            command: cat target.branch && sonar-scanner
+            command: sonar-scanner
             args:
               - "-Dsonar.host.url=${SONAR_HOST}"
               - "-Dsonar.login=${SONAR_TOKEN}"
