@@ -30,7 +30,7 @@ pipelineConfig:
           - name: swith-branch
             dir: /workspace/source2
             command: git status && git fetch && git checkout $(cat target.branch)
-          - name: command
+          - name: sonar
             dir: /workspace/source2
             image: sonarsource/sonar-scanner-cli:4.4
             command: sonar-scanner
@@ -40,8 +40,8 @@ pipelineConfig:
               - -Dnsonar.pullrequest.branch=$(cat target.branch)
               - -Dsonar.pullrequest.base=${PULL_BASE_REF}
               - -Dsonar.pullrequest.key=${PULL_NUMBER}
-              - -Dsonar.pullrequest.github.repository=${REPO_OWNER/${REPO_NAME}
-              - -Dsonar.projectKey=${REPO_OWNER:${REPO_NAME}
+              - -Dsonar.pullrequest.github.repository=${REPO_OWNER}/${REPO_NAME}
+              - -Dsonar.projectKey=${REPO_OWNER}:${REPO_NAME}
               - -Dsonar.organization=${SONAR_ORG}
               - -Dsonar.projectName=${REPO_NAME}
               - -Dsonar.scm.provider=${SONAR_SCM}
