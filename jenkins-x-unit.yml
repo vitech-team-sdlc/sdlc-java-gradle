@@ -7,6 +7,13 @@ pipelineConfig:
     - name: DOCKER_REGISTRY
       value: gcr.io
     - name: GOOGLE_APPLICATION_CREDENTIALS
+  containerOptions:
+    options:
+      containerOptions:
+        resources:
+          requests:
+            cpu: 0.4
+            memory: 256Mi
   pipelines:
     pullRequest:
       postBuild:
@@ -15,12 +22,8 @@ pipelineConfig:
             command: mkdir /workspace/source2 && git clone $SOURCE_URL /workspace/source2
           - name: gradle-buid
             dir: /workspace/source2
+            image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
             command: gradle clean build --no-daemon
-            options:
-              resources:
-                requests:
-                  cpu: 0.5
-                  memory: 512Mi
           - name: get-pr-info
             image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
             command: jx gitops pr get --git-token=$GIT_TOKEN > pr.yaml
