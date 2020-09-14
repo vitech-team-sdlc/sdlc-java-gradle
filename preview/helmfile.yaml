@@ -3,7 +3,7 @@ repositories:
   url: https://kubernetes-charts.storage.googleapis.com
 releases:
 - chart: stable/mysql
-  name: mysql
+  name: preview-mysql
   version: 1.6.6
   namespace: '{{ requiredEnv "PREVIEW_NAMESPACE" }}'
   createNamespace: true
