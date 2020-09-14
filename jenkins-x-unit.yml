@@ -7,6 +7,13 @@ pipelineConfig:
     - name: DOCKER_REGISTRY
       value: gcr.io
     - name: GOOGLE_APPLICATION_CREDENTIALS
+  pipelines:
+    pullRequest:
+      postBuild:
+        steps:
+          - name: test
+            command: echo TEST
+
 #  pipelines:
 #    pullRequest:
 #      postBuild:
@@ -70,4 +77,3 @@ pipelineConfig:
 #                  secretKeyRef:
 #                    name: sonar
 #                    key: sonar.scm.provider
-
