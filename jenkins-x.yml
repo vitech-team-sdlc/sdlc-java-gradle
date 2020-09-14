@@ -72,3 +72,16 @@ pipelineConfig:
                     key: sonar.scm.provider
           - name: sonar-analysis-finish
             command: git checkout master
+    release:
+      postBuild:
+        steps:
+          - name: sonar-analysis
+            image: sonarsource/sonar-scanner-cli:4.4
+            command: sonar-scanner
+            args:
+              - "-Dsonar.host.url=${SONAR_HOST}"
+              - "-Dsonar.login=${SONAR_TOKEN}"
+              - "-Dsonar.projectKey=${REPO_OWNER}:${REPO_NAME}"
+              - "-Dsonar.organization=${SONAR_ORG}"
+              - "-Dsonar.projectName=${REPO_NAME}"
+              - "-Dsonar.scm.provider=${SONAR_SCM}"
