@@ -26,3 +26,5 @@ releases:
   name: mysql
   version: 1.6.6
   namespace: '{{ requiredEnv "PREVIEW_NAMESPACE" }}'
+  values:
+    - values.yaml.gotmpl
