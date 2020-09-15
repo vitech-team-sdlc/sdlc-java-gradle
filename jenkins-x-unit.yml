@@ -42,7 +42,7 @@ pipelineConfig:
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
             steps:
               - name: new-git-folder
-                command: /workspace/source2
+                command: mkdir /workspace/source2
               - name: git-clone
                 command: git clone $SOURCE_URL /workspace/source2
           - name: sonar-check
