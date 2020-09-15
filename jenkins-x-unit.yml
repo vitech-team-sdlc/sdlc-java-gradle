@@ -10,13 +10,12 @@ pipelineConfig:
   pipelines:
     pullRequest:
       pipeline:
-        dir: /workspace/source2
-        options:
-          containerOptions:
-            resources:
-              requests:
-                cpu: 500m
-                memory: 512Mi
+#        options:
+#          containerOptions:
+#            resources:
+#              requests:
+#                cpu: 500m
+#                memory: 512Mi
         env:
           - name: GIT_TOKEN
             valueFrom:
@@ -45,14 +44,15 @@ pipelineConfig:
                 key: sonar.scm.provider
         stages:
           - name: sonar-check
+            dir: /workspace/source2
             agent:
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
-            #            options:
-            #              containerOptions:
-            #                resources:
-            #                  requests:
-            #                    cpu: 500m
-            #                    memory: 512Mi
+            options:
+              containerOptions:
+                resources:
+                  requests:
+                    cpu: 0.4
+                    memory: 512Mi
             steps:
               - name: git-clone
                 command: mkdir /workspace/source2 && git clone $SOURCE_URL /workspace/source2
