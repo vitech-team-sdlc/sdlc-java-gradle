@@ -3,20 +3,7 @@ pipelineConfig:
   extends:
     file: ./jenkins-x-sonar.yml
   agent:
-    image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
-  env:
-    - value: gcr.io
-      name: DOCKER_REGISTRY
-    - name: GIT_AUTHOR_EMAIL
-      value: jenkins-x@googlegroups.com
-    - name: GIT_AUTHOR_NAME
-      value: jenkins-x-bot
-    - name: GIT_COMMITTER_EMAIL
-      value: jenkins-x@googlegroups.com
-    - name: GIT_COMMITTER_NAME
-      value: jenkins-x-bot
-    - name: XDG_CONFIG_HOME
-      value: /home/jenkins
+    image: gradle5-java11
   pipelines:
     release:
       postBuild:
