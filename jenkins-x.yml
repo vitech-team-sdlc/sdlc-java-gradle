@@ -5,9 +5,10 @@ pipelineConfig:
   pipelines:
     post:
       steps:
-        - name: sonar-check
+        - name: sonar-check-dir
           command: mkdir /workspace/source2
         - dir: /workspace/source2
+          name: sonar-check
           steps:
             - name: git-clone
               command: git clone $SOURCE_URL /workspace/source2
