@@ -75,7 +75,6 @@ pipelineConfig:
                 dir: /workspace/source2
                 image: sonarsource/sonar-scanner-cli:4.4
                 command: cat sonar-project.properties && sonar-scanner
-                options:
                 args:
                   - "-Dsonar.host.url=${SONAR_HOST}"
                   - "-Dsonar.login=${SONAR_TOKEN}"
