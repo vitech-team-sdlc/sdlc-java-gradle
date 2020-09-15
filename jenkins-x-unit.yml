@@ -9,10 +9,6 @@ pipelineConfig:
     - name: GOOGLE_APPLICATION_CREDENTIALS
   pipelines:
     pullRequest:
-      setup:
-        preSteps:
-          - name: create-clone-dir
-            command: mkdir /workspace/source2
       pipeline:
         env:
           - name: GIT_TOKEN
@@ -40,8 +36,15 @@ pipelineConfig:
               secretKeyRef:
                 name: sonar
                 key: sonar.scm.provider
-
         stages:
+          - name: git
+            agent:
+              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+            steps:
+              - name: new-git-folder
+                command: /workspace/source2
+              - name: git-clone
+                command: git clone $SOURCE_URL /workspace/source2
           - name: sonar-check
             dir: /workspace/source2
             agent:
@@ -53,8 +56,6 @@ pipelineConfig:
                     cpu: 0.4
                     memory: 512Mi
             steps:
-              - name: git-clone
-                command: git clone $SOURCE_URL /workspace/source2
               - name: get-pr-info
                 dir: /workspace/source2
                 image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
@@ -74,6 +75,7 @@ pipelineConfig:
                 dir: /workspace/source2
                 image: sonarsource/sonar-scanner-cli:4.4
                 command: cat sonar-project.properties && sonar-scanner
+                options:
                 args:
                   - "-Dsonar.host.url=${SONAR_HOST}"
                   - "-Dsonar.login=${SONAR_TOKEN}"
