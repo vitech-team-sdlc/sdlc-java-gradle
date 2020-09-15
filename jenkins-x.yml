@@ -1,7 +1,5 @@
 buildPack: gradle
 pipelineConfig:
-#  extends:
-#    file: ./jenkins-x-sonar.yml
   agent:
     image: gradle5-java11
   pipelines:
