@@ -6,7 +6,7 @@ pipelineConfig:
     pullRequest:
       setup:
         steps:
-          - name: check-conventionalcommits
+          - name: check-conventionalcommits2
             image: autonomy/conform:latest
             command: conform enforce
       postBuild:
