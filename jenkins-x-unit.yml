@@ -30,5 +30,5 @@ pipelineConfig:
           - name: print-url
             command: jx step pr comment
             args:
-              - -c "See Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
+              - -c "Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
 
