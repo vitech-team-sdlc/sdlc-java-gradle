@@ -4,6 +4,11 @@ pipelineConfig:
     image: gradle5-java11
   pipelines:
     pullRequest:
+      setup:
+        steps:
+          - name: check-conventionalcommits
+            image: autonomy/conform:latest
+            command: conform enforce
       postBuild:
         steps:
           - name: sonar-check-dir

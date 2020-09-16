@@ -11,5 +11,7 @@ pipelineConfig:
     pullRequest:
       postBuild:
         steps:
+          - name: store-file
+            command: echo "Source test" > test.txt
           - name: test
-            command: echo TEST
+            command: jx step stash -c integration-tests -p test.txt --bucket-url gs://reports-tf-jx-concrete-lemur-0ba2a21ddb0a
