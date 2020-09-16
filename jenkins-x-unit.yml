@@ -28,5 +28,7 @@ pipelineConfig:
               - -p *.txt
               - --bucket-url gs://${REPORTS_BUCKET}
           - name: print-url
-            command: echo "$REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
+            command: jx step pr comment
+            args:
+              - "-c See Report: $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
 
