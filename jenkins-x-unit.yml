@@ -14,4 +14,6 @@ pipelineConfig:
           - name: store-file
             command: echo "Source test" > test.txt
           - name: test
-            command: jx step stash -c integration-tests -p test.txt --bucket-url gs://reports-tf-jx-concrete-lemur-0ba2a21ddb0a
+            command: jx step stash -c integration-tests --to-path largeTests/ -p test.txt --bucket-url gs://reports-tf-jx-concrete-lemur-0ba2a21ddb0a > report.url
+          - name: print-url
+            command: cat report.url
