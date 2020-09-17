@@ -19,8 +19,12 @@ pipelineConfig:
       postBuild:
         steps:
           - name: check-conventionalcommits
-            image: aevea/commitsar:latest
-            command: commitsar
+            image: autonomy/conform:v0.1.0-alpha.17
+            command: conform enforce
+#        steps:
+#          - name: check-conventionalcommits
+#            image: aevea/commitsar:latest
+#            command: commitsar
 #        steps:
 #          - name: test
 #            command: echo TEST
@@ -38,4 +42,3 @@ pipelineConfig:
 #            command: jx step pr comment
 #            args:
 #              - -c "Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
-
