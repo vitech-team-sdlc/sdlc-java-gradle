@@ -18,17 +18,20 @@ pipelineConfig:
     pullRequest:
       postBuild:
         steps:
-          - name: store-file
-            command: echo "Source test" > test.txt
           - name: test
-            command: jx step stash
-            args:
-              - -c large-tests
-              - --to-path $LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER
-              - -p *.txt
-              - --bucket-url gs://${REPORTS_BUCKET}
-          - name: print-url
-            command: jx step pr comment
-            args:
-              - -c "Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
+            command: echo TEST
+#        steps:
+#          - name: store-file
+#            command: echo "Source test" > test.txt
+#          - name: test
+#            command: jx step stash
+#            args:
+#              - -c large-tests
+#              - --to-path $LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER
+#              - -p *.txt
+#              - --bucket-url gs://${REPORTS_BUCKET}
+#          - name: print-url
+#            command: jx step pr comment
+#            args:
+#              - -c "Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
 
