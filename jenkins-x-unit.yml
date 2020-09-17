@@ -23,11 +23,11 @@ pipelineConfig:
 #            command: go get github.com/talos-systems/conform && conform enforce > commit.check
           - name: check-conventionalcommits
             image: aevea/commitsar:latest
-            command: commitsar
-#          - name: conventionalcommits-comment
-#            command: jx step pr comment
-#            args:
-#              - -c "$(cat commit.check)"
+            command: commitsar > commit.check 2>&1
+          - name: conventionalcommits-comment
+            command: jx step pr comment
+            args:
+              - -c "$(cat commit.check)"
           #        steps:
 #          - name: check-conventionalcommits
 #            image: aevea/commitsar:latest
