@@ -17,7 +17,7 @@ pipelineConfig:
                   jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
                   exit 1;
               else
-                 echo 'COMMIT CHECK PASSED!'
+                 echo 'COMMIT MSG CHECK PASSED'
               fi
       postBuild:
         steps:
