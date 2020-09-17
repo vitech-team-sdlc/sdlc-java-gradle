@@ -1,9 +1,37 @@
 buildPack: gradle
 pipelineConfig:
   agent:
-    image: gradle5-java11
+    image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+  env:
+    - value: gcr.io
+      name: DOCKER_REGISTRY
+    - name: GIT_AUTHOR_EMAIL
+      value: jenkins-x@googlegroups.com
+    - name: GIT_AUTHOR_NAME
+      value: jenkins-x-bot
+    - name: GIT_COMMITTER_EMAIL
+      value: jenkins-x@googlegroups.com
+    - name: GIT_COMMITTER_NAME
+      value: jenkins-x-bot
+    - name: XDG_CONFIG_HOME
+      value: /home/jenkins
   pipelines:
     pullRequest:
+      preBuild:
+        steps:
+          - name: conventionalcommits-check
+            image: aevea/commitsar:latest
+            command: $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' >> check.failed ; exit 0; }
+          - name: conventionalcommits-print
+            command: cat commit.check
+          - name: conventionalcommits-comment
+            command: |
+              if [ -f "check.failed" ]; then
+                  jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
+                  exit 1;
+              else
+                 echo 'COMMIT MSG CHECK PASSED'
+              fi
       postBuild:
         steps:
           - name: sonar-check-dir
