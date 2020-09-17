@@ -19,9 +19,8 @@ pipelineConfig:
       postBuild:
         steps:
           - name: check-conventionalcommits
-            image: autonomy/conform:v0.1.0-alpha.17
-#            command: conform enforce
-            sh: conform enforce
+            image: golang:1.15.2
+            command: go get github.com/talos-systems/conform && conform enforce
             comment: some random comment
 #        steps:
 #          - name: check-conventionalcommits
