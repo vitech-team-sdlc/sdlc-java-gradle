@@ -18,9 +18,12 @@ pipelineConfig:
     pullRequest:
       postBuild:
         steps:
-          - name: conventionalcommits-check
-            image: golang:1.15.2
-            command: go get github.com/talos-systems/conform && conform enforce > commit.check
+#          - name: conventionalcommits-check
+#            image: golang:1.15.2
+#            command: go get github.com/talos-systems/conform && conform enforce > commit.check
+          - name: check-conventionalcommits
+            image: aevea/commitsar:latest
+            command: commitsar > commit.check
           - name: conventionalcommits-comment
             command: jx step pr comment
             args:
