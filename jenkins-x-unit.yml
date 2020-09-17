@@ -27,7 +27,7 @@ pipelineConfig:
           - name: conventionalcommits-comment
             command: |
               if [ -f "commit.check.failed" ]; then
-                  echo jx step pr comment -c "$(cat commit.check.failed)");
+                  echo jx step pr comment -c $(cat commit.check.failed)"
                   exit 0;
               else
                  echo 'COMMIT CHECK PASSED!'
