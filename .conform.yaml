@@ -13,7 +13,7 @@ policies:
       gpg: false
       spellcheck:
         locale: US
-      maximumOfOneCommit: false
+      maximumOfOneCommit: true
       conventional:
         types:
           - chore
