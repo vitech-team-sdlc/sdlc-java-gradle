@@ -18,9 +18,6 @@ pipelineConfig:
     pullRequest:
       postBuild:
         steps:
-#          - name: conventionalcommits-check
-#            image: golang:1.15.2
-#            command: go get github.com/talos-systems/conform && conform enforce > commit.check
           - name: conventionalcommits-check
             image: aevea/commitsar:latest
             command: $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' ; exit 0; }
@@ -34,6 +31,9 @@ pipelineConfig:
               else
                  echo 'COMMIT CHECK PASSED!'
               fi
+          #          - name: conventionalcommits-check
+          #            image: golang:1.15.2
+          #            command: go get github.com/talos-systems/conform && conform enforce > commit.check
           #        steps:
 #          - name: check-conventionalcommits
 #            image: aevea/commitsar:latest
