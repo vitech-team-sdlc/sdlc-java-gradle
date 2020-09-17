@@ -18,8 +18,12 @@ pipelineConfig:
     pullRequest:
       postBuild:
         steps:
-          - name: test
-            command: echo TEST
+          - name: check-conventionalcommits
+            image: aevea/commitsar:latest
+            command: commitsar
+#        steps:
+#          - name: test
+#            command: echo TEST
 #        steps:
 #          - name: store-file
 #            command: echo "Source test" > test.txt
