@@ -23,11 +23,15 @@ pipelineConfig:
 #            command: go get github.com/talos-systems/conform && conform enforce > commit.check
           - name: check-conventionalcommits
             image: aevea/commitsar:latest
-            command: commitsar > commit.check 2>&1 || { echo 'my_command failed' ; exit 0; }
+            command: commitsar > commit.check 2>commit.check.failed || { echo 'commit check failed' ; exit 0; }
           - name: conventionalcommits-comment
-            command: jx step pr comment
-            args:
-              - -c "$(cat commit.check)"
+            command: |
+              if [ -f "commit.check.failed" ]; then
+                  echo jx step pr comment -c "$(cat commit.check.failed)");
+                  exit 0;
+              else
+                 echo 'COMMIT CHECK PASSED!'
+              fi
           #        steps:
 #          - name: check-conventionalcommits
 #            image: aevea/commitsar:latest
