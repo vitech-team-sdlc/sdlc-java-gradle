@@ -20,7 +20,7 @@ pipelineConfig:
         steps:
           - name: check-conventionalcommits
             image: autonomy/conform:v0.1.0-alpha.17
-            command: conform enforce
+#            command: conform enforce
 #        steps:
 #          - name: check-conventionalcommits
 #            image: aevea/commitsar:latest
