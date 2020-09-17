@@ -9,7 +9,7 @@ policies:
         invalidLastCharacters: .
       body:
         required: false
-      dco: true
+      dco: false
       gpg: false
       spellcheck:
         locale: US

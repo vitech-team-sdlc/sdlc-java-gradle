@@ -20,9 +20,12 @@ pipelineConfig:
         steps:
           - name: check-conventionalcommits
             image: golang:1.15.2
-            command: go get github.com/talos-systems/conform && conform enforce
-            comment: some random comment
-#        steps:
+            command: go get github.com/talos-systems/conform && conform enforce > commit.check
+          - name: print-url
+            command: jx step pr comment
+            args:
+              - -c "$(cat commit.check)"
+          #        steps:
 #          - name: check-conventionalcommits
 #            image: aevea/commitsar:latest
 #            command: commitsar
@@ -39,7 +42,7 @@ pipelineConfig:
 #              - --to-path $LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER
 #              - -p *.txt
 #              - --bucket-url gs://${REPORTS_BUCKET}
-#          - name: print-url
-#            command: jx step pr comment
-#            args:
-#              - -c "Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
+          - name: print-url
+            command: jx step pr comment
+            args:
+              - -c "Report $REPORTS_BUCKET_HTTP/${REPORTS_BUCKET}/$LARGE_TEST_FOLDER/$PULL_NUMBER/$BUILD_NUMBER/index.html"
