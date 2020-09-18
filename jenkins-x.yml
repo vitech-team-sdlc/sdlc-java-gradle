@@ -25,13 +25,13 @@ pipelineConfig:
         steps:
           - name: conventionalcommits-check
             image: aevea/commitsar:latest
-            command: $(commitsar > $CONV_COMMIT_FILE 2> commit.check.failed) || { echo 'commit check failed' >> $CONV_COMMIT_ERR_FILE; exit 0; }
+            command: $(commitsar > $CONV_COMMIT_FILE) || { echo 'commit check failed' >> $CONV_COMMIT_ERR_FILE; exit 0; }
           - name: conventionalcommits-print
             command: cat $CONV_COMMIT_FILE
           - name: conventionalcommits-comment
             command: |
               if [ -f "$CONV_COMMIT_ERR_FILE" ]; then
-                  jx step pr comment -c "$(echo -e "HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
+                  jx step pr comment -c "$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
                   exit 1;
               else
                  echo 'COMMIT MSG CHECK PASSED'
