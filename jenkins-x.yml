@@ -15,22 +15,26 @@ pipelineConfig:
       value: jenkins-x-bot
     - name: XDG_CONFIG_HOME
       value: /home/jenkins
+    - name: CONV_COMMIT_ERR_FILE
+      value: check.failed
+    - name: CONV_COMMIT_FILE
+      value: commit.check
   pipelines:
     pullRequest:
       preBuild:
         steps:
           - name: conventionalcommits-check
             image: aevea/commitsar:latest
-            command: $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' >> check.failed ; exit 0; }
+            command: $(commitsar > $CONV_COMMIT_FILE) || { echo 'commit check failed' >> $CONV_COMMIT_ERR_FILE; exit 0; }
           - name: conventionalcommits-print
-            command: cat commit.check
+            command: cat $CONV_COMMIT_FILE
           - name: conventionalcommits-comment
             command: |
-              if [ -f "check.failed" ]; then
-                  jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
+              if [ -f "$CONV_COMMIT_ERR_FILE" ]; then
+                  jx step pr comment -c "$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
                   exit 1;
               else
-                 echo 'COMMIT MSG CHECK PASSED'
+                 echo 'COMMIT MESSAGE CHECK PASSED!'
               fi
       postBuild:
         steps:
