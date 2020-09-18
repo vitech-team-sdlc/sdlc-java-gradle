@@ -31,7 +31,7 @@ pipelineConfig:
           - name: conventionalcommits-comment
             command: |
               if [ -f "$CONV_COMMIT_ERR_FILE" ]; then
-                  jx step pr comment -c "HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')"
+                  jx step pr comment -c "$(echo -e "HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
                   exit 1;
               else
                  echo 'COMMIT MSG CHECK PASSED'
