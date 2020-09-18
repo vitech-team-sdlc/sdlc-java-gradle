@@ -15,6 +15,10 @@ pipelineConfig:
       value: jenkins-x-bot
     - name: XDG_CONFIG_HOME
       value: /home/jenkins
+    - name: CONV_COMMIT_ERR_FILE
+      value: check.failed
+    - name: CONV_COMMIT_FILE
+      value: commit.check
   pipelines:
     pullRequest:
       preBuild:
