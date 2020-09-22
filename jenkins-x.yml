@@ -21,11 +21,10 @@ pipelineConfig:
       value: commit.check
   pipelines:
     overrides:
-      - stage: setVersion
+      - pipeline: setVersion
+        name: next-version
         steps:
-          - name: next-version
-            command: jx step next-version --semantic-release --tag
-            comment: so we can retrieve the version in later steps
+          - command: jx step next-version --semantic-release
     pullRequest:
       preBuild:
         steps:
