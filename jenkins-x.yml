@@ -24,8 +24,7 @@ pipelineConfig:
       - stage: setVersion
         steps:
           - name: next-version
-            command: jx step next-version --semantic-release --filename package.json
-            image: gcr.io/jenkinsxio/builder-go
+            command: jx step next-version --semantic-release --tag
             comment: so we can retrieve the version in later steps
     pullRequest:
       preBuild:
