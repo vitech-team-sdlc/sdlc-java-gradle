@@ -20,6 +20,11 @@ pipelineConfig:
     - name: CONV_COMMIT_FILE
       value: commit.check
   pipelines:
+    overrides:
+      - pipeline: setVersion
+        name: next-version
+        steps:
+          - command: jx step next-version --semantic-release
     pullRequest:
       preBuild:
         steps:
