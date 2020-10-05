@@ -243,7 +243,7 @@ spec:
           - -c
           env:
           - name: _JAVA_OPTIONS
-            value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+            value: -Xms10m -Xmx192m
           image: gradle:6.3.0-jdk11
           name: build-gradle-build
           resources: {}
