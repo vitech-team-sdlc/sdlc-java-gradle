@@ -12,10 +12,9 @@ jx:
   imagePullSecrets: []
 
 # define environment variables here as a map of key: value
-envValueFrom:
+envValueFrom: []
 
-env:
-  SPRING_PROFILES_ACTIVE: production
+env: {}
 
 envFrom:
 
