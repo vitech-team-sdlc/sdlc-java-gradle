@@ -12,13 +12,17 @@ jx:
   imagePullSecrets: []
 
 # define environment variables here as a map of key: value
+envValueFrom:
+- name: MYSQL_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: mysql
+      key: mysql-root-password
+
 env:
   SPRING_PROFILES_ACTIVE: production
 
 envFrom:
-  - secretRef:
-      name: mysql
-      optional: false
 
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
