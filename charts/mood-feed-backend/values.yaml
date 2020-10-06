@@ -12,7 +12,7 @@ jx:
   imagePullSecrets: []
 
 # define environment variables here as a map of key: value
-env:
+env: {}
 
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
@@ -59,7 +59,8 @@ resources:
   requests:
     cpu: 200m
     memory: 128Mi
-probePath: /
+probePathLiveness: actuator/health/liveness
+probePathReadiness: actuator/health/readiness
 livenessProbe:
   initialDelaySeconds: 60
   periodSeconds: 10

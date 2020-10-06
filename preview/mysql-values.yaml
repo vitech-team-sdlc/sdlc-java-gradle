@@ -1,0 +1,6 @@
+mysqlPassword: 123QWEasd
+mysqlDatabase: mood_feed
+mysqlUser: moodfeed
+mysqlRootPassword: 123QWEasd
+initializationFiles:
+  mood_feed_db.sql: "CREATE DATABASE IF NOT EXISTS mood_feed DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;"
