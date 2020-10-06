@@ -13,11 +13,6 @@ jx:
 
 # define environment variables here as a map of key: value
 envValueFrom:
-- name: MYSQL_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: mysql
-      key: mysql-root-password
 
 env:
   SPRING_PROFILES_ACTIVE: production
