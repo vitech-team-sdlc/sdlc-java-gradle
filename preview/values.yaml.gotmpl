@@ -3,9 +3,9 @@ image:
     tag: "{{ requiredEnv "VERSION" }}"
 
 env:
-    SPRING_PROFILES_ACTIVE: "production"
+    "SPRING_PROFILES_ACTIVE": "production"
 
 envFrom:
     - secretRef:
-          name: mysql
-          optional: false
+        name: mysql
+        optional: false
