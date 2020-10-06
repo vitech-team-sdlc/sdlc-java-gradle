@@ -12,7 +12,8 @@ jx:
   imagePullSecrets: []
 
 # define environment variables here as a map of key: value
-env: {}
+env:
+  SPRING_PROFILES_ACTIVE: production
 
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
@@ -20,8 +21,8 @@ knativeDeploy: false
 # HorizontalPodAutoscaler
 hpa:
   enabled: false
-  minReplicas: 2
-  maxReplicas: 6
+  minReplicas: 1
+  maxReplicas: 1
   cpuTargetAverageUtilization: 80
   memoryTargetAverageUtilization: 80
 
@@ -54,8 +55,8 @@ service:
     fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
 resources:
   limits:
-    cpu: 400m
-    memory: 256Mi
+    cpu: 500m
+    memory: 512Mi
   requests:
     cpu: 200m
     memory: 128Mi
