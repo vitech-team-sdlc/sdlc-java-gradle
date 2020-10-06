@@ -23,6 +23,8 @@ env:
   SPRING_PROFILES_ACTIVE: production
   MYSQL_USER: root
 
+envFrom:
+
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
 
