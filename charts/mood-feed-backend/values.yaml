@@ -15,6 +15,11 @@ jx:
 env:
   SPRING_PROFILES_ACTIVE: production
 
+envFrom:
+  - secretRef:
+      name: mysql
+      optional: false
+
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
 
