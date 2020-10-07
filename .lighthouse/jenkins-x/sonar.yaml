@@ -1,14 +1,10 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  creationTimestamp: null
   labels:
-    branch: master
-    build: "1"
     jenkins.io/pipelineType: build
     owner: vitech-team
-    repository: node-http
-  name: jenkins-x-conventionalcommits
+  name: jenkins-x-sonar
 spec:
   pipelineSpec:
     params:
