@@ -14,7 +14,7 @@ spec:
     always_run: true
     optional: false
     trigger: "/conv"
-    rerun_command: "/retest"
+    rerun_command: "/reconv"
     source: "conventionalcommits.yaml"
   postsubmits:
   - name: release
