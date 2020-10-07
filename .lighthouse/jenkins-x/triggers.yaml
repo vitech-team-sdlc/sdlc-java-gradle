@@ -16,6 +16,13 @@ spec:
     trigger: "/conv"
     rerun_command: "/reconv"
     source: "conventionalcommits.yaml"
+  - name: sonar
+    context: "sonar"
+    always_run: true
+    optional: false
+    trigger: "/sonar"
+    rerun_command: "/resonar"
+    source: "sonar.yaml"
   postsubmits:
   - name: release
     context: "release"
