@@ -192,11 +192,6 @@ spec:
             - name: save-source-branch
               image: mikefarah/yq
               script: yq r pr.yaml Source > target.branch && rm pr.yaml
-            - name: git-setup
-              image: gcr.io/jenkinsxio/jx-cli:latest
-              workingDir: /workspace
-              script: |
-                jx gitops git setup --namespace jx-git-operator
             - name: swith-to-pr-branch
               image: gcr.io/jenkinsxio/jx-cli:latest
               script: git checkout $(cat target.branch)
