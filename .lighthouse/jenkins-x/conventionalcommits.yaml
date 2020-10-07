@@ -229,18 +229,19 @@ spec:
               image: aevea/commitsar:latest
               script: |
                 $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' >> check.failed ; exit 0; }
-#            - name: conventionalcommits-print
-#              command:
-#                - cat commit.check
-#            - name: conventionalcommits-comment
-#              command:
-#                - >
-#                  if [ -f "check.failed" ]; then
-#                  jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
-#                  exit 1;
-#                  else
-#                     echo 'COMMIT MSG CHECK PASSED'
-#                  fi
+            - name: conventionalcommits-print
+              image: aevea/commitsar:latest
+              script: |
+                cat commit.check
+            - name: conventionalcommits-comment
+              image: aevea/commitsar:latest
+              script: |
+                  if [ -f "check.failed" ]; then
+                    jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
+                    exit 1;
+                  else
+                     echo 'COMMIT MSG CHECK PASSED'
+                  fi
           volumes:
             - name: volume-0
               secret:
