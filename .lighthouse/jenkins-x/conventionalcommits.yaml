@@ -1,0 +1,231 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  labels:
+    jenkins.io/pipelineType: build
+    owner: vitech-team
+  name: jenkins-x-conventionalcommits
+spec:
+  pipelineSpec:
+    params:
+      - description: the unique build number
+        name: BUILD_ID
+        type: string
+      - description: the name of the job which is the trigger context name
+        name: JOB_NAME
+        type: string
+      - description: the specification of the job
+        name: JOB_SPEC
+        type: string
+      - description: 'the kind of job: postsubmit or presubmit'
+        name: JOB_TYPE
+        type: string
+      - default: master
+        description: the base git reference of the pull request
+        name: PULL_BASE_REF
+        type: string
+      - description: the git sha of the base of the pull request
+        name: PULL_BASE_SHA
+        type: string
+      - default: ""
+        description: git pull request number
+        name: PULL_NUMBER
+        type: string
+      - default: ""
+        description: git pull request ref in the form 'refs/pull/$PULL_NUMBER/head'
+        name: PULL_PULL_REF
+        type: string
+      - default: master
+        description: git revision to checkout (branch, tag, sha, ref…)
+        name: PULL_PULL_SHA
+        type: string
+      - description: git pull reference strings of base and latest in the form 'master:$PULL_BASE_SHA,$PULL_NUMBER:$PULL_PULL_SHA:refs/pull/$PULL_NUMBER/head'
+        name: PULL_REFS
+        type: string
+      - description: git repository name
+        name: REPO_NAME
+        type: string
+      - description: git repository owner (user or organisation)
+        name: REPO_OWNER
+        type: string
+      - description: git url to clone
+        name: REPO_URL
+        type: string
+    tasks:
+      - name: from-build-pack
+        params:
+          - name: BUILD_ID
+            value: $(params.BUILD_ID)
+          - name: JOB_NAME
+            value: $(params.JOB_NAME)
+          - name: JOB_SPEC
+            value: $(params.JOB_SPEC)
+          - name: JOB_TYPE
+            value: $(params.JOB_TYPE)
+          - name: PULL_BASE_REF
+            value: $(params.PULL_BASE_REF)
+          - name: PULL_BASE_SHA
+            value: $(params.PULL_BASE_SHA)
+          - name: PULL_NUMBER
+            value: $(params.PULL_NUMBER)
+          - name: PULL_PULL_REF
+            value: $(params.PULL_PULL_REF)
+          - name: PULL_PULL_SHA
+            value: $(params.PULL_PULL_SHA)
+          - name: PULL_REFS
+            value: $(params.PULL_REFS)
+          - name: REPO_NAME
+            value: $(params.REPO_NAME)
+          - name: REPO_OWNER
+            value: $(params.REPO_OWNER)
+          - name: REPO_URL
+            value: $(params.REPO_URL)
+        taskSpec:
+          params:
+            - description: git url to clone
+              name: REPO_URL
+              type: string
+            - default: master
+              description: git revision to checkout (branch, tag, sha, ref…)
+              name: PULL_PULL_SHA
+              type: string
+            - default: source
+              description: subdirectory inside of /workspace to clone the git repo
+              name: subdirectory
+              type: string
+            - description: the unique build number
+              name: BUILD_ID
+              type: string
+            - description: the name of the job which is the trigger context name
+              name: JOB_NAME
+              type: string
+            - description: the specification of the job
+              name: JOB_SPEC
+              type: string
+            - description: 'the kind of job: postsubmit or presubmit'
+              name: JOB_TYPE
+              type: string
+            - default: master
+              description: the base git reference of the pull request
+              name: PULL_BASE_REF
+              type: string
+            - description: the git sha of the base of the pull request
+              name: PULL_BASE_SHA
+              type: string
+            - default: ""
+              description: git pull request number
+              name: PULL_NUMBER
+              type: string
+            - default: ""
+              description: git pull request ref in the form 'refs/pull/$PULL_NUMBER/head'
+              name: PULL_PULL_REF
+              type: string
+            - description: git pull reference strings of base and latest in the form 'master:$PULL_BASE_SHA,$PULL_NUMBER:$PULL_PULL_SHA:refs/pull/$PULL_NUMBER/head'
+              name: PULL_REFS
+              type: string
+            - description: git repository name
+              name: REPO_NAME
+              type: string
+            - description: git repository owner (user or organisation)
+              name: REPO_OWNER
+              type: string
+          stepTemplate:
+            env:
+              - name: BUILD_ID
+                value: $(params.BUILD_ID)
+              - name: JOB_NAME
+                value: $(params.JOB_NAME)
+              - name: JOB_SPEC
+                value: $(params.JOB_SPEC)
+              - name: JOB_TYPE
+                value: $(params.JOB_TYPE)
+              - name: PULL_BASE_REF
+                value: $(params.PULL_BASE_REF)
+              - name: PULL_BASE_SHA
+                value: $(params.PULL_BASE_SHA)
+              - name: PULL_NUMBER
+                value: $(params.PULL_NUMBER)
+              - name: PULL_PULL_REF
+                value: $(params.PULL_PULL_REF)
+              - name: PULL_PULL_SHA
+                value: $(params.PULL_PULL_SHA)
+              - name: PULL_REFS
+                value: $(params.PULL_REFS)
+              - name: REPO_NAME
+                value: $(params.REPO_NAME)
+              - name: REPO_OWNER
+                value: $(params.REPO_OWNER)
+              - name: REPO_URL
+                value: $(params.REPO_URL)
+            name: ""
+            resources:
+              requests:
+                cpu: 200m
+                memory: 512Mi
+            volumeMounts:
+              - mountPath: /home/jenkins
+                name: workspace-volume
+              - mountPath: /home/jenkins/.gnupg
+                name: volume-0
+              - mountPath: /etc/podinfo
+                name: podinfo
+                readOnly: true
+            workingDir: /workspace/source
+          steps:
+            - name: git-clone
+              image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
+              workingDir: /workspace
+              script: |
+                mkdir -p $HOME
+                git config --global credential.helper store
+                git clone $(params.REPO_URL) $(params.subdirectory)
+                echo cloned url: $(params.REPO_URL) to dir: $(params.subdirectory)
+                cd $(params.subdirectory)
+                git checkout $(params.PULL_PULL_SHA)
+                echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(params.subdirectory)
+            - name: git-setup
+              image: gcr.io/jenkinsxio/jx-cli:latest
+              workingDir: /workspace
+              script: |
+                jx gitops git setup --namespace jx-git-operator
+            - name: git-merge
+              image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
+              script: |
+                jx step git merge --verbose \
+                  --baseSHA $(params.PULL_BASE_SHA) --sha $(params.PULL_PULL_SHA) --baseBranch $(params.PULL_BASE_REF)
+            - name: conventionalcommits-check
+              image: aevea/commitsar:latest
+              script: |
+                $(commitsar > commit.check 2> commit.check.failed) \
+                  || { echo 'commit check failed' >> check.failed ; exit 0; }
+            - name: conventionalcommits-print
+              image: aevea/commitsar:latest
+              script: |
+                cat commit.check
+            - name: conventionalcommits-comment
+              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+              script: |
+                if [ -f "$CONV_COMMIT_ERR_FILE" ]; then
+                    jx step pr comment -c "$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
+                    exit 1;
+                else
+                   echo 'COMMIT MESSAGE CHECK PASSED!'
+                fi
+          volumes:
+            - name: volume-0
+              secret:
+                secretName: jenkins-release-gpg
+            - emptyDir: { }
+              name: workspace-volume
+            - downwardAPI:
+                items:
+                  - fieldRef:
+                      fieldPath: metadata.labels
+                    path: labels
+              name: podinfo
+  podTemplate:
+    ImagePullSecrets: null
+    hostNetwork: false
+    schedulerName: ""
+  serviceAccountName: tekton-bot
+  timeout: 240h0m0s
