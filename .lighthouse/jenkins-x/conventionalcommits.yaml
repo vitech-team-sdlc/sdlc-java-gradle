@@ -177,6 +177,9 @@ spec:
                 readOnly: true
             workingDir: /workspace/source
           steps:
+            - name: print-env-variables
+              image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
+              script: printenv
             - name: git-clone
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               workingDir: /workspace
