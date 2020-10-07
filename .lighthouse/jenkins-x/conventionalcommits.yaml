@@ -177,9 +177,6 @@ spec:
                 readOnly: true
             workingDir: /workspace/source
           steps:
-            - name: print-env-variables
-              image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
-              script: printenv
             - name: git-clone
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               workingDir: /workspace
@@ -198,29 +195,18 @@ spec:
                 jx gitops git setup --namespace jx-git-operator
             - name: git-merge
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
-              command:
-                - jx
-              args:
-                - step
-                - git
-                - merge
-                - --verbose
-                - --baseSHA
-                - $(params.PULL_BASE_SHA)
-                - --sha
-                - $(params.PULL_PULL_SHA)
-                - --baseBranch
-                - $(params.PULL_BASE_REF)
+              script: |
+                jx step git merge --verbose \
+                  --baseSHA $(params.PULL_BASE_SHA) --sha $(params.PULL_PULL_SHA) --baseBranch $(params.PULL_BASE_REF)
             - name: conventionalcommits-check
               image: aevea/commitsar:latest
               script: |
-                $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' >> check.failed ; exit 0; }
+                $(commitsar > commit.check 2> commit.check.failed) \
+                  || { echo 'commit check failed' >> check.failed ; exit 0; }
             - name: conventionalcommits-print
               image: aevea/commitsar:latest
               script: |
                 cat commit.check
-                echo '========='
-                cat commit.check.failed
             - name: conventionalcommits-comment
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
               script: |
