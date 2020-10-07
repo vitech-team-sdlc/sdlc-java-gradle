@@ -1,13 +1,9 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  creationTimestamp: null
   labels:
-    branch: master
-    build: "1"
     jenkins.io/pipelineType: build
     owner: vitech-team
-    repository: node-http
   name: jenkins-x-conventionalcommits
 spec:
   pipelineSpec:
@@ -209,11 +205,11 @@ spec:
             - name: conventionalcommits-comment
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
               script: |
-                if [ -f "check.failed" ]; then
-                  jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
-                  exit 1;
+                if [ -f "$CONV_COMMIT_ERR_FILE" ]; then
+                    jx step pr comment -c "$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
+                    exit 1;
                 else
-                   echo 'COMMIT MSG CHECK PASSED'
+                   echo 'COMMIT MESSAGE CHECK PASSED!'
                 fi
           volumes:
             - name: volume-0
