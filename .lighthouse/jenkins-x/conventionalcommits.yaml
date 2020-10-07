@@ -193,7 +193,18 @@ spec:
             - name: git-setup
               image: gcr.io/jenkinsxio/jx-cli:latest
               workingDir: /workspace
-              script: jx gitops git setup --namespace jx-git-operator
+              script: |
+                jx gitops git setup --namespace jx-git-operator
+            - name: setup-builder-home
+              args:
+                - '[ -d /builder/home ] || mkdir -p /builder && ln -s /tekton/home /builder/home'
+              command:
+                - /bin/sh
+                - -c
+              env:
+                - name: _JAVA_OPTIONS
+                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
+              image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
             - args:
                 - step
                 - git
