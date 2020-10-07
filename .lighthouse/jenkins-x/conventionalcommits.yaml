@@ -84,7 +84,7 @@ spec:
             value: $(params.REPO_OWNER)
           - name: REPO_URL
             value: $(params.REPO_URL)
-        resources: {}
+        resources: { }
         taskSpec:
           params:
             - description: git url to clone
@@ -184,7 +184,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               name: git-clone
-              resources: {}
+              resources: { }
               workingDir: /workspace
             - name: git-setup
               args:
@@ -227,22 +227,25 @@ spec:
               name: git-merge
             - name: conventionalcommits-check
               image: aevea/commitsar:latest
-              command: $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' >> check.failed ; exit 0; }
+              command:
+                - $(commitsar > commit.check 2> commit.check.failed) || { echo 'commit check failed' >> check.failed ; exit 0; }
             - name: conventionalcommits-print
-              command: cat commit.check
+              command:
+                - cat commit.check
             - name: conventionalcommits-comment
-              command: |
-                if [ -f "check.failed" ]; then
-                    jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
-                    exit 1;
-                else
-                   echo 'COMMIT MSG CHECK PASSED'
-                fi
+              command:
+                - >
+                  if [ -f "check.failed" ]; then
+                  jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
+                  exit 1;
+                  else
+                     echo 'COMMIT MSG CHECK PASSED'
+                  fi
           volumes:
             - name: volume-0
               secret:
                 secretName: jenkins-release-gpg
-            - emptyDir: {}
+            - emptyDir: { }
               name: workspace-volume
             - downwardAPI:
                 items:
@@ -256,4 +259,4 @@ spec:
     schedulerName: ""
   serviceAccountName: tekton-bot
   timeout: 240h0m0s
-status: {}
+status: { }
