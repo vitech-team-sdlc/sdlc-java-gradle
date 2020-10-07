@@ -206,7 +206,7 @@ spec:
             - name: sonar
               image: sonarsource/sonar-scanner-cli:4.4
               script: |
-                cat ${SONAR_HOST} && cat sonar-project.properties && sonar-scanner \
+                cat sonar-project.properties && sonar-scanner \
                  -Dsonar.host.url=${SONAR_HOST} \
                  -Dsonar.login=${SONAR_TOKEN} \
                  -Dsonar.pullrequest.branch=$(cat target.branch) \
