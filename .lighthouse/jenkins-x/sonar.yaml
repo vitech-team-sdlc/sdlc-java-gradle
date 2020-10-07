@@ -206,14 +206,14 @@ spec:
               script: git checkout $(cat target.branch)
             - name: gradle-buid
               image: gradle:6.3.0-jdk11
-              command: gradle clean build --no-daemon
+              script: gradle clean build --no-daemon
               resources:
                 requests:
                   cpu: 700m
                   memory: 512Mi
             - name: sonar
               image: sonarsource/sonar-scanner-cli:4.4
-              command: cat sonar-project.properties && sonar-scanner
+              script: cat sonar-project.properties && sonar-scanner
               args:
                 - "-Dsonar.host.url=${SONAR_HOST}"
                 - "-Dsonar.login=${SONAR_TOKEN}"
