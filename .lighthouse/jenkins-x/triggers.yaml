@@ -10,7 +10,7 @@ spec:
     rerun_command: "/retest"
     source: "pullrequest.yaml"
   - name: conventionalcommits
-    context: "pr"
+    context: "conventionalcommits"
     always_run: true
     optional: false
     trigger: "/conv"
