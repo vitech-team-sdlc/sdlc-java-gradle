@@ -164,7 +164,7 @@ spec:
             name: ""
             resources:
               requests:
-                cpu: 200m
+                cpu: 500m
                 memory: 512Mi
             volumeMounts:
               - mountPath: /home/jenkins
@@ -207,10 +207,6 @@ spec:
             - name: gradle-buid
               image: gradle:6.3.0-jdk11
               script: gradle clean build --no-daemon
-              resources:
-                requests:
-                  cpu: 700m
-                  memory: 512Mi
             - name: sonar
               image: sonarsource/sonar-scanner-cli:4.4
               script: cat sonar-project.properties && sonar-scanner
