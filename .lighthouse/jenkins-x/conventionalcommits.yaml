@@ -219,7 +219,7 @@ spec:
               image: aevea/commitsar:latest
               script: |
                 cat commit.check
-                echo "----"
+                echo '========='
                 cat commit.check.failed
             - name: conventionalcommits-comment
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
