@@ -84,7 +84,6 @@ spec:
             value: $(params.REPO_OWNER)
           - name: REPO_URL
             value: $(params.REPO_URL)
-        resources: { }
         taskSpec:
           params:
             - description: git url to clone
