@@ -234,14 +234,14 @@ spec:
               script: |
                 cat commit.check
             - name: conventionalcommits-comment
-              image: aevea/commitsar:latest
+              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
               script: |
-                  if [ -f "check.failed" ]; then
-                    jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
-                    exit 1;
-                  else
-                     echo 'COMMIT MSG CHECK PASSED'
-                  fi
+                if [ -f "check.failed" ]; then
+                  jx step pr comment -c "\`\`\`$(cat commit.check)\`\`\`"
+                  exit 1;
+                else
+                   echo 'COMMIT MSG CHECK PASSED'
+                fi
           volumes:
             - name: volume-0
               secret:
