@@ -248,13 +248,12 @@ spec:
       - name: extract-sourch-branch
         taskRef:
           name: get-pr-branch
-        stepTemplate:
-          env:
-            - name: GIT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: jx-pipeline-git-github-github
-                  key: password
+        env:
+          - name: GIT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jx-pipeline-git-github-github
+                key: password
         params:
           - name: PR_NUMBER
             value: "$(params.PULL_NUMBER)"
