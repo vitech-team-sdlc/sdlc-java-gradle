@@ -1,14 +1,11 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  creationTimestamp: null
   labels:
     branch: master
-    build: "1"
     jenkins.io/pipelineType: build
     owner: jenkins-x-quickstarts
-    repository: node-http
-  name: jenkins-x-quickstarts-node-http-dnprs-1
+  name: release
 spec:
   pipelineSpec:
     params:
@@ -274,6 +271,54 @@ spec:
           image: gcr.io/kaniko-project/executor:debug-v0.24.0
           name: build-container-build
           resources: {}
+        - name: get-pr-info
+          image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
+          script: |
+            jx gitops pr get --git-token=$GIT_TOKEN --pr=$(params.PULL_NUMBER) > pr.yaml
+          env:
+            - name: GIT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: jx-pipeline-git-github-github
+                  key: password
+        - name: save-source-branch
+          image: mikefarah/yq
+          script: yq r pr.yaml Source > target.branch && rm pr.yaml
+        - name: sonar
+          image: sonarsource/sonar-scanner-cli:4.4
+          script: |
+            cat sonar-project.properties && sonar-scanner \
+             -Dsonar.host.url=${SONAR_HOST} \
+             -Dsonar.login=${SONAR_TOKEN} \
+             -Dsonar.pullrequest.branch=$(cat target.branch) \
+             -Dsonar.pullrequest.base=${PULL_BASE_REF} \
+             -Dsonar.pullrequest.key=${PULL_NUMBER} \
+             -Dsonar.pullrequest.github.repository=${REPO_OWNER}/${REPO_NAME} \
+             -Dsonar.projectKey=${REPO_OWNER}:${REPO_NAME} \
+             -Dsonar.organization=${SONAR_ORG} \
+             -Dsonar.projectName=${REPO_NAME} \
+             -Dsonar.scm.provider=${SONAR_SCM}
+          env:
+            - name: SONAR_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: sonar
+                  key: sonar-login
+            - name: SONAR_ORG
+              valueFrom:
+                secretKeyRef:
+                  name: sonar
+                  key: sonar-organization
+            - name: SONAR_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: sonar
+                  key: sonar-host-url
+            - name: SONAR_SCM
+              valueFrom:
+                secretKeyRef:
+                  name: sonar
+                  key: sonar-scm-provider
         - args:
           - source /workspace/source/.jx/variables.sh && jx step changelog --version v${VERSION}
           command:
@@ -325,4 +370,3 @@ spec:
     schedulerName: ""
   serviceAccountName: tekton-bot
   timeout: 240h0m0s
-status: {}

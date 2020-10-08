@@ -245,13 +245,6 @@ spec:
                       fieldPath: metadata.labels
                     path: labels
               name: podinfo
-      - name: get-sourch-branch
-        taskRef:
-          name: get-pr-branch
-        workingDir: /workspace/source
-        params:
-          - name: PR_NUMBER
-            value: "$(params.PULL_NUMBER)"
   podTemplate:
     ImagePullSecrets: null
     hostNetwork: false
