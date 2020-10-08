@@ -19,7 +19,7 @@ spec:
     - name: get-pr-info
       image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
       script: |
-        jx gitops pr get --git-token=$GIT_TOKEN --pr=$(params.PR_NUMBER) > pr.yaml
+        printenv && jx gitops pr get --git-token=$GIT_TOKEN --pr=$(params.PR_NUMBER) > pr.yaml
       env:
         - name: GIT_TOKEN
           valueFrom:
