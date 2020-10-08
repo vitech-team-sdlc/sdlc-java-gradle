@@ -17,7 +17,7 @@ spec:
       description: source branch name
   steps:
     - name: print-dir
-      image: bash:latest
+      image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
       script: ls -la /workspace/source
     - name: get-pr-info
       image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
