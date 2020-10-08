@@ -12,9 +12,6 @@ spec:
     - name: PR_NUMBER
       type: string
       description: PR id
-    - name: GIT_TOKEN
-      type: string
-      description: git token
   results:
     - name: source_branch
       description: source branch name
@@ -22,7 +19,7 @@ spec:
     - name: get-pr-info
       image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
       script: |
-        jx gitops pr get --git-token=$(params.GIT_TOKEN) --pr=$(params.PR_NUMBER) > pr.yaml
+        jx gitops pr get --git-token=$(GIT_TOKEN) --pr=$(params.PR_NUMBER) > pr.yaml
     - name: save-source-branch
       image: mikefarah/yq
       script: yq r pr.yaml Source | tee $(results.source_branch.path)

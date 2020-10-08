@@ -258,11 +258,6 @@ spec:
         params:
           - name: PR_NUMBER
             value: "$(params.PULL_NUMBER)"
-          - name: GIT_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: jx-pipeline-git-github-github
-                key: password
   podTemplate:
     ImagePullSecrets: null
     hostNetwork: false
