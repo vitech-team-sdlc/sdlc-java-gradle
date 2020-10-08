@@ -1,4 +1,34 @@
 apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  labels:
+    owner: vitech-team
+  name: get-pr-branch
+  annotations:
+    description: |
+      get current PR build sourch branch name
+spec:
+  params:
+    - name: PR_NUMBER
+      type: string
+      description: PR id
+    - name: GIT_TOKEN
+      type: string
+      description: git token
+  results:
+    - name: source_branch
+      description: source branch name
+  steps:
+    - name: get-pr-info
+      image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
+      script: |
+        jx gitops pr get --git-token=$(params.GIT_TOKEN) --pr=$(params.PR_NUMBER) > pr.yaml
+    - name: save-source-branch
+      image: mikefarah/yq
+      script: yq r pr.yaml Source | tee $(results.source_branch.path)
+
+---
+apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   labels:
@@ -245,6 +275,23 @@ spec:
                       fieldPath: metadata.labels
                     path: labels
               name: podinfo
+      - name: extract-sourch-branch
+        taskRef:
+          name: get-pr-branch
+        params:
+          - name: PR_NUMBER
+            value: "$(params.PULL_NUMBER)"
+          - name: GIT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: jx-pipeline-git-github-github
+                key: password
+        env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jx-pipeline-git-github-github
+              key: password
   podTemplate:
     ImagePullSecrets: null
     hostNetwork: false
