@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  labels:
+    owner: vitech-team
+  name: get-pr-branch
+  annotations:
+    description: |
+      get current PR build sourch branch name
+spec:
+  params:
+    - name: PR_NUMBER
+      type: string
+      description: PR id
+  results:
+    - name: source_branch
+      description: source branch name
+  steps:
+    - name: print-dir
+      image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
+      script: ls -la /workspace/source
+    - name: get-pr-info
+      image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
+      script: |
+        printenv && jx gitops pr get --git-token=$GIT_TOKEN --pr=$(params.PR_NUMBER) > pr.yaml
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jx-pipeline-git-github-github
+              key: password
+    - name: save-source-branch
+      image: mikefarah/yq
+      script: yq r pr.yaml Source | tee $(results.source_branch.path)
