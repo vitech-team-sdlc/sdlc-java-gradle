@@ -20,6 +20,12 @@ spec:
       image: 'gcr.io/jenkinsxio/jx-cli:3.0.232'
       script: |
         jx gitops pr get --git-token=$(GIT_TOKEN) --pr=$(params.PR_NUMBER) > pr.yaml
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jx-pipeline-git-github-github
+              key: password
     - name: save-source-branch
       image: mikefarah/yq
       script: yq r pr.yaml Source | tee $(results.source_branch.path)
