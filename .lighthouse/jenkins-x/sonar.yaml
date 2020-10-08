@@ -248,6 +248,7 @@ spec:
       - name: get-sourch-branch
         taskRef:
           name: get-pr-branch
+        workingDir: /workspace/source
         params:
           - name: PR_NUMBER
             value: "$(params.PULL_NUMBER)"
