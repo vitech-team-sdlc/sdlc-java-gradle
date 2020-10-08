@@ -245,7 +245,7 @@ spec:
                       fieldPath: metadata.labels
                     path: labels
               name: podinfo
-      - name: extract-sourch-branch
+      - name: get-sourch-branch
         taskRef:
           name: get-pr-branch
         params:
