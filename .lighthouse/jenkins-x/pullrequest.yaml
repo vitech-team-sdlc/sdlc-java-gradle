@@ -274,6 +274,7 @@ spec:
               args:
                 - "-c"
                 - |-
+                  echo "USER $(params.USER_ID):$(params.GROUP_ID)" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
               securityContext:
