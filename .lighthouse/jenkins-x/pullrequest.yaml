@@ -290,9 +290,16 @@ spec:
                 - "-c"
                 - |-
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source"
               securityContext:
                 privileged: true
+              volumeMounts:
+                - name: layers-dir
+                  mountPath: /layers
+                - name: empty-dir
+                  mountPath: /cache
 
             - name: build-container-buildpacks-create
               image: paketobuildpacks/builder:base
@@ -300,9 +307,19 @@ spec:
               command: [ "/cnb/lifecycle/creator" ]
               args:
                 - "-app=/workspace/source"
+                - "-cache-dir=/cache"
+                - "-layers=/layers"
+                - "-platform=/platform"
                 - "-gid=$(params.GROUP_ID)"
                 - "-uid=$(params.USER_ID)"
                 - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
+              volumeMounts:
+                - name: layers-dir
+                  mountPath: /layers
+                - name: $(params.CACHE)
+                  mountPath: /cache
+                - name: $(params.PLATFORM_DIR)
+                  mountPath: /platform
 
 #            - name: build-container-buildpacks
 #              image: paketobuildpacks/builder:base
@@ -342,6 +359,10 @@ spec:
               hostPath:
                 path: /var/run/docker.sock
                 type: Socket
+            - name: empty-dir
+              emptyDir: { }
+            - name: layers-dir
+              emptyDir: { }
   podTemplate:
     ImagePullSecrets: null
     hostNetwork: false
