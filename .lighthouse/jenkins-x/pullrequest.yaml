@@ -244,16 +244,16 @@ spec:
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: jx-variables
 
-            - args:
-                - gradle clean build --no-daemon
-              command:
-                - /bin/sh
-                - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -Xms10m -Xmx512m
-              image: gradle:6.3.0-jdk11
-              name: build-gradle-build
+#            - args:
+#                - gradle clean build --no-daemon
+#              command:
+#                - /bin/sh
+#                - -c
+#              env:
+#                - name: _JAVA_OPTIONS
+#                  value: -Xms10m -Xmx512m
+#              image: gradle:6.3.0-jdk11
+#              name: build-gradle-build
 
 #            - name: build-container-build
 #              image: gradle:6.3.0-jdk11
@@ -274,13 +274,13 @@ spec:
                 echo "USER $(params.USER_ID):$(params.GROUP_ID)"
                 chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home"
                 chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
+                ls /tekton/home
               securityContext:
                 privileged: true
 
             - name: build-container-build
               image: paketobuildpacks/builder:base
               script: |
-                #!/usr/bin/env bash
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
