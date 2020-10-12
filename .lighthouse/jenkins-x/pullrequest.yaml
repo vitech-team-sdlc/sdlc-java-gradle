@@ -275,19 +275,31 @@ spec:
                 chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home"
                 chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
                 ls -la /tekton/home
-              securityContext:
-                privileged: true
-
-            - name: build-container-buildpacks
-              image: paketobuildpacks/builder:base
-              script: |
-                #!/usr/bin/env bash
-                ls -la /tekton/home
-                cat /tekton/home/.docker
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
-                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
-                /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
+                echo $OUTPUT_IMAGE > /workspace/.imageName
+              securityContext:
+                privileged: true
+            - name: build-container-buildpacks-create
+              image: $(params.BUILDER_IMAGE)
+              imagePullPolicy: Always
+              command: [ "/cnb/lifecycle/creator" ]
+              args:
+                - "-app=/workspace/source"
+                - "-gid=$(params.GROUP_ID)"
+                - "-uid=$(params.USER_ID)"
+                - "$(cat /workspace/.imageName)"
+
+#            - name: build-container-buildpacks
+#              image: paketobuildpacks/builder:base
+#              script: |
+#                #!/usr/bin/env bash
+#                ls -la /tekton/home
+#                cat /tekton/home/.docker
+#                source /workspace/source/.jx/variables.sh
+#                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
+#                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
+#                /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
