@@ -268,6 +268,7 @@ spec:
 #              volumeMounts:
 #                - name: docker-socket
 #                  mountPath: /var/run/docker.sock
+            -
             - name: prepare2
               image: gcr.io/jenkinsxio/jx-cli:latest
               script: |
@@ -302,47 +303,25 @@ spec:
                   mountPath: /layers
                 - name: empty-dir
                   mountPath: /cache
+              env:
+                - name: GITHUB_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: $(params.github-token-secret)
+                      key: bot-token
 
-            - name: build-container-buildpacks-create
-              image: paketobuildpacks/builder:base
-              imagePullPolicy: Always
-              command: [ "/cnb/lifecycle/creator" ]
-              args:
-                - "-app=/workspace/source"
-                - "-cache-dir=/cache"
-                - "-layers=/layers"
-                - "-platform=/platform"
-                - "-gid=$(params.GROUP_ID)"
-                - "-uid=$(params.USER_ID)"
-                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
-              volumeMounts:
-                - name: layers-dir
-                  mountPath: /layers
-                - name: empty-dir
-                  mountPath: /cache
-                - name: empty-dir
-                  mountPath: /platform
-                - name: docker-socket
-                  mountPath: /var/run/docker.sock
-              securityContext:
-                runAsUser: 1000
-
-            #            - name: build-container-buildpacks
-#              image: buildpacksio/pack:latest
-#              script: |
-#                #!/usr/bin/env bash
-#                ls -la /tekton/home
-#                ls /tekton/home/.docker
-#                source /workspace/source/.jx/variables.sh
-#                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
-#                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
-#                pack build -app=/workspace/source \
-#                  -gid=$(params.GROUP_ID) \
-#                  -uid=$(params.USER_ID) \
-#                  -cache-dir=/cache \
-#                  -layers=/layers \
-#                  -platform=/platform \
-#                  $OUTPUT_IMAGE
+#            - name: build-container-buildpacks-create
+#              image: paketobuildpacks/builder:base
+#              imagePullPolicy: Always
+#              command: [ "/cnb/lifecycle/creator" ]
+#              args:
+#                - "-app=/workspace/source"
+#                - "-cache-dir=/cache"
+#                - "-layers=/layers"
+#                - "-platform=/platform"
+#                - "-gid=$(params.GROUP_ID)"
+#                - "-uid=$(params.USER_ID)"
+#                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
 #              volumeMounts:
 #                - name: layers-dir
 #                  mountPath: /layers
@@ -350,8 +329,34 @@ spec:
 #                  mountPath: /cache
 #                - name: empty-dir
 #                  mountPath: /platform
-#              securityContext:
-#                privileged: true
+#                - name: docker-socket
+#                  mountPath: /var/run/docker.sock
+
+            - name: build-container-buildpacks
+              image: paketobuildpacks/builder:base
+              script: |
+                #!/usr/bin/env bash
+                ls -la /tekton/home
+                ls /tekton/home/.docker
+                source /workspace/source/.jx/variables.sh
+                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
+                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
+                pack build -app=/workspace/source \
+                  -gid=$(params.GROUP_ID) \
+                  -uid=$(params.USER_ID) \
+                  -cache-dir=/cache \
+                  -layers=/layers \
+                  -platform=/platform \
+                  $OUTPUT_IMAGE
+              volumeMounts:
+                - name: layers-dir
+                  mountPath: /layers
+                - name: empty-dir
+                  mountPath: /cache
+                - name: empty-dir
+                  mountPath: /platform
+                - name: container-registry-auth
+                  mountPath: ~/.docker/config.json
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
@@ -384,6 +389,10 @@ spec:
               emptyDir: { }
             - name: layers-dir
               emptyDir: { }
+            - name: container-registry-auth
+              secret:
+                secretName: tekton-container-registry-auth
+                defaultMode: 420
   podTemplate:
     ImagePullSecrets: null
     hostNetwork: false
