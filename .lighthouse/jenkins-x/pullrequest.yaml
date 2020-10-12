@@ -302,7 +302,7 @@ spec:
                 - "-app=/workspace/source"
                 - "-gid=$(params.GROUP_ID)"
                 - "-uid=$(params.USER_ID)"
-                - "gcr.io/sdlc-286111/mood-feed-backend:$BUILD_ID"
+                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
 
 #            - name: build-container-buildpacks
 #              image: paketobuildpacks/builder:base
