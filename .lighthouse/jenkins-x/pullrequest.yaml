@@ -253,7 +253,7 @@ spec:
                 - name: _JAVA_OPTIONS
                   value: -Xms10m -Xmx256m
               script: |
-                source /workspace/source/.jx/variables.sh
+                sh ./workspace/source/.jx/variables.sh
                 echo "Image IS: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION"
                 gradle bootBuildImage --imageName=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
