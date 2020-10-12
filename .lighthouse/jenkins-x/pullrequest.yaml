@@ -276,7 +276,8 @@ spec:
                 chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home"
                 chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
                 ls -la /tekton/home
-                 ls /tekton/home/.docker
+                ls /tekton/home/.docker
+                cat /tekton/home/.docker/config.json
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "$OUTPUT_IMAGE" >> /workspace/source/image.name
