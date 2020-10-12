@@ -270,13 +270,10 @@ spec:
 #                  mountPath: /var/run/docker.sock
             - name: prepare2
               image: alpine
-              command: [ "/bin/sh" ]
-              args:
-                - "-c"
-                - |-
-                  echo "USER $(params.USER_ID):$(params.GROUP_ID)" &&
-                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
-                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
+              script: |
+                echo "USER $(params.USER_ID):$(params.GROUP_ID)"
+                chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home"
+                chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
               securityContext:
                 privileged: true
 
@@ -288,9 +285,6 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
-              securityContext:
-                runAsUser: 1000
-                runAsGroup: 1000
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
