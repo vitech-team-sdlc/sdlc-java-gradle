@@ -303,26 +303,30 @@ spec:
                 - name: empty-dir
                   mountPath: /cache
 
-#            - name: build-container-buildpacks-create
-#              image: paketobuildpacks/builder:base
-#              imagePullPolicy: Always
-#              command: [ "/cnb/lifecycle/creator" ]
-#              args:
-#                - "-app=/workspace/source"
-#                - "-cache-dir=/cache"
-#                - "-layers=/layers"
-#                - "-platform=/platform"
-#                - "-gid=$(params.GROUP_ID)"
-#                - "-uid=$(params.USER_ID)"
-#                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
-#              volumeMounts:
-#                - name: layers-dir
-#                  mountPath: /layers
-#                - name: empty-dir
-#                  mountPath: /cache
-#                - name: empty-dir
-#                  mountPath: /platform
-#            - name: build-container-buildpacks
+            - name: build-container-buildpacks-create
+              image: paketobuildpacks/builder:base
+              imagePullPolicy: Always
+              command: [ "/cnb/lifecycle/creator" ]
+              args:
+                - "-app=/workspace/source"
+                - "-cache-dir=/cache"
+                - "-layers=/layers"
+                - "-platform=/platform"
+                - "-gid=$(params.GROUP_ID)"
+                - "-uid=$(params.USER_ID)"
+                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
+              volumeMounts:
+                - name: layers-dir
+                  mountPath: /layers
+                - name: empty-dir
+                  mountPath: /cache
+                - name: empty-dir
+                  mountPath: /platform
+                - name: docker-socket
+                  mountPath: /var/run/docker.sock
+
+
+            #            - name: build-container-buildpacks
 #              image: buildpacksio/pack:latest
 #              script: |
 #                #!/usr/bin/env bash
