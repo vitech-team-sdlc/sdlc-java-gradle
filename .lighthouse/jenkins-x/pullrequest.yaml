@@ -268,7 +268,7 @@ spec:
 #              volumeMounts:
 #                - name: docker-socket
 #                  mountPath: /var/run/docker.sock
-            - name: prepare
+            - name: prepare2
               image: alpine
               command: [ "/bin/sh" ]
               args:
