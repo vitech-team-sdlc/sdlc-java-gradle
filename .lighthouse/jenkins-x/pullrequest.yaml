@@ -243,20 +243,18 @@ spec:
                 - -c
               env:
                 - name: _JAVA_OPTIONS
-                  value: -Xms10m -Xmx256m
+                  value: -Xms10m -Xmx512m
               image: gradle:6.3.0-jdk11
               name: build-gradle-build
 
-            - args:
-                - source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
-              command:
-                - /busybox/sh
-                - -c
+            - name: build-container-build
+              image: gradle:6.3.0-jdk11
               env:
                 - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
-              image: gcr.io/kaniko-project/executor:debug-v0.24.0
-              name: build-container-build
+                  value: -Xms10m -Xmx256m
+              script: |
+                echo "Image IS: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION"
+                source .jx/variables.sh && gradle bootBuildImage --imageName=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
