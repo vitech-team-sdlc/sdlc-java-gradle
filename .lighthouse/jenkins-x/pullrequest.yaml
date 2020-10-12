@@ -321,7 +321,7 @@ spec:
 #                - name: empty-dir
 #                  mountPath: /platform
             - name: build-container-buildpacks
-              image: paketobuildpacks/builder:base
+              image: buildpacksio/pack:latest
               script: |
                 #!/usr/bin/env bash
                 ls -la /tekton/home
@@ -329,13 +329,13 @@ spec:
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
-                /cnb/lifecycle/creator -app=/workspace/source \
-                  -gid=$(params.GROUP_ID) \
-                  -uid=$(params.USER_ID) \
-                  -cache-dir=/cache \
-                  -layers=/layers \
-                  -platform=/platform \
-                  $OUTPUT_IMAGE
+#                pack build -app=/workspace/source \
+#                  -gid=$(params.GROUP_ID) \
+#                  -uid=$(params.USER_ID) \
+#                  -cache-dir=/cache \
+#                  -layers=/layers \
+#                  -platform=/platform \
+#                  $OUTPUT_IMAGE
               volumeMounts:
                 - name: layers-dir
                   mountPath: /layers
