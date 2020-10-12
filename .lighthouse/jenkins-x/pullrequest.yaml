@@ -276,6 +276,8 @@ spec:
                 - |-
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
+              securityContext:
+                privileged: true
 
             - name: build-container-build
               image: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
@@ -285,9 +287,9 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
-              volumeMounts:
-                - name: docker-socket
-                  mountPath: /var/run/docker.sock
+#              volumeMounts:
+#                - name: docker-socket
+#                  mountPath: /var/run/docker.sock
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
