@@ -278,9 +278,22 @@ spec:
                 ls -la /tekton/home
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
-                echo "$OUTPUT_IMAGE" >> /workspace/.imageName
+                echo "$OUTPUT_IMAGE" >> /workspace/source/image.name
+                cat /workspace/source/image.name
               securityContext:
                 privileged: true
+            - name: prepare
+              image: alpine
+              imagePullPolicy: Always
+              command: [ "/bin/sh" ]
+              args:
+                - "-c"
+                - |-
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source"
+              securityContext:
+                privileged: true
+
             - name: build-container-buildpacks-create
               image: paketobuildpacks/builder:base
               imagePullPolicy: Always
@@ -289,7 +302,7 @@ spec:
                 - "-app=/workspace/source"
                 - "-gid=$(params.GROUP_ID)"
                 - "-uid=$(params.USER_ID)"
-                - "$(cat /workspace/.imageName)"
+                - "$(cat /workspace/source/image.name)"
 
 #            - name: build-container-buildpacks
 #              image: paketobuildpacks/builder:base
