@@ -136,10 +136,10 @@ spec:
               type: string
             - name: USER_ID
               description: The user ID of the builder image user.
-              default: "2000"
+              default: "1000"
             - name: GROUP_ID
               description: The group ID of the builder image user.
-              default: "2000"
+              default: "1000"
           stepTemplate:
             env:
               - name: CNB_PLATFORM_API
@@ -316,9 +316,9 @@ spec:
               volumeMounts:
                 - name: layers-dir
                   mountPath: /layers
-                - name: $(params.CACHE)
+                - name: empty-dir
                   mountPath: /cache
-                - name: $(params.PLATFORM_DIR)
+                - name: empty-dir
                   mountPath: /platform
 
 #            - name: build-container-buildpacks
