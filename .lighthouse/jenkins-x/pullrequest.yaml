@@ -320,7 +320,6 @@ spec:
 #                  mountPath: /cache
 #                - name: empty-dir
 #                  mountPath: /platform
-
             - name: build-container-buildpacks
               image: paketobuildpacks/builder:base
               script: |
