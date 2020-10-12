@@ -301,18 +301,42 @@ spec:
                 - name: empty-dir
                   mountPath: /cache
 
-            - name: build-container-buildpacks-create
+#            - name: build-container-buildpacks-create
+#              image: paketobuildpacks/builder:base
+#              imagePullPolicy: Always
+#              command: [ "/cnb/lifecycle/creator" ]
+#              args:
+#                - "-app=/workspace/source"
+#                - "-cache-dir=/cache"
+#                - "-layers=/layers"
+#                - "-platform=/platform"
+#                - "-gid=$(params.GROUP_ID)"
+#                - "-uid=$(params.USER_ID)"
+#                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
+#              volumeMounts:
+#                - name: layers-dir
+#                  mountPath: /layers
+#                - name: empty-dir
+#                  mountPath: /cache
+#                - name: empty-dir
+#                  mountPath: /platform
+
+            - name: build-container-buildpacks
               image: paketobuildpacks/builder:base
-              imagePullPolicy: Always
-              command: [ "/cnb/lifecycle/creator" ]
-              args:
-                - "-app=/workspace/source"
-                - "-cache-dir=/cache"
-                - "-layers=/layers"
-                - "-platform=/platform"
-                - "-gid=$(params.GROUP_ID)"
-                - "-uid=$(params.USER_ID)"
-                - "gcr.io/sdlc-286111/mood-feed-backend:buildpack"
+              script: |
+                #!/usr/bin/env bash
+                ls -la /tekton/home
+                cat /tekton/home/.docker
+                source /workspace/source/.jx/variables.sh
+                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
+                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
+                /cnb/lifecycle/creator -app=/workspace/source \
+                  -gid=$(params.GROUP_ID) \
+                  -uid=$(params.USER_ID) \
+                  -cache-dir=/cache \
+                  -layers=/layers \
+                  -platform=/platform \
+                  $OUTPUT_IMAGE
               volumeMounts:
                 - name: layers-dir
                   mountPath: /layers
@@ -320,18 +344,6 @@ spec:
                   mountPath: /cache
                 - name: empty-dir
                   mountPath: /platform
-
-#            - name: build-container-buildpacks
-#              image: paketobuildpacks/builder:base
-#              script: |
-#                #!/usr/bin/env bash
-#                ls -la /tekton/home
-#                cat /tekton/home/.docker
-#                source /workspace/source/.jx/variables.sh
-#                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
-#                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
-#                /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
-
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
               command:
