@@ -281,7 +281,7 @@ spec:
               securityContext:
                 privileged: true
             - name: build-container-buildpacks-create
-              image: $(params.BUILDER_IMAGE)
+              image: paketobuildpacks/builder:base
               imagePullPolicy: Always
               command: [ "/cnb/lifecycle/creator" ]
               args:
