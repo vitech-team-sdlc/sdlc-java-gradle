@@ -288,7 +288,7 @@ spec:
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
-                pack build -app=/workspace/source \
+                /cnb/lifecycle/creator -app=/workspace/source \
                   -gid=$(params.GROUP_ID) \
                   -uid=$(params.USER_ID) \
                   -cache-dir=/cache \
