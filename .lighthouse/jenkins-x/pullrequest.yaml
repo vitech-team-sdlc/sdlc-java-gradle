@@ -293,7 +293,9 @@ spec:
                 echo "--4--"
                 cat /tekton/home/test/.dockerconfigjson
 
-                cp -TRv /tekton/home/test/.dockerconfigjson ~/.docker/config.json
+                rm ~/.docker/config.json
+                cp /tekton/home/test/.dockerconfigjson ~/.docker/config.json
+
                 echo "--5--"
                 cat ~/.docker/config.json
 
