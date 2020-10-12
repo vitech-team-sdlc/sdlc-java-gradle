@@ -285,9 +285,12 @@ spec:
                 #!/usr/bin/env bash
                 ls -la /tekton/home
                 echo "--1--"
-                ls -la ~/docker/
+                ls -la ~/.docker/
                 echo "--2--"
                 cat ~/.docker/config.json
+                echo "--3--"
+                ls -la /tekton/home/test
+                echo "--4--"
 
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
@@ -307,7 +310,7 @@ spec:
                 - name: empty-dir
                   mountPath: /platform
                 - name: container-registry-auth
-                  mountPath: ~/.docker/
+                  mountPath: /tekton/home/test
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
@@ -343,7 +346,6 @@ spec:
             - name: container-registry-auth
               secret:
                 secretName: tekton-container-registry-auth
-                defaultMode: 420
   podTemplate:
     ImagePullSecrets: null
     hostNetwork: false
