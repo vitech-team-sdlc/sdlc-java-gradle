@@ -278,7 +278,7 @@ spec:
               securityContext:
                 privileged: true
 
-            - name: build-container-build
+            - name: build-container-buildpacks
               image: paketobuildpacks/builder:base
               script: |
                 #!/usr/bin/env bash
@@ -287,10 +287,9 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
-              env:
-                - name: DOCKER_CONFIG
-                  value: /tekton/home/.docker
-
+              securityContext:
+                runAsUser: root
+                runAsGroup: root
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
               command:
