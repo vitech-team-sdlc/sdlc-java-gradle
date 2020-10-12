@@ -134,8 +134,16 @@ spec:
             - description: git repository owner (user or organisation)
               name: REPO_OWNER
               type: string
+            - name: USER_ID
+              description: The user ID of the builder image user.
+              default: "1000"
+            - name: GROUP_ID
+              description: The group ID of the builder image user.
+              default: "1000"
           stepTemplate:
             env:
+              - name: CNB_PLATFORM_API
+                value: "0.3"
               - name: BUILD_ID
                 value: $(params.BUILD_ID)
               - name: JOB_NAME
@@ -260,37 +268,26 @@ spec:
 #              volumeMounts:
 #                - name: docker-socket
 #                  mountPath: /var/run/docker.sock
-
             - name: prepare
               image: alpine
-              imagePullPolicy: Always
               command: [ "/bin/sh" ]
               args:
                 - "-c"
                 - |-
-                  chown -R "1000:1000" "/tekton/home" &&
-                  chown -R "1000:1000" "/workspace/source"
-              securityContext:
-                privileged: true
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source/"
 
             - name: build-container-build
-              image: buildpacksio/pack:latest
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -Xms10m -Xmx256m
+              image: gcr.io/paketo-buildpacks/builder:base-platform-api-0.3
               script: |
                 #!/usr/bin/env bash
                 source /workspace/source/.jx/variables.sh
-                export IMAGE_NAME=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
-                echo "Building next image: $IMAGE_NAME"
-                pack build $IMAGE_NAME \
-                    --builder gcr.io/paketo-buildpacks/builder:base-platform-api-0.3 \
-                    --path .
+                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
+                echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
+                /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
               volumeMounts:
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
-              securityContext:
-                privileged: true
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
