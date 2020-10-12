@@ -136,10 +136,10 @@ spec:
               type: string
             - name: USER_ID
               description: The user ID of the builder image user.
-              default: "1000"
+              default: "2000"
             - name: GROUP_ID
               description: The group ID of the builder image user.
-              default: "1000"
+              default: "2000"
           stepTemplate:
             env:
               - name: CNB_PLATFORM_API
@@ -269,7 +269,7 @@ spec:
 #                - name: docker-socket
 #                  mountPath: /var/run/docker.sock
             - name: prepare2
-              image: alpine
+              image: gcr.io/jenkinsxio/jx-cli:latest
               script: |
                 #!/usr/bin/env bash
                 echo "USER $(params.USER_ID):$(params.GROUP_ID)"
