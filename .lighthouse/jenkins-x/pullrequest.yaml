@@ -289,8 +289,8 @@ spec:
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source -gid=$(params.GROUP_ID) -uid=$(params.USER_ID) $OUTPUT_IMAGE
               securityContext:
-                runAsUser: $(params.USER_ID)
-                runAsGroup: $(params.GROUP_ID)
+                runAsUser: 1000
+                runAsGroup: 1000
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
