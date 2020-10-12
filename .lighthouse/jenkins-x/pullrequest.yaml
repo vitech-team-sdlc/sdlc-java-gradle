@@ -343,6 +343,9 @@ spec:
                   mountPath: /cache
                 - name: empty-dir
                   mountPath: /platform
+              securityContext:
+                privileged: true
+
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
               command:
