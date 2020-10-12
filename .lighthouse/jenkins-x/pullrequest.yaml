@@ -387,6 +387,8 @@ spec:
     ImagePullSecrets: null
     hostNetwork: false
     schedulerName: ""
+    securityContext:
+      runAsUser: 1000
   serviceAccountName: tekton-bot
   timeout: 240h0m0s
 status: { }
