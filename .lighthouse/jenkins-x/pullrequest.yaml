@@ -280,6 +280,14 @@ spec:
                 - name: empty-dir
                   mountPath: /cache
 
+            - name: build-container-build
+              image: gcr.io/kaniko-project/executor:debug-v0.24.0
+              args:
+                - cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+              command:
+                - /busybox/sh
+                - -c
+
             - name: build-container-buildpacks
               image: paketobuildpacks/builder:base
               script: |
@@ -291,10 +299,6 @@ spec:
                 ls -la ~/.docker/
                 echo "--2--"
                 cat ~/.docker/config.json
-                echo "--3--"
-                ls -la /tekton/home/test
-                echo "--4--"
-                cat /tekton/home/test/.dockerconfigjson
 
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
