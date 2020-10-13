@@ -311,16 +311,6 @@ spec:
 
                 curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" | tar xz --to-stdout ./docker-credential-gcr > /usr/local/bin/docker-credential-gcr && chmod +x /usr/local/bin/docker-credential-gcr
 
-#                docker-credential-gcr --help
-#
-#                rm ~/.docker/config.json
-#
-#                cat << EOF > ~/.docker/config.json
-#                {"credHelpers":{"gcr.io":"gcr","us.gcr.io":"gcr","eu.gcr.io":"gcr","asia.gcr.io":"gcr","staging-k8s.gcr.io":"gcr"},"auths":{"ghcr.io":{"auth":""}}}
-#                EOF
-#
-#                cat ~/.docker/config.json
-
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source \
                   -gid=$(params.GROUP_ID) \
