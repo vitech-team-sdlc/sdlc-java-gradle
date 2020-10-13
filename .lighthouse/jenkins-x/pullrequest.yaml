@@ -300,8 +300,7 @@ spec:
                   mountPath: /cache
                 - name: empty-dir
                   mountPath: /platform
-              securityContext:
-                runAsUser: 1000
+
 
             - args:
                 - source /workspace/source/.jx/variables.sh && jx preview create
@@ -341,5 +340,7 @@ spec:
     ImagePullSecrets: null
     hostNetwork: false
     schedulerName: ""
+    securityContext:
+      runAsUser: 1000
   serviceAccountName: tekton-build-bot
   timeout: 1h
