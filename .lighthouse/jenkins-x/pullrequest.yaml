@@ -284,7 +284,9 @@ spec:
               script: |
                 #!/usr/bin/env bash
                 source /workspace/source/.jx/variables.sh
+
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
+
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source \
                   -gid=$(params.GROUP_ID) \
@@ -342,5 +344,5 @@ spec:
     schedulerName: ""
     securityContext:
       runAsUser: 1000
-  serviceAccountName: default
+  serviceAccountName: tekton-bot
   timeout: 1h
