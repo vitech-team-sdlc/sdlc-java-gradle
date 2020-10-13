@@ -4,3 +4,4 @@ metadata:
   name: tekton-build-bot
 secrets:
   - name: tekton-container-registry-auth
+  - name: tekton-git
