@@ -211,9 +211,6 @@ spec:
               command:
                 - /bin/sh
                 - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
               name: setup-builder-home
 
@@ -243,6 +240,18 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: jx-variables
+
+            - name: build-gradle-build
+              args:
+                - gradle clean build -x test --no-daemon
+              command:
+                - /bin/sh
+                - -c
+              env:
+                - name: _JAVA_OPTIONS
+                  value: -Xms10m -Xmx256m
+              image: gradle:6.3.0-jdk11
+
 
             - name: prepare2
               image: gcr.io/jenkinsxio/jx-cli:latest
@@ -283,7 +292,7 @@ spec:
             - name: build-container-build
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               args:
-                - printenv && cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+                - ls -la /kaniko/.docker/ && printenv && cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
               command:
                 - /busybox/sh
                 - -c
