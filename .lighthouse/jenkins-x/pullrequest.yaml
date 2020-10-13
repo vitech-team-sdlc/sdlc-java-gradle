@@ -241,16 +241,16 @@ spec:
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: jx-variables
 
-            - name: build-gradle-build
-              args:
-                - gradle clean build -x test --no-daemon
-              command:
-                - /bin/sh
-                - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -Xms10m -Xmx256m
-              image: gradle:6.3.0-jdk11
+#            - name: build-gradle-build
+#              args:
+#                - gradle clean build -x test --no-daemon
+#              command:
+#                - /bin/sh
+#                - -c
+#              env:
+#                - name: _JAVA_OPTIONS
+#                  value: -Xms10m -Xmx256m
+#              image: gradle:6.3.0-jdk11
 
 
             - name: prepare2
@@ -289,13 +289,13 @@ spec:
                 - name: empty-dir
                   mountPath: /cache
 
-            - name: build-container-build
-              image: gcr.io/kaniko-project/executor:debug-v0.24.0
-              args:
-                - cat /kaniko/.config/gcloud/docker_credential_gcr_config.json && cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
-              command:
-                - /busybox/sh
-                - -c
+#            - name: build-container-build
+#              image: gcr.io/kaniko-project/executor:debug-v0.24.0
+#              args:
+#                - cat /kaniko/.config/gcloud/docker_credential_gcr_config.json && cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+#              command:
+#                - /busybox/sh
+#                - -c
 
             - name: build-container-buildpacks
               image: paketobuildpacks/builder:base
@@ -318,6 +318,8 @@ spec:
 
                 curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" | tar xz --to-stdout ./docker-credential-gcr > /usr/local/bin/docker-credential-gcr && chmod +x /usr/local/bin/docker-credential-gcr
 
+                docker-credential-gcr --help
+
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
                 /cnb/lifecycle/creator -app=/workspace/source \
                   -gid=$(params.GROUP_ID) \
@@ -326,8 +328,8 @@ spec:
                   -layers=/layers \
                   -platform=/platform \
                   $OUTPUT_IMAGE
-              securityContext:
-                runAsUser: 0
+#              securityContext:
+#                runAsUser: 0
               volumeMounts:
                 - name: layers-dir
                   mountPath: /layers
