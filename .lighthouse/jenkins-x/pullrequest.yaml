@@ -295,7 +295,7 @@ spec:
                   -platform=/platform \
                   $OUTPUT_IMAGE
               securityContext:
-                privileged: true
+                runAsUser: 0
               volumeMounts:
                 - name: layers-dir
                   mountPath: /layers
