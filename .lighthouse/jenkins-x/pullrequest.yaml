@@ -292,7 +292,7 @@ spec:
             - name: build-container-build
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               args:
-                - ls -la /kaniko/.docker/ && printenv && cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+                - cat /kaniko/.config/gcloud/docker_credential_gcr_config.json && printenv && cat ~/.docker/config.json && source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
               command:
                 - /busybox/sh
                 - -c
