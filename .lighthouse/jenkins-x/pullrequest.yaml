@@ -313,7 +313,11 @@ spec:
                 docker-credential-gcr --help
 
                 rm ~/.docker/config.json
-                echo "{"credHelpers":{"gcr.io":"gcr","us.gcr.io":"gcr","eu.gcr.io":"gcr","asia.gcr.io":"gcr","staging-k8s.gcr.io":"gcr"},"auths":{"ghcr.io":{"auth":""}}}" > ~/.docker/config.json
+
+                cat << EOF > ~/.docker/config.json
+                {"credHelpers":{"gcr.io":"gcr","us.gcr.io":"gcr","eu.gcr.io":"gcr","asia.gcr.io":"gcr","staging-k8s.gcr.io":"gcr"},"auths":{"ghcr.io":{"auth":""}}}
+                EOF
+
                 cat ~/.docker/config.json
 
                 echo "Building next image: $DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID"
