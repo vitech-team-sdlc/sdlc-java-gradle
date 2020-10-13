@@ -342,5 +342,5 @@ spec:
     schedulerName: ""
     securityContext:
       runAsUser: 1000
-  serviceAccountName: tekton-build-bot
+  serviceAccountName: default
   timeout: 1h
