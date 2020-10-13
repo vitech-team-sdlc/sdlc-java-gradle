@@ -270,7 +270,8 @@ spec:
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
-                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source"
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source" &&
+                  ls -al /tekton/home
               securityContext:
                 privileged: true
               volumeMounts:
@@ -283,6 +284,18 @@ spec:
               image: paketobuildpacks/builder:base
               script: |
                 #!/usr/bin/env bash
+                ls -al /tekton/home
+                echo "======"
+                ls -la /tekton/home
+                echo "--1--"
+                ls -la ~/.docker/
+                echo "--2--"
+                cat ~/.docker/config.json
+                echo "--3--"
+                ls -la /tekton/home/test
+                echo "--4--"
+                cat /tekton/home/test/.dockerconfigjson
+
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$BUILD_ID
 
