@@ -295,6 +295,8 @@ spec:
                   -layers=/layers \
                   -platform=/platform \
                   $OUTPUT_IMAGE
+              securityContext:
+                privileged: true
               volumeMounts:
                 - name: layers-dir
                   mountPath: /layers
@@ -340,7 +342,7 @@ spec:
                 secretName: tekton-container-registry-auth
   podTemplate:
     ImagePullSecrets: null
-    hostNetwork: false
+    hostNetwork: true
     schedulerName: ""
   serviceAccountName: tekton-bot
   timeout: 1h
