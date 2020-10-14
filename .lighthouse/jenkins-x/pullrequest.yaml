@@ -269,6 +269,8 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
                 cat /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson
+                echo "========================="
+                cat ~/.docker/config.json
 
                 export VERSION=2.0.0
                 export OS=linux
