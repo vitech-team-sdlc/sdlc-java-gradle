@@ -265,9 +265,6 @@ spec:
               command:
                 - /busybox/sh
                 - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               name: build-container-build
 
@@ -307,9 +304,6 @@ spec:
               command:
                 - /bin/bash
                 - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
               image: gcr.io/jenkinsxio/builder-go:2.1.142-761
               name: promote-changelog
 
@@ -318,9 +312,6 @@ spec:
               command:
                 - /bin/sh
                 - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: promote-helm-release
 
@@ -329,9 +320,6 @@ spec:
               command:
                 - /bin/bash
                 - -c
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: promote-jx-promote
 
