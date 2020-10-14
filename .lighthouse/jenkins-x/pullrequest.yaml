@@ -246,15 +246,15 @@ spec:
               image: alpine
               imagePullPolicy: Always
               command: [ "/bin/sh" ]
-              args:
-                - "-c"
-                - |-
+              script: |
+                  export SOURCE_DIR=/workspace/source-build
+                  cp -r /workspace/source $SOURCE_DIR
+
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
                   chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source" &&
-                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source-build"
-                  ls -al /tekton/home
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "$SOURCE_DIR"
               securityContext:
                 privileged: true
               volumeMounts:
@@ -270,9 +270,6 @@ spec:
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
                 export SOURCE_DIR=/workspace/source-build
-
-                cp -r /workspace/source $SOURCE_DIR
-                ls -la $SOURCE_DIR
 
                 echo "Building next image: $OUTPUT_IMAGE"
                 /cnb/lifecycle/creator -app=$SOURCE_DIR  \
