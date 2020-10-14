@@ -277,8 +277,6 @@ spec:
                   -layers=/layers \
                   -platform=/platform \
                   $OUTPUT_IMAGE
-
-                ls -la /workspace/source
               securityContext:
                 runAsUser: 0
               volumeMounts:
