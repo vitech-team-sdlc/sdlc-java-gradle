@@ -259,7 +259,7 @@ spec:
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
-                cat ~/.docker/config.json
+                cat /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson
 
                 export VERSION=2.0.0
                 export OS=linux
