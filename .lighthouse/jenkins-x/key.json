@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sdlc-286111",
+  "private_key_id": "88c14f7f18a347f6c8e06c25e4432c0a0c55a620",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+9ykY2dIW7XpC\nb24jJc4MozRzySLAMcP/l1bau4oolJODsMqRRAcn1jYpeNPZqU/fwaBm+FzSOJPh\n/P7kuqmXkdy6/1HDI/SA5Ejw3enGpLgDn/s0zjPDXRw88szrZbKaq+VUB7zNy3NQ\nv7673qk336dVLQaMaE1jlREe7c0uSM8PWgsOP28sAfrLVygHbm337mVnnQJYIkph\n7/hLqIxAgblbM2vD2gn7/8nOJPDAdy3Y7vR/v7FMmi0JRElHUa49kbBHKxTGDjQu\nRcYcCVJUExKjJK1qcWIqpbquNH0MdiTLdRK1FxGMJFp+ow/NSkq2lyNpGKclzYEL\nDtoR6cjpAgMBAAECggEAVtZapFfMnqtvmI1GRopW581BOVOhz0byCyRdFQsJ2Mkz\nSUOX4bXPETDqITK2FzjUPvo0AA75Wojqym161TUCkI9+EbSvj+6mLQRiHNG0kCVw\nHgneOBV6WWDaSebZA0QUExyOpIb+NpDJB9OhnpmyVluIIoXef/OgGWP8TJWzY1Nk\nTU2uMHSkZA5DObeJBYFbwC1Wx1brYKw0h+im9vCnfggWMMMaGMqckDQvYXPQoa5F\n9+SoWUwMF9M+EJNeWuMTYwe/Bh0f5oYcKWp9iJlpB0FanmACFUlTRXBEoWXlSdE1\n4/wwOLXZIMwXBarEMOlULAXbiLkf1KFs+v7EMKcCXwKBgQDkqzzEfa5H9bSTvT5u\nVg6t6ick+D7ger8phVgFYh4M9m306p2dhKs5IKicCus5SSIfz6Okh2rmmQIf7mcT\nfAufSokxyG/LfD1WPkZKH51xJpWm6pMlED2PcOs70ol3icmQ47XTuK5hBvAB9Ffb\nftSI7e2UayXIuTaAuaEDg6i8HwKBgQDVykgegwn3d1vTzFhdFPX+kYianPVVqakp\ni53hqHpfwe5P8gp1BG7SjPdKTWEnRp5CTUEWhygW6Qw2dad5k67WxeQD905mxL7V\npuykaAOHhmLmU5cFqLEN8aIMHQn+LDA0AvFfSS/y050axB20EiTYbcYWBkVuzSHx\nKDhKKJrZ9wKBgFo6x2uxPAfhCDQTxIK9KmWts2x/GDBzvuKfXzAgm0L6KkEuIqt5\nIicUn/OSy2Z7WR+8SxIs7R242oHHDJ0/oUZlnuUp9hMRHxLc19d/yhxP4VVP0mgZ\nlHD5WZjtZpjoocSuVZ0JjqVym1nqFJDj5vFxEQIzlWEy1DLPDJ3aYcZ5AoGAPJc9\n5VfiJT6wydAqYwcjyOhaPOerKIITLXEiZ+gl9qmx7vp8ODnvZsEI/Qf9NvJuu//F\nKKtZk1StX2ns8yoF7VzciLs4fyvXohnTC61nAqv1r62VKcdrlrYa5S/9uwmvB66l\n1gmaC0oqRoG6oWRbCPPjpi5U01hT/FMX0Py9FnUCgYEAgrHrSnZ8/T92QF/E1U+2\nwyaOTf5nWda6MqSqYtpWTmdLJtzHvmec9XblQRTCBVMXvnOzK7s9n358/632N4qU\nbLsewl5aRw2Ccde2O3q4AbBpYg1ooxPX8qBqwkBlk3cLpm5fwOcAZo1uWW2jjy0/\nrTMRKqQYxsdqAUWMT23TYFw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "mood-feed-tekton@sdlc-286111.iam.gserviceaccount.com",
+  "client_id": "114167862918521973925",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/mood-feed-tekton%40sdlc-286111.iam.gserviceaccount.com"
+}
