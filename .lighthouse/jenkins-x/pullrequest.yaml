@@ -241,16 +241,25 @@ spec:
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: jx-variables
 
-#            - name: build-gradle-build
-#              args:
-#                - gradle clean build -x test --no-daemon
-#              command:
-#                - /bin/sh
-#                - -c
-#              env:
-#                - name: _JAVA_OPTIONS
-#                  value: -Xms10m -Xmx256m
-#              image: gradle:6.3.0-jdk11
+            - name: prepare
+              image: alpine
+              imagePullPolicy: Always
+              command: [ "/bin/sh" ]
+              args:
+                - "-c"
+                - |-
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
+                  chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/workspace/source" &&
+                  ls -al /tekton/home
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - name: layers-dir
+                  mountPath: /layers
+                - name: empty-dir
+                  mountPath: /cache
 
             - name: build-container-buildpacks
               image: paketobuildpacks/builder:base
