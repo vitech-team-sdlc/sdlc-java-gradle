@@ -244,8 +244,6 @@ spec:
 
             - name: prepare
               image: alpine
-              imagePullPolicy: Always
-              command: [ "/bin/sh" ]
               script: |
                   export SOURCE_DIR=/workspace/source-build
                   cp -r /workspace/source $SOURCE_DIR
