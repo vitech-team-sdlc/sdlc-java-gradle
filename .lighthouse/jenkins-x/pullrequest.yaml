@@ -268,21 +268,14 @@ spec:
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
-                cat /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson
-                echo "========================="
-                cat ~/.docker/config.json
+                rm ~/.docker/config.json
+                cp /tekton/creds-secrets/tekton-container-registry-auth/.dockerconfigjson ~/.docker/config.json
 
                 export VERSION=2.0.0
                 export OS=linux
                 export ARCH=amd64
 
                 curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${VERSION}/docker-credential-gcr_${OS}_${ARCH}-${VERSION}.tar.gz" | tar xz --to-stdout ./docker-credential-gcr > /usr/local/bin/docker-credential-gcr && chmod +x /usr/local/bin/docker-credential-gcr
-
-                rm ~/.docker/config.json
-
-                cat << EOF > ~/.docker/config.json
-                {"credHelpers":{"gcr.io":"gcr","us.gcr.io":"gcr","eu.gcr.io":"gcr","asia.gcr.io":"gcr","staging-k8s.gcr.io":"gcr"},"auths":{"ghcr.io":{"auth":""}}}
-                EOF
 
                 echo "Building next image: $OUTPUT_IMAGE"
                 /cnb/lifecycle/creator -app=/workspace/source \
@@ -292,6 +285,8 @@ spec:
                   -layers=/layers \
                   -platform=/platform \
                   $OUTPUT_IMAGE
+
+                ls -la /workspace/sourc
               securityContext:
                 runAsUser: 0
               volumeMounts:
