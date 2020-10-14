@@ -280,7 +280,7 @@ spec:
                   -platform=/platform \
                   $OUTPUT_IMAGE
 
-                ls -la /workspace/sourc
+                ls -la /workspace/source
               securityContext:
                 runAsUser: 0
               volumeMounts:
