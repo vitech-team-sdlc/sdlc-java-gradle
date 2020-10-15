@@ -207,7 +207,7 @@ spec:
               script: |
                 cat commit.check
             - name: conventionalcommits-comment
-              image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
+              image: gcr.io/jenkinsxio/jx-cli:latest
               script: |
                 export CONV_COMMIT_FILE=commit.check
                 if [ -f "check.failed" ]; then

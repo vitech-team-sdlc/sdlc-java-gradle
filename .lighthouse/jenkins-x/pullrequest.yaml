@@ -316,7 +316,15 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
                 echo -e "About to run snyk ${YELLOW}test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
-                snyk container test --project-name=$PROJECT_NAME --severity-threshold=high $OUTPUT_IMAGE
+                if snyk container test --project-name=$PROJECT_NAME --severity-threshold=$SEVERITY_THRESHOLD $OUTPUT_IMAGE; then
+                  jx step pr comment -c "$(echo -e ":x: [Snyk Container Test Failed](https://www.conventionalcommits.org) :cursing_face:)"
+                  exit 1;
+                else
+                  echo "No issues found for ${GREEN}$OUTPUT_IMAGE with severity level ${YELLOW}$SEVERITY_THRESHOLD"
+                end
+              env:
+                - name: SEVERITY_THRESHOLD
+                  value: high
               volumeMounts:
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
