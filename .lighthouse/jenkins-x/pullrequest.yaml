@@ -294,6 +294,7 @@ spec:
               script: |
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+                cat ~/.docker/config.json
                 /usr/local/bin/docker-entrypoint.sh && snyk container test $OUTPUT_IMAGE
 
             - args:
