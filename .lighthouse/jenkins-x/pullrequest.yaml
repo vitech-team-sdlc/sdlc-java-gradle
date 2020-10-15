@@ -296,10 +296,10 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
                 export PROJECT_NAME=$REPO_OWNER:$REPO_NAME
                 export NOCOLOR='\033[0m'
-                export RED='\033[0;31m'
+                export YELLOW='\033[1;33m'
                 export GREEN='\033[0;32m'
 
-                echo -e "About to run snyk ${RED}monitor ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
+                echo -e "About to run snyk ${YELLOW}monitor ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
                 snyk container monitor --project-name=$PROJECT_NAME $OUTPUT_IMAGE
               volumeMounts:
                 - name: docker-socket
@@ -312,10 +312,10 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
                 export PROJECT_NAME=$REPO_OWNER:$REPO_NAME
                 export NOCOLOR='\033[0m'
-                export RED='\033[0;31m'
+                export YELLOW='\033[1;33m'
                 export GREEN='\033[0;32m'
 
-                echo -e "About to run snyk ${RED}test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
+                echo -e "About to run snyk ${YELLOW}test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
                 snyk container test --project-name=$PROJECT_NAME --severity-threshold=high $OUTPUT_IMAGE
               volumeMounts:
                 - name: docker-socket

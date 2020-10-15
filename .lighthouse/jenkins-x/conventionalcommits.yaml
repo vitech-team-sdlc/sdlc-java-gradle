@@ -196,7 +196,8 @@ spec:
             - name: conventionalcommits-check
               image: aevea/commitsar:latest
               script: |
-                if commitsar > commit.check; then
+                export CONV_COMMIT_FILE = commit.check;
+                if commitsar > $CONV_COMMIT_FILE; then
                   echo "conventional commits check passed"
                 else
                   echo "commit check failed" >> check.failed
@@ -208,6 +209,7 @@ spec:
             - name: conventionalcommits-comment
               image: gcr.io/jenkinsxio/builder-gradle5-java11:latest
               script: |
+                export CONV_COMMIT_FILE = commit.check;
                 if [ -f "check.failed" ]; then
                     jx step pr comment -c "$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
                     exit 1;
