@@ -238,9 +238,6 @@ spec:
                 - $(params.PULL_BASE_REF)
               command:
                 - jx
-              env:
-                - name: _JAVA_OPTIONS
-                  value: -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Dsun.zip.disableMemoryMapping=true -XX:+UseParallelGC -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Xms10m -Xmx192m
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
               name: git-merge
 
@@ -304,10 +301,8 @@ spec:
                 export SNYK_ERR_FILE=snyk.$PULL_NUMBER.failed
                 export SNYK_MONITOR_FILE=snyk.$PULL_NUMBER.monitor.url
 
-                snyk monitor \
-                  --project-name=$PROJECT_NAME:$PULL_NUMBER \
-                  --remote-repo-url=$REPO_URL \
-                  --severity-threshold=$SEVERITY_THRESHOLD | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
+                snyk monitor --project-name=$PROJECT_NAME:$PULL_NUMBER --remote-repo-url=$REPO_URL --severity-threshold=$SEVERITY_THRESHOLD | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
+
                 if snyk test --severity-threshold=$SEVERITY_THRESHOLD; then
                     echo "${GREEN}No issues found{NOCOLOR}"
                   else
