@@ -336,7 +336,7 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
                 export SNYK_MONITOR_URL=$(cat snyk.monitor.url)
                 if [ -f snyk.failed ]; then
-                  jx gitops pr comment --comment="$(echo -e ":x: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) :cursing_face: \nImage: [$OUTPUT_IMAGE"]())" --pr="$PULL_NUMBER"
+                  jx gitops pr comment --comment="$(echo -e ":x: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) :cursing_face: \nImage: [$OUTPUT_IMAGE]()")" --pr="$PULL_NUMBER"
                   exit 1;
                 fi
 
