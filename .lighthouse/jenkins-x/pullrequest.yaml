@@ -304,7 +304,7 @@ spec:
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
                 echo -e "About to run ${YELLOW}snyk monitor ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
-                snyk container monitor --remote-repo-url=$PROJECT_NAME --project-name=$PULL_NUMBER $OUTPUT_IMAGE
+                snyk container monitor --project-name=$PROJECT_NAME:$PULL_NUMBER $OUTPUT_IMAGE
               volumeMounts:
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
