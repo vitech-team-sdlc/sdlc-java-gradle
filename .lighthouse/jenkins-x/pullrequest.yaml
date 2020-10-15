@@ -318,9 +318,8 @@ spec:
                 echo -e "About to run ${YELLOW}snyk test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
                 if snyk container test --project-name=$PROJECT_NAME --severity-threshold=$SEVERITY_THRESHOLD $OUTPUT_IMAGE; then
                   echo "No issues found for ${GREEN}$OUTPUT_IMAGE with severity level ${YELLOW}$SEVERITY_THRESHOLD"
-                  echo "snyk fail" > snyk.failed
                 else
-                  exit 1;
+                  echo "snyk fail" > snyk.failed
                 fi
               env:
                 - name: SEVERITY_THRESHOLD
