@@ -329,8 +329,9 @@ spec:
               volumeMounts:
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
-            - name: snyk-container-test
-              image: "snyk/snyk:docker"
+
+            - name: snyk-container-verify
+              image: gcr.io/jenkinsxio/jx-cli:latest
               script: |
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
