@@ -30,6 +30,8 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
+        - name: VERSION
+          value: {{ .Chart.Version }}
 {{ toYaml .Values.envValueFrom | indent 8 }}
 {{- range $pkey, $pval := .Values.env }}
         - name: {{ $pkey }}
