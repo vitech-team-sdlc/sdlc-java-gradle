@@ -320,7 +320,6 @@ spec:
                   echo "No issues found for ${GREEN}$OUTPUT_IMAGE with severity level ${YELLOW}$SEVERITY_THRESHOLD"
                   echo "snyk fail" > snyk.failed
                 else
-                  jx step pr comment -c "$(echo -e ":x: [ Snyk Container Test Failed ](https://www.conventionalcommits.org) :cursing_face:")"
                   exit 1;
                 fi
               env:
