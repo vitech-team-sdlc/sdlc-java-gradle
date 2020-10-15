@@ -321,7 +321,7 @@ spec:
                 else
                   jx step pr comment -c "$(echo -e ":x: [ Snyk Container Test Failed ](https://www.conventionalcommits.org) :cursing_face:")"
                   exit 1;
-                end
+                fi
               env:
                 - name: SEVERITY_THRESHOLD
                   value: medium
