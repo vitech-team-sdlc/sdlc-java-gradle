@@ -211,7 +211,7 @@ spec:
               script: |
                 export CONV_COMMIT_FILE=commit.check
                 if [ -f "check.failed" ]; then
-                    jx step pr comment -c "$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
+                    jx gitops pr comment --pr="$PULL_NUMBER" --comment="$(echo -e "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face: \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $CONV_COMMIT_FILE | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')")"
                     exit 1;
                 else
                    echo 'COMMIT MESSAGE CHECK PASSED!'

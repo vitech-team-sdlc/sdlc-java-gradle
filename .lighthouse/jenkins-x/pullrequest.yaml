@@ -297,29 +297,54 @@ spec:
                 - name: empty-dir
                   mountPath: /platform
 
-            - name: snyk-container-monitor
-              image: "snyk/snyk:docker"
+            - name: snyk-dependency-test
+              image: "snyk/snyk:linux"
               script: |
-                source /workspace/source/.jx/variables.sh
-                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+                echo -e "About to run ${YELLOW}snyk dependency test ${NOCOLOR}"
+                export SNYK_ERR_FILE=snyk.$PULL_NUMBER.failed
+                export SNYK_MONITOR_FILE=snyk.$PULL_NUMBER.monitor.url
 
-                echo -e "About to run ${YELLOW}snyk monitor ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
-                snyk container monitor --project-name=$PROJECT_NAME:$PULL_NUMBER $OUTPUT_IMAGE | grep -Eo '(http|https).+' > snyk.monitor.url
-              volumeMounts:
-                - name: docker-socket
-                  mountPath: /var/run/docker.sock
+                snyk monitor \
+                  --project-name=$PROJECT_NAME:$PULL_NUMBER \
+                  --remote-repo-url=$REPO_URL \
+                  --severity-threshold=$SEVERITY_THRESHOLD | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
+                if snyk test --severity-threshold=$SEVERITY_THRESHOLD; then
+                    echo "${GREEN}No issues found{NOCOLOR}"
+                  else
+                    echo -e ":x: :cursing_face: [ Snyk Dependency Test Failed ]($SNYK_MONITOR_URL)" > $SNYK_ERR_FILE
+                fi
+              env:
+                - name: SEVERITY_THRESHOLD
+                  value: medium
+
+            - name: snyk-dependency-test-comment
+              image: gcr.io/jenkinsxio/jx-cli:latest
+              script: |
+                #!/usr/bin/env bash
+                export SNYK_ERR_FILE=snyk.$PULL_NUMBER.failed
+                export SNYK_MONITOR_FILE=snyk.$PULL_NUMBER.monitor.url
+                export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
+
+                if [ -f $SNYK_ERR_FILE ]; then
+                  jx gitops pr comment --comment="$(cat $SNYK_ERR_FILE)" --pr="$PULL_NUMBER"
+                  exit 1;
+                fi
 
             - name: snyk-container-test
               image: "snyk/snyk:docker"
               script: |
+                echo -e "About to run ${YELLOW}snyk test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+                export SNYK_ERR_FILE=snyk.container.$PULL_NUMBER.failed
+                export SNYK_MONITOR_FILE=snyk.container.$PULL_NUMBER.monitor.url
 
-                echo -e "About to run ${YELLOW}snyk test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
-                if snyk container test --project-name="$PROJECT_NAME:$PULL_NUMBER" --severity-threshold=$SEVERITY_THRESHOLD $OUTPUT_IMAGE; then
-                  echo "No issues found for ${GREEN}$OUTPUT_IMAGE with severity level ${YELLOW}$SEVERITY_THRESHOLD"
+                snyk container monitor --project-name=$PROJECT_NAME:$PULL_NUMBER $OUTPUT_IMAGE | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
+
+                if snyk container test --severity-threshold=$SEVERITY_THRESHOLD $OUTPUT_IMAGE; then
+                  echo "${GREEN}No issues found for ${YELLOW}$OUTPUT_IMAGE {NOCOLOR}with severity level ${YELLOW}$SEVERITY_THRESHOLD{NOCOLOR}"
                 else
-                  echo "snyk fail" > snyk.failed
+                  echo -e ":x: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) :cursing_face: \nImage: [$OUTPUT_IMAGE]()" > $SNYK_ERR_FILE
                 fi
               env:
                 - name: SEVERITY_THRESHOLD
@@ -328,15 +353,15 @@ spec:
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
 
-            - name: snyk-container-verify
+            - name: snyk-container-test-comment
               image: gcr.io/jenkinsxio/jx-cli:latest
               script: |
                 #!/usr/bin/env bash
-                source /workspace/source/.jx/variables.sh
-                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
-                export SNYK_MONITOR_URL=$(cat snyk.monitor.url)
-                if [ -f snyk.failed ]; then
-                  jx gitops pr comment --comment="$(echo -e ":x: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) :cursing_face: \nImage: [$OUTPUT_IMAGE]()")" --pr="$PULL_NUMBER"
+                export SNYK_ERR_FILE=snyk.container.$PULL_NUMBER.failed
+                export SNYK_MONITOR_FILE=snyk.container.$PULL_NUMBER.monitor.url
+                export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
+                if [ -f $SNYK_ERR_FILE ]; then
+                  jx gitops pr comment --comment="$(cat $SNYK_MONITOR_FILE)" --pr="$PULL_NUMBER"
                   exit 1;
                 fi
 
