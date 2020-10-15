@@ -294,8 +294,20 @@ spec:
               script: |
                 source /workspace/source/.jx/variables.sh
                 export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
-                cat ~/.docker/config.json
-                echo "About to run snyk test for image: $OUTPUT_IMAGE"
+
+                echo -e "About to run snyk  \e[93test \e[39mfor image: \e[94m$OUTPUT_IMAGE"
+                snyk container monitor $OUTPUT_IMAGE
+              volumeMounts:
+                - name: docker-socket
+                  mountPath: /var/run/docker.sock
+
+            - name: snyk-container-test
+              image: "snyk/snyk:docker"
+              script: |
+                source /workspace/source/.jx/variables.sh
+                export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
+
+                echo -e "About to run snyk \e[93mmonitor \e[39mfor image: \e[94m$OUTPUT_IMAGE"
                 snyk container test $OUTPUT_IMAGE
               volumeMounts:
                 - name: docker-socket
