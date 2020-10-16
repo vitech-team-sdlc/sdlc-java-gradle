@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: git-clone-checking-out-a-branch
+  name: jx-pullrequest-1
 spec:
   pipelineRef:
     name: jx-pullrequest
