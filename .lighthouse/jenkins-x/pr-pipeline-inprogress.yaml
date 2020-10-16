@@ -183,4 +183,6 @@ spec:
 
               jx gitops git setup --namespace jx-git-operator
 
+              ls -la .
+
 

@@ -1,7 +1,10 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: jx-pullrequest-1
+  name: jx-pullrequest
+  labels:
+    jenkins.io/pipelineType: build
+    owner: vitech-team
 spec:
   pipelineRef:
     name: jx-pullrequest
