@@ -95,8 +95,6 @@ spec:
           - name: source
         stepTemplate:
           env:
-            - name: BUILD_ID
-              value: 1
             - name: JOB_NAME
               value: $(params.JOB_NAME)
             - name: JOB_SPEC
