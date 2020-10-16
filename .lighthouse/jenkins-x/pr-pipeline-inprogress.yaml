@@ -177,6 +177,7 @@ spec:
         steps:
           - name: git-configure
             image: gcr.io/jenkinsxio/jx-cli:latest
+            workingDir: $(workspaces.source.path)
             script: |
               #!/usr/bin/env bash
               echo "Dir: $(pwd)"
