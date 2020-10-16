@@ -56,7 +56,18 @@ spec:
         This workspace will receive the cloned git repo and be passed
         to the next Task for the repo's README.md file to be read.
   tasks:
+    - name: fetch-repo
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-data
+      params:
+        - name: url
+          value: $(params.REPO_URL)
     - name: jx-setup
+      runAfter:
+        - fetch-repo
       workspaces:
         - name: source
           workspace: shared-data
@@ -171,14 +182,14 @@ spec:
               git config --global --add user.name ${GIT_AUTHOR_NAME:-jenkins-x-bot}
               git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
               git config --global credential.helper store
-              git clone $(params.REPO_URL) $(workspaces.source.path);
-              echo cloned url: $(params.REPO_URL) to dir: $(workspaces.source.path)
-              cd $(workspaces.source.path)
+
+              ls -la $(workspaces.source.path)
+
               git checkout $(params.PULL_PULL_SHA)
               echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(workspaces.source.path)
 
               jx gitops git setup --namespace jx-git-operator
 
-              ls -la $(workspaces.source.path)
+
 
 
