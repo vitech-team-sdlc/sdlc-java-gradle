@@ -301,17 +301,13 @@ spec:
                 export SNYK_ERR_FILE=snyk.$PULL_NUMBER.failed
                 export SNYK_MONITOR_FILE=snyk.$PULL_NUMBER.monitor.url
 
-                snyk monitor \
-                  --project-name=$PROJECT_NAME:$PULL_NUMBER \
-                  --remote-repo-url=$REPO_URL \
-                  --severity-threshold=$SEVERITY_THRESHOLD | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
-
-
+                snyk monitor --project-name="$PROJECT_NAME:$PULL_NUMBER" --remote-repo-url="$REPO_URL" --severity-threshold=$SEVERITY_THRESHOLD | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
+                echo "URL: $(cat $SNYK_MONITOR_FILE)"
                 if snyk test --severity-threshold=$SEVERITY_THRESHOLD; then
                     echo "${GREEN}No issues found{NOCOLOR}"
                   else
                     export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
-                    echo -e ":x: :cursing_face: [ Snyk Dependency Test Failed ]($SNYK_MONITOR_URL)" > $SNYK_ERR_FILE
+                    echo ":x: :cursing_face: [ Snyk Dependency Test Failed ]($SNYK_MONITOR_URL)" > $SNYK_ERR_FILE
                 fi
               env:
                 - name: SEVERITY_THRESHOLD
@@ -323,7 +319,6 @@ spec:
                 #!/usr/bin/env bash
                 export SNYK_ERR_FILE=snyk.$PULL_NUMBER.failed
                 export SNYK_MONITOR_FILE=snyk.$PULL_NUMBER.monitor.url
-                export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
 
                 if [ -f $SNYK_ERR_FILE ]; then
                   jx gitops pr comment --comment="$(cat $SNYK_ERR_FILE)" --pr="$PULL_NUMBER"
