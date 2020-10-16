@@ -126,3 +126,4 @@ spec:
             script: |
               #!/usr/bin/env bash
               echo 1
+
