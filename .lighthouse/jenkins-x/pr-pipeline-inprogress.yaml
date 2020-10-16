@@ -97,10 +97,6 @@ spec:
             description: git revision to checkout (branch, tag, sha, ref…)
             name: PULL_PULL_SHA
             type: string
-          - default: source
-            description: subdirectory inside of /workspace to clone the git repo
-            name: subdirectory
-            type: string
           - description: the unique build number
             name: BUILD_ID
             type: string
@@ -175,11 +171,11 @@ spec:
               git config --global --add user.name ${GIT_AUTHOR_NAME:-jenkins-x-bot}
               git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
               git config --global credential.helper store
-              git clone $(params.REPO_URL) $(workspaces.source.path)/$(params.subdirectory);
-              echo cloned url: $(params.REPO_URL) to dir: $(params.subdirectory)
-              cd $(params.subdirectory)
+              git clone $(params.REPO_URL) $(workspaces.source.path);
+              echo cloned url: $(params.REPO_URL) to dir: $(workspaces.source.path)
+              cd $(workspaces.source.path)
               git checkout $(params.PULL_PULL_SHA)
-              echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(params.subdirectory)
+              echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(workspaces.source.path)
 
               jx gitops git setup --namespace jx-git-operator
 
