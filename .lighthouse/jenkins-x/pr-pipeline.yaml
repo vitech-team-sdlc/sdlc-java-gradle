@@ -1,0 +1,196 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: jx-pullrequest
+spec:
+  description: |
+    desc
+  params:
+    - description: the unique build number
+      name: BUILD_ID
+      type: string
+    - description: the name of the job which is the trigger context name
+      name: JOB_NAME
+      type: string
+    - description: the specification of the job
+      name: JOB_SPEC
+      type: string
+    - description: 'the kind of job: postsubmit or presubmit'
+      name: JOB_TYPE
+      type: string
+    - default: master
+      description: the base git reference of the pull request
+      name: PULL_BASE_REF
+      type: string
+    - description: the git sha of the base of the pull request
+      name: PULL_BASE_SHA
+      type: string
+    - default: ""
+      description: git pull request number
+      name: PULL_NUMBER
+      type: string
+    - default: ""
+      description: git pull request ref in the form 'refs/pull/$PULL_NUMBER/head'
+      name: PULL_PULL_REF
+      type: string
+    - default: master
+      description: git revision to checkout (branch, tag, sha, ref…)
+      name: PULL_PULL_SHA
+      type: string
+    - description: git pull reference strings of base and latest in the form 'master:$PULL_BASE_SHA,$PULL_NUMBER:$PULL_PULL_SHA:refs/pull/$PULL_NUMBER/head'
+      name: PULL_REFS
+      type: string
+    - description: git repository name
+      name: REPO_NAME
+      type: string
+    - description: git repository owner (user or organisation)
+      name: REPO_OWNER
+      type: string
+    - description: git url to clone
+      name: REPO_URL
+      type: string
+  workspaces:
+    - name: shared-data
+      description: |
+        This workspace will receive the cloned git repo and be passed
+        to the next Task for the repo's README.md file to be read.
+  tasks:
+    - name: fetch-repo
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-data
+      params:
+        - name: url
+          value: $(params.REPO_URL)
+        - name: revision
+          value: $(params.PULL_BASE_REF)
+
+    - name: jx-setup
+      runAfter: [ "fetch-repo" ]
+      workspaces:
+        - name: source
+          workspace: shared-data
+      taskSpec:
+        workingDir: $(workspaces.source.path)
+        workspaces:
+          - name: source
+        steps:
+          - image: gcr.io/jenkinsxio/jx-cli:latest
+            script: |
+              #!/usr/bin/env zsh
+              echo "step: git-setup"
+              git config --global --add user.name ${GIT_AUTHOR_NAME:-jenkins-x-bot}
+              git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
+              git config --global credential.helper store
+              jx gitops git setup --namespace jx-git-operator
+          - name: git-merge
+            image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
+            command:
+              - jx
+            args:
+              - step
+              - git
+              - merge
+              - --verbose
+              - --baseSHA
+              - $(params.PULL_BASE_SHA)
+              - --sha
+              - $(params.PULL_PULL_SHA)
+              - --baseBranch
+              - $(params.PULL_BASE_REF)
+          - name: jx-variables
+            image: gcr.io/jenkinsxio/jx-cli:latest
+            command:
+              - jx
+            args:
+              - gitops
+              - variables
+            volumeMounts:
+              - mountPath: /etc/podinfo
+                name: podinfo
+                readOnly: true
+
+          - name: conventionalcommits
+            taskRef:
+              name: conventionalcommits
+            runAfter:
+              - "jx-setup"
+            workspaces:
+              - name: source
+                workspace: shared-data
+
+          - name: build
+            taskRef:
+              name: gradle-build
+            runAfter:
+              - "jx-setup"
+            workspaces:
+              - name: source
+                workspace: shared-data
+
+          - name: container-build
+            taskRef:
+              name: buildpacks
+            runAfter:
+              - "jx-setup"
+            workspaces:
+              - name: source
+                workspace: shared-data
+          - name: snyk-container-check
+            taskRef:
+              name: gradle-build
+            runAfter:
+              - "container-build"
+            workspaces:
+              - name: source
+                workspace: shared-data
+            volumeMounts:
+              - name: docker-socket
+                mountPath: /var/run/docker.sock
+
+          - name: sonar-check
+            taskRef:
+              name: gradle-build
+            runAfter:
+              - "jx-setup"
+            workspaces:
+              - name: source
+                workspace: shared-data
+
+          - name: snyk-dependency-check
+            taskRef:
+              name: gradle-build
+            runAfter:
+              - "jx-setup"
+            workspaces:
+              - name: source
+                workspace: shared-data
+
+          - name: jx-finish
+            runAfter:
+              - "container-build"
+              - "sonar-check"
+              - "snyk-container-check"
+            workspaces:
+              - name: source
+                workspace: shared-data
+            taskSpec:
+              workingDir: $(workspaces.source.path)
+              workspaces:
+                - name: source
+              steps:
+                - name: promote-jx-preview
+                  image: gcr.io/jenkinsxio/jx-cli:latest
+                  script: |
+                    #!/usr/bin/env bash
+                    source /workspace/source/.jx/variables.sh
+                    jx preview create
+              volumeMounts:
+                - mountPath: /etc/podinfo
+                  name: podinfo
+                  readOnly: true
+
+
+---

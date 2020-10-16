@@ -1,0 +1,41 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: greadle-build
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: "gradle"
+    tekton.dev/displayName: "gradle"
+spec:
+  description: >-
+    build
+  workspaces:
+    - name: source
+      description: sources dir
+  params:
+    - name: IMAGE
+      description: gradle image with jdk
+      type: string
+      default: "gradle:6.3.0-jdk11"
+    - name: JAVA_OPTIONS
+      default: "-Xms10m -Xmx192m"
+  results:
+    - name: commit
+      description: The precise commit SHA that was fetched by this Task
+    - name: url
+      description: The precise URL that was fetched by this Task
+  steps:
+    - name: build-gradle-build
+      image: $(params.IMAGE)
+      command:
+        - gradle
+      args:
+        - clean
+        - build
+        - --no-daemon
+      env:
+        - name: _JAVA_OPTIONS
+          value: ${params.JAVA_OPTIONS}
+
