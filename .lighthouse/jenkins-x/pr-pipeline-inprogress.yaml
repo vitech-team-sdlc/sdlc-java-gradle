@@ -9,6 +9,7 @@ spec:
     - description: the unique build number
       name: BUILD_ID
       type: string
+      default: ""
     - description: the name of the job which is the trigger context name
       name: JOB_NAME
       type: string
