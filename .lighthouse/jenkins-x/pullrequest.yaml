@@ -310,6 +310,7 @@ spec:
                 if snyk test --severity-threshold=$SEVERITY_THRESHOLD; then
                     echo "${GREEN}No issues found{NOCOLOR}"
                   else
+                    export SNYK_MONITOR_URL=$(cat SNYK_MONITOR_FILE)
                     echo -e ":x: :cursing_face: [ Snyk Dependency Test Failed ]($SNYK_MONITOR_URL)" > $SNYK_ERR_FILE
                 fi
               env:
@@ -343,6 +344,7 @@ spec:
                 if snyk container test --severity-threshold=$SEVERITY_THRESHOLD $OUTPUT_IMAGE; then
                   echo "${GREEN}No issues found for ${YELLOW}$OUTPUT_IMAGE {NOCOLOR}with severity level ${YELLOW}$SEVERITY_THRESHOLD{NOCOLOR}"
                 else
+                  export SNYK_MONITOR_URL=$(cat SNYK_MONITOR_FILE)
                   echo -e ":x: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) :cursing_face: \nImage: [$OUTPUT_IMAGE]()" > $SNYK_ERR_FILE
                 fi
               env:
@@ -358,7 +360,6 @@ spec:
                 #!/usr/bin/env bash
                 export SNYK_ERR_FILE=snyk.container.$PULL_NUMBER.failed
                 export SNYK_MONITOR_FILE=snyk.container.$PULL_NUMBER.monitor.url
-                export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
                 if [ -f $SNYK_ERR_FILE ]; then
                   jx gitops pr comment --comment="$(cat $SNYK_MONITOR_FILE)" --pr="$PULL_NUMBER"
                   exit 1;
