@@ -179,6 +179,6 @@ spec:
 
               jx gitops git setup --namespace jx-git-operator
 
-              ls -la .
+              ls -la $(workspaces.source.path)
 
 
