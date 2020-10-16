@@ -310,7 +310,7 @@ spec:
                 if snyk test --severity-threshold=$SEVERITY_THRESHOLD; then
                     echo "${GREEN}No issues found{NOCOLOR}"
                   else
-                    export SNYK_MONITOR_URL=$(cat SNYK_MONITOR_FILE)
+                    export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
                     echo -e ":x: :cursing_face: [ Snyk Dependency Test Failed ]($SNYK_MONITOR_URL)" > $SNYK_ERR_FILE
                 fi
               env:
@@ -344,7 +344,7 @@ spec:
                 if snyk container test --severity-threshold=$SEVERITY_THRESHOLD $OUTPUT_IMAGE; then
                   echo "${GREEN}No issues found for ${YELLOW}$OUTPUT_IMAGE {NOCOLOR}with severity level ${YELLOW}$SEVERITY_THRESHOLD{NOCOLOR}"
                 else
-                  export SNYK_MONITOR_URL=$(cat SNYK_MONITOR_FILE)
+                  export SNYK_MONITOR_URL=$(cat $SNYK_MONITOR_FILE)
                   echo -e ":x: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) :cursing_face: \nImage: [$OUTPUT_IMAGE]()" > $SNYK_ERR_FILE
                 fi
               env:
