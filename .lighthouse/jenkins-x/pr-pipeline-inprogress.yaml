@@ -168,19 +168,19 @@ spec:
             - name: REPO_URL
               value: $(params.REPO_URL)
         steps:
-          - name: git clone
+          - name: git-clone
             image: gcr.io/jenkinsxio/jx-cli:latest
             script: |
               #!/usr/bin/env bash
               git config --global --add user.name ${GIT_AUTHOR_NAME:-jenkins-x-bot}
-                git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
-                git config --global credential.helper store
-                git clone $(params.REPO_URL) $(workspaces.source.path)/$(params.subdirectory);
-                echo cloned url: $(params.REPO_URL) to dir: $(params.subdirectory)
-                cd $(params.subdirectory)
-                git checkout $(params.PULL_PULL_SHA)
-                echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(params.subdirectory)
+              git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
+              git config --global credential.helper store
+              git clone $(params.REPO_URL) $(workspaces.source.path)/$(params.subdirectory);
+              echo cloned url: $(params.REPO_URL) to dir: $(params.subdirectory)
+              cd $(params.subdirectory)
+              git checkout $(params.PULL_PULL_SHA)
+              echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(params.subdirectory)
 
-                jx gitops git setup --namespace jx-git-operator
+              jx gitops git setup --namespace jx-git-operator
 
 
