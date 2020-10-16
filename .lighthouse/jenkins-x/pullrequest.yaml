@@ -301,7 +301,7 @@ spec:
                 export SNYK_ERR_FILE=snyk.$PULL_NUMBER.failed
                 export SNYK_MONITOR_FILE=snyk.$PULL_NUMBER.monitor.url
 
-                snyk monitor --project-name=$PROJECT_NAME:$PULL_NUMBER --remote-repo-url=$PROJECT_NAME --severity-threshold=$SEVERITY_THRESHOLD | grep -Eo '(http|https).+' > $SNYK_MONITOR_FILE
+                snyk monitor --project-name=$PROJECT_NAME:$PULL_NUMBER --remote-repo-url=$PROJECT_NAME --severity-threshold=$SEVERITY_THRESHOLD
 
                 if snyk test --severity-threshold=$SEVERITY_THRESHOLD; then
                     echo "${GREEN}No issues found{NOCOLOR}"
