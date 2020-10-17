@@ -98,6 +98,8 @@ spec:
         git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
         git config --global credential.helper store
 
+        git pull
+
         git checkout $(params.PULL_PULL_SHA)
         echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(workspaces.source.path)
 
