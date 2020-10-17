@@ -38,5 +38,5 @@ spec:
         - --no-daemon
       env:
         - name: _JAVA_OPTIONS
-          value: ${params.JAVA_OPTIONS}
+          value: $(params.JAVA_OPTIONS)
 
