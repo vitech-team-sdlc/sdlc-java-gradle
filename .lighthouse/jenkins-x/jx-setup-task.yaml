@@ -94,13 +94,9 @@ spec:
         #!/usr/bin/env bash
         echo "Dir: $(pwd)"
 
-        cd $(workspaces.source.path)
-
         git config --global --add user.name ${GIT_AUTHOR_NAME:-jenkins-x-bot}
         git config --global --add user.email ${GIT_AUTHOR_EMAIL:-jenkins-x@googlegroups.com}
         git config --global credential.helper store
-
-        ls -la $(workspaces.source.path)
 
         git checkout $(params.PULL_PULL_SHA)
         echo checked out revision: $(params.PULL_PULL_SHA) to dir: $(workspaces.source.path)

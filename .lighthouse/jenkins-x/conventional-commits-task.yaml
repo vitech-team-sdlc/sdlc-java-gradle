@@ -58,7 +58,14 @@ spec:
             if [ -z "$(params.PR_NUMBER)" ]; then
               jx gitops pr comment --pr="$PULL_NUMBER" --comment="$(results.mardown_report.path)"
             fi
-            exit 1
         else
-           echo 'COMMIT MESSAGE CHECK PASSED!'
+           echo 'No PR_NUMBER parameter provider, skipping commet.'
+        fi
+
+    - name: conventional-commits-check
+      image: gcr.io/jenkinsxio/jx-cli:latest
+      workingDir: $(workspaces.source.path)
+      script: |
+        if [ "$(cat $(results.passed.path))" == "no" ]; then
+            exit 1
         fi
