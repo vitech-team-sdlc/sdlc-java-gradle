@@ -65,6 +65,7 @@ spec:
       params:
         - name: url
           value: $(params.REPO_URL)
+
     - name: jx-setup
       runAfter:
         - fetch-repo
@@ -195,6 +196,40 @@ spec:
 
               jx gitops git setup --namespace jx-git-operator
 
+          - name: git-merge
+            image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
+            command:
+              - jx
+            args:
+              - step
+              - git
+              - merge
+              - --verbose
+              - --baseSHA
+              - $(params.PULL_BASE_SHA)
+              - --sha
+              - $(params.PULL_PULL_SHA)
+              - --baseBranch
+              - $(params.PULL_BASE_REF)
+              - name: jx-variables
+                image: gcr.io/jenkinsxio/jx-cli:latest
+                command:
+                  - jx
+                args:
+                  - gitops
+                  - variables
+                volumeMounts:
+                  - mountPath: /etc/podinfo
+                    name: podinfo
+                    readOnly: true
 
+    - name: build
+      taskRef:
+        name: gradle-build
+      runAfter:
+        - "jx-setup"
+      workspaces:
+        - name: source
+          workspace: shared-data
 
 
