@@ -66,8 +66,6 @@ spec:
       params:
         - name: url
           value: $(params.REPO_URL)
-        - name: depth
-          value: ""
 
     - name: jx-setup
       taskRef:
