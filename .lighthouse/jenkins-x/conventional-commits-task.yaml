@@ -41,7 +41,7 @@ spec:
         else
           echo -n "no" > $(results.passed.path)
         fi
-        cat commit.check
+        cat $(results.report.path)
 
     - name: conventional-commits-prepare-report
       image: aevea/commitsar:latest
