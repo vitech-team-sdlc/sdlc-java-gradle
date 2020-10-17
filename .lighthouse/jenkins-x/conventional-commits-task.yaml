@@ -60,7 +60,7 @@ spec:
             echo "No PR_NUMBER parameter provider, skipping commet."
         fi
 
-    - name: conventional-commits-check
+    - name: conventional-commits-final
       image: gcr.io/jenkinsxio/jx-cli:latest
       workingDir: $(workspaces.source.path)
       script: |
