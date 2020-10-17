@@ -54,12 +54,10 @@ spec:
       image: gcr.io/jenkinsxio/jx-cli:latest
       workingDir: $(workspaces.source.path)
       script: |
-        if [ "$(cat $(results.passed.path))" == "no" ]; then
-            if [ -z "$(params.PR_NUMBER)" ]; then
-              jx gitops pr comment --pr="$PULL_NUMBER" --comment="$(results.mardown_report.path)"
-            fi
-        else
-           echo 'No PR_NUMBER parameter provider, skipping commet.'
+        if [ -z "$(params.PR_NUMBER)" ]; then
+            jx gitops pr comment --pr="$PULL_NUMBER" --comment="$(cat $(results.mardown_report.path))"
+          else
+            echo "No PR_NUMBER parameter provider, skipping commet."
         fi
 
     - name: conventional-commits-check
