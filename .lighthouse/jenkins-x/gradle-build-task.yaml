@@ -29,6 +29,7 @@ spec:
   steps:
     - name: build-gradle-build
       image: $(params.IMAGE)
+      workingDir: $(workspaces.source.path)
       command:
         - gradle
       args:

@@ -198,6 +198,7 @@ spec:
 
           - name: git-merge
             image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
+            workingDir: $(workspaces.source.path)
             command:
               - jx
             args:
@@ -213,6 +214,7 @@ spec:
               - $(params.PULL_BASE_REF)
           - name: jx-variables
             image: gcr.io/jenkinsxio/jx-cli:latest
+            workingDir: $(workspaces.source.path)
             command:
               - jx
             args:
