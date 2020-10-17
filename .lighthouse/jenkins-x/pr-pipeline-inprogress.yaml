@@ -62,9 +62,12 @@ spec:
       workspaces:
         - name: output
           workspace: shared-data
+
       params:
         - name: url
           value: $(params.REPO_URL)
+        - name: depth
+          value: ""
 
     - name: jx-setup
       taskRef:
