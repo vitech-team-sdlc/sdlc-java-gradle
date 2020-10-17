@@ -1,0 +1,64 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: conventional-commits
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: "conventional-commits"
+    tekton.dev/displayName: "conventional-commits"
+spec:
+  description: >-
+    build
+  workspaces:
+    - name: source
+      description: sources dir
+  params:
+    - name: MARDOWN_HEADER
+      type: string
+      description: header of comment
+      default: "[Conventional Commits](https://www.conventionalcommits.org): **Check Failed** :cursing_face:"
+    - name: PR_NUMBER
+      type: string
+      description: Pull Request Number to left comment
+      default: ""
+  results:
+    - name: report
+      description: report of commits
+    - name: mardown_report
+      description: report of commits
+    - name: passed
+      description: is passed
+
+  steps:
+    - name: conventional-commits-check
+      image: aevea/commitsar:latest
+      workingDir: $(workspaces.source.path)
+      script: |
+        if commitsar > $(results.report.path); then
+          echo -n "yes" > $(results.passed.path)
+        else
+          echo -n "no" > $(results.passed.path)
+        fi
+        cat commit.check
+
+    - name: conventional-commits-prepare-report
+      image: aevea/commitsar:latest
+      workingDir: $(workspaces.source.path)
+      script: |
+        $(echo -e "$(params.MARDOWN_HEADER) \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $(results.report.path) | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')") \
+        > $(results.mardown_report.path)
+
+    - name: conventional-commits-comment
+      image: gcr.io/jenkinsxio/jx-cli:latest
+      workingDir: $(workspaces.source.path)
+      script: |
+        if [ "$(cat $(results.passed.path))" == "no" ]; then
+            if [ -z "$(params.PR_NUMBER)" ]; then
+              jx gitops pr comment --pr="$PULL_NUMBER" --comment="$(results.mardown_report.path)"
+            fi
+            exit 1
+        else
+           echo 'COMMIT MESSAGE CHECK PASSED!'
+        fi

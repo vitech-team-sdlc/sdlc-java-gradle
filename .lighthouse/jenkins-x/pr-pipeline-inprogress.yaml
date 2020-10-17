@@ -111,4 +111,15 @@ spec:
         - name: source
           workspace: shared-data
 
+    - name: conventionalcommits
+      taskRef:
+        name: conventional-commits
+      runAfter:
+        - "jx-setup"
+      workspaces:
+        - name: source
+          workspace: shared-data
+      params:
+        - name: PR_NUMBER
+          value: $(params.PULL_NUMBER)
 
