@@ -211,17 +211,17 @@ spec:
               - $(params.PULL_PULL_SHA)
               - --baseBranch
               - $(params.PULL_BASE_REF)
-              - name: jx-variables
-                image: gcr.io/jenkinsxio/jx-cli:latest
-                command:
-                  - jx
-                args:
-                  - gitops
-                  - variables
-                volumeMounts:
-                  - mountPath: /etc/podinfo
-                    name: podinfo
-                    readOnly: true
+          - name: jx-variables
+            image: gcr.io/jenkinsxio/jx-cli:latest
+            command:
+              - jx
+            args:
+              - gitops
+              - variables
+            volumeMounts:
+              - mountPath: /etc/podinfo
+                name: podinfo
+                readOnly: true
 
     - name: build
       taskRef:
