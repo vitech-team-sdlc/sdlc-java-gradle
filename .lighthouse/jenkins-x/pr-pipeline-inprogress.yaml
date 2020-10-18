@@ -5,6 +5,10 @@ metadata:
 spec:
   description: |
     desc
+  resources:
+    output:
+      - name: image
+        type: image
   params:
     - description: the unique build number
       name: BUILD_ID
