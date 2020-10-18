@@ -4,7 +4,7 @@ metadata:
   name: jx-pullrequest
 spec:
   description: |
-    desc
+    description
   resources:
     output:
       - name: image
