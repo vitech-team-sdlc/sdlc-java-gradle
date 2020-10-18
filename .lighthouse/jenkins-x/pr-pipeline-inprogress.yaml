@@ -6,8 +6,9 @@ spec:
   description: |
     desc
   resources:
-    - name: image
-      type: image
+    output:
+      - name: image
+        type: image
   params:
     - description: the unique build number
       name: BUILD_ID
