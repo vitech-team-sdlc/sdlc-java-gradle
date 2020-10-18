@@ -6,7 +6,7 @@ spec:
   description: |
     description
   resources:
-    - name: image
+    - name: app-image
       type: image
   params:
     - description: the unique build number
@@ -138,6 +138,7 @@ spec:
       resources:
         outputs:
           - name: image
+            resource: app-image
             resourceSpec:
               type: image
               params:
