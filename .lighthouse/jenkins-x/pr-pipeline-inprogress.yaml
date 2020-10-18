@@ -124,3 +124,22 @@ spec:
         - name: PR_NUMBER
           value: $(params.PULL_NUMBER)
 
+    - name: container-build
+      taskRef:
+        name: buildpacks
+      runAfter:
+        - "build"
+      params:
+        - name: BUILDER_IMAGE
+          value: paketobuildpacks/builder:base
+      resources:
+        outputs:
+          - name: image
+            resourceSpec:
+              type: image
+              params:
+                - name: url
+                  value: $(tasks.jx-setup.results.image)
+      workspaces:
+        - name: source
+          workspace: shared-data
