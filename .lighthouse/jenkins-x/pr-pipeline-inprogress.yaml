@@ -144,7 +144,6 @@ spec:
           value: paketobuildpacks/builder:base
         - name: IMAGE
           value: $(tasks.jx-setup.results.image)
-
       workspaces:
         - name: source
           workspace: shared-data
@@ -159,7 +158,6 @@ spec:
           value: "$(params.REPO_OWNER):$(params.REPO_NAME)"
         - name: SONAR_PROJECT_NAME
           value: "$(params.REPO_NAME)"
-
         - name: SONAR_PR_BRANCH
           value: "$(tasks.jx-setup.results.source_branch)"
         - name: SONAR_PR_BASE

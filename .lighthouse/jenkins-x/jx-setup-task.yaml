@@ -158,5 +158,9 @@ spec:
       workingDir: $(workspaces.source.path)
       image: mikefarah/yq
       script: |
+        #!/usr/bin/env bash
+
         yq r pr.yaml Source > $(results.source_branch.path)
         rm pr.yaml
+
+        echo "Soure branch is: $(cat $(results.source_branch.path))"
