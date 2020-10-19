@@ -153,6 +153,7 @@ spec:
       image: 'gcr.io/jenkinsxio/jx-cli:latest'
       workingDir: $(workspaces.source.path)
       script: |
+        #!/usr/bin/env bash
         jx gitops pr get --git-token="$GIT_TOKEN" --pr="${PULL_NUMBER}" > pr.yaml
     - name: save-source-branch
       workingDir: $(workspaces.source.path)
