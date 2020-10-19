@@ -177,9 +177,11 @@ spec:
         - name: IMAGE
           value: $(tasks.jx-setup.results.image)
         - name: MONITOR_ARGS
-          value: "--project-name=$(params.REPO_OWNER)/$(params.REPO_NAME)/$(tasks.jx-setup.results.source_branch)"
+          value:
+            - --project-name=$(params.REPO_OWNER)/$(params.REPO_NAME)/$(tasks.jx-setup.results.source_branch)
         - name: TEST_ARGS
-          value: "--severity-threshold=medium"
+          value:
+            - --severity-threshold=medium
         - name: SNYK_SECRET
           value: snyk
       workspaces:
