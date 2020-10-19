@@ -109,23 +109,6 @@ spec:
         - name: source-copy
           mountPath: /$(params.COPY_FOLDER)
 
-    - name: cleanup
-      image: $(params.BUILDER_IMAGE)
-      command:
-        - rm
-      args:
-        - "-rf"
-        - "/$(params.COPY_FOLDER)"
-      volumeMounts:
-        - name: layers-dir
-          mountPath: /layers
-        - name: $(params.CACHE)
-          mountPath: /cache
-        - name: $(params.PLATFORM_DIR)
-          mountPath: /platform
-        - name: source-copy
-          mountPath: /$(params.COPY_FOLDER)
-
   volumes:
     - name: empty-dir
       emptyDir: {}
