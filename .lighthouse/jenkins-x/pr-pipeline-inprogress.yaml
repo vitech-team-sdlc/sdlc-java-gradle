@@ -144,7 +144,6 @@ spec:
       resources:
         outputs:
           - name: image
-            resource: image
             resourceSpec:
               type: image
               params:
