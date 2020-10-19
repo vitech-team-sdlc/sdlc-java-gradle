@@ -3,11 +3,6 @@ kind: Pipeline
 metadata:
   name: jx-pullrequest
 spec:
-  resources:
-    - name: image
-      type: image
-      optional: true
-
 
   description: |
     description
@@ -141,15 +136,8 @@ spec:
       params:
         - name: BUILDER_IMAGE
           value: paketobuildpacks/builder:base
-      resources:
-        outputs:
-          - name: image
-            resorce: image
-            resourceSpec:
-              type: image
-              params:
-                - name: url
-                  value: $(tasks.jx-setup.results.image)
+        - name: IMAGE
+          value: $(tasks.jx-setup.results.image)
 
       workspaces:
         - name: source
