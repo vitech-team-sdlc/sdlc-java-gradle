@@ -33,6 +33,13 @@ spec:
     - name: SNYK_SECRET
       type: string
       description: Secret where SNYK_TOKEN is stored
+  stepTemplate:
+    env:
+      - name: SNYK_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: $(params.SNYK_SECRET)
+            key: SNYK_TOKEN
   results:
     - name: monitor-url
       description: The precise URL that was fetched by this Task
@@ -68,13 +75,3 @@ spec:
           fi
           exit 1;
         fi
-      env:
-        - name: SNYK_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: $(params.SNYK_SECRET)
-              key: SNYK_TOKEN
-
-
-
-
