@@ -79,8 +79,12 @@ spec:
             replaceValues $(workspaces.source.path)/sonar-project.properties sonar.projectName $(params.SONAR_PROJECT_NAME)
           fi
 
-          if [[ -n "${SONAR_ORGANIZATION}" ]]; then
-            replaceValues $(workspaces.source.path)/sonar-project.properties sonar.organization ${SONAR_ORGANIZATION}
+          if [ ! -z "${SONAR_ORGANIZATION}" ]; then
+              replaceValues $(workspaces.source.path)/sonar-project.properties sonar.organization ${SONAR_ORGANIZATION}
+            else
+              if [[ -n "$(params.SONAR_ORGANIZATION)" ]]; then
+                replaceValues $(workspaces.source.path)/sonar-project.properties sonar.projectName $(params.SONAR_ORGANIZATION)
+              fi
           fi
 
           if [[ -n "$(params.SONAR_PR_BRANCH)" ]]; then
