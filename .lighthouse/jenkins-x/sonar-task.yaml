@@ -47,6 +47,9 @@ spec:
     - name: SONAR_PR_KEY
       description: Project's unique key
       default: ""
+
+    - name: SONAR_SECRET
+      description: Name of sonar secret
   steps:
     - name: sonar-properties-create
       image: registry.access.redhat.com/ubi8/ubi-minimal:latest
@@ -111,3 +114,14 @@ spec:
         - sonar-scanner
       args:
         - "-Dsonar.login=${SONAR_TOKEN}"
+      env:
+        - name: SONAR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: $(params.SONAR_SECRET)
+              key: sonar-login
+        - name: SONAR_ORGANIZATION
+          valueFrom:
+            secretKeyRef:
+              name: $(params.SONAR_SECRET)
+              key: sonar-organization
