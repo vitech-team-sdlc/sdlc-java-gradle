@@ -1,0 +1,72 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: snyk-container
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: "gradle"
+    tekton.dev/displayName: "gradle"
+spec:
+  description: >-
+    Snyk container security check
+  workspaces:
+    - name: source
+      description: sources dir
+  params:
+    - name: IMAGE
+      type: string
+      description: image what should be analyzed   
+    - name: MONITOR_ARGS
+      type: string
+      description: snyk arguments
+      default: ""
+    - name: TEST_ARGS
+      type: string
+      description: snyk arguments
+      default: ""
+    - name: PR_ID
+      type: string
+      description: Pull Request ID
+      default: ""
+  results:
+    - name: monitor-url
+      description: The precise URL that was fetched by this Task
+    - name: status
+      description: Excecution result
+  steps:
+    - name: snyk-container-monitor
+      image: "snyk/snyk:docker"
+      script: |
+        echo -e "About to run ${YELLOW}snyk test ${NOCOLOR}for image: ${GREEN}$OUTPUT_IMAGE${NOCOLOR}"
+        source /workspace/source/.jx/variables.sh
+
+        snyk container monitor $(params.MONITOR_ARGS) $(params.IMAGE) | grep -Eo '(http|https).+' > $(monitor-url)
+
+    - name: snyk-container-test
+      image: "snyk/snyk:docker"
+      script: |
+        if snyk container test $ $(params.TEST_ARGS) $(params.IMAGE); then
+          echo "success" > $(results.status.path)
+          echo "${GREEN}No issues found for ${YELLOW}$(params.IMAGE) {NOCOLOR}with severity level ${YELLOW}$SEVERITY_THRESHOLD{NOCOLOR}"
+        else
+          echo "failed" > $(results.status.path)
+        fi
+
+    - name: snyk-container-test-comment
+      image: gcr.io/jenkinsxio/jx-cli:latest
+      script: |
+        #!/usr/bin/env bash
+
+        if [[ $(cat $(results.status.path)) == "failed" ]]; then
+          if [[ -n "$(params.PR_ID)" ]]; then
+            SNYK_MONITOR_URL=$(cat $(monitor-url))
+            COMMENT_CONTENT=$(echo -e ":x: :cursing_face: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) \nImage: [$(params.IMAGE)]()")
+            jx gitops pr comment --comment="$(cat $COMMENT_CONTENT)" --pr="$(params.PR_ID)"
+          fi
+          exit 1;
+        fi
+
+
+

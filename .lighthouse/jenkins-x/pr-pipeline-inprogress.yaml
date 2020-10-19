@@ -178,3 +178,22 @@ spec:
       workspaces:
         - name: source
           workspace: shared-data
+
+    - name: snyk-container-check
+      taskRef:
+        name: snyk-container
+      runAfter:
+        - "container-build"
+      params:
+        - name: IMAGE
+          value: $(tasks.jx-setup.results.image)
+        - name: MONITOR_ARGS
+          value: "--project-name=$(params.REPO_OWNER)/$(params.REPO_NAME)/$(tasks.jx-setup.results.source_branch)"
+        - name: TEST_ARGS
+          value: "--severity-threshold=medium"
+      workspaces:
+        - name: source
+          workspace: shared-data
+      volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
