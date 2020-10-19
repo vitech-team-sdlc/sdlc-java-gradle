@@ -1,3 +1,4 @@
+# TODO: add PR comment with results
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -50,6 +51,9 @@ spec:
 
     - name: SONAR_SECRET
       description: Name of sonar secret
+  results:
+    - name: url
+      description: Sonar analys URL
   steps:
     - name: sonar-properties-create
       image: registry.access.redhat.com/ubi8/ubi-minimal:latest
@@ -88,9 +92,6 @@ spec:
             replaceValues $(workspaces.source.path)/sonar-project.properties sonar.projectName $(params.SONAR_PROJECT_NAME)
           fi
 
-          echo "Organization is: $SONAR_ORGANIZATION"
-          printenv
-
           if [[ -n "${SONAR_ORGANIZATION}" ]]; then
               replaceValues $(workspaces.source.path)/sonar-project.properties sonar.organization ${SONAR_ORGANIZATION}
             else
@@ -117,10 +118,9 @@ spec:
     - name: sonar-scan
       image: sonarsource/sonar-scanner-cli
       workingDir: $(workspaces.source.path)
-      command:
-        - sonar-scanner
-      args:
-        - "-Dsonar.login=${SONAR_TOKEN}"
+      sciptr: |
+        sonar-scanner -Dsonar.login=${SONAR_TOKEN} | grep "ANALYSIS " | grep -Eo '(http|https).+' > $(results.url.path)
+        rm -rf .scannerwork
       env:
         - name: SONAR_TOKEN
           valueFrom:
