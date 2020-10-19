@@ -3,10 +3,8 @@ kind: Pipeline
 metadata:
   name: jx-pullrequest
 spec:
-
   description: |
     description
-
   params:
     - description: the unique build number
       name: BUILD_ID
