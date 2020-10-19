@@ -58,6 +58,11 @@ spec:
       description: |
         This workspace will receive the cloned git repo and be passed
         to the next Task for the repo's README.md file to be read.
+
+  respurces:
+    - name: image
+      type: image
+
   tasks:
     - name: fetch-repo
       taskRef:
