@@ -3,6 +3,11 @@ kind: Pipeline
 metadata:
   name: jx-pullrequest
 spec:
+  resources:
+    - name: image
+      type: image
+      optional: true
+
   description: |
     description
 
