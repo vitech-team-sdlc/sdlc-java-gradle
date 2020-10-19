@@ -5,8 +5,11 @@ metadata:
 spec:
   resources:
     - name: image
-      type: image
-      optional: true
+      resourceSpec:
+        type: image
+        params:
+          - name: url
+            value: $(tasks.jx-setup.results.image)
 
   description: |
     description
@@ -143,11 +146,7 @@ spec:
       resources:
         outputs:
           - name: image
-            resourceSpec:
-              type: image
-              params:
-                - name: url
-                  value: $(tasks.jx-setup.results.image)
+            resource: image
       workspaces:
         - name: source
           workspace: shared-data
