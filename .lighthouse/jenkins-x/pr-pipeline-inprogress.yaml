@@ -144,11 +144,6 @@ spec:
         outputs:
           - name: image
             resource: app-image
-            resourceSpec:
-              type: image
-              params:
-                - name: url
-                  value: $(tasks.jx-setup.results.image)
       workspaces:
         - name: source
           workspace: shared-data
