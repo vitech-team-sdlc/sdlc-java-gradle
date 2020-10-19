@@ -151,9 +151,11 @@ spec:
 
     - name: get-pr-info
       image: 'gcr.io/jenkinsxio/jx-cli:latest'
+      workingDir: $(workspaces.source.path)
       script: |
         jx gitops pr get --git-token="$GIT_TOKEN" --pr="${PULL_NUMBER}" > pr.yaml
     - name: save-source-branch
+      workingDir: $(workspaces.source.path)
       image: mikefarah/yq
       script: |
         yq r pr.yaml Source > $(results.source_branch.path)
