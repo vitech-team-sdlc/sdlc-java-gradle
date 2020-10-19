@@ -69,7 +69,7 @@ spec:
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
-          cp -aR  "$(workspaces.source.path)" "/$(params.COPY_FOLDER)" &&
+          cp -aR  "$(workspaces.source.path)/." "/$(params.COPY_FOLDER)" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/$(params.COPY_FOLDER)" &&
           ls -la /$(params.COPY_FOLDER)
       volumeMounts:
