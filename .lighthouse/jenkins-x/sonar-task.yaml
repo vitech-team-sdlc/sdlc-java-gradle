@@ -54,6 +54,12 @@ spec:
     - name: sonar-properties-create
       image: registry.access.redhat.com/ubi8/ubi-minimal:latest
       workingDir: $(workspaces.source.path)
+      env:
+        - name: SONAR_ORGANIZATION
+          valueFrom:
+            secretKeyRef:
+              name: $(params.SONAR_SECRET)
+              key: sonar-organization
       script: |
         #!/usr/bin/env bash
         replaceValues() {
@@ -107,6 +113,7 @@ spec:
         fi
         echo "---------------------------"
         cat $(workspaces.source.path)/sonar-project.properties
+
     - name: sonar-scan
       image: sonarsource/sonar-scanner-cli
       workingDir: $(workspaces.source.path)
@@ -120,8 +127,3 @@ spec:
             secretKeyRef:
               name: $(params.SONAR_SECRET)
               key: sonar-login
-        - name: SONAR_ORGANIZATION
-          valueFrom:
-            secretKeyRef:
-              name: $(params.SONAR_SECRET)
-              key: sonar-organization
