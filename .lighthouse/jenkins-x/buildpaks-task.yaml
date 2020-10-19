@@ -1,3 +1,4 @@
+# TODO: try original image with Resource
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:

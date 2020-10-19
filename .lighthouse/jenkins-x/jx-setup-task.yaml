@@ -61,6 +61,8 @@ spec:
   results:
     - name: image
       description: Name of the image which should be builded
+    - name: source_branch
+      description: name of the source branch
   stepTemplate:
     env:
       - name: BUILD_ID
@@ -146,3 +148,13 @@ spec:
         export OUTPUT_IMAGE=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION
 
         echo -n "$OUTPUT_IMAGE" > $(results.image.path)
+
+    - name: get-pr-info
+      image: 'gcr.io/jenkinsxio/jx-cli:latest'
+      script: |
+        jx gitops pr get --git-token="$GIT_TOKEN" --pr="${PULL_NUMBER}" > pr.yaml
+    - name: save-source-branch
+      image: mikefarah/yq
+      script: |
+        yq r pr.yaml Source > $(results.source_branch.path)
+        rm pr.yaml

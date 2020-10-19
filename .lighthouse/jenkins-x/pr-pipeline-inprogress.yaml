@@ -79,6 +79,12 @@ spec:
       workspaces:
         - name: source
           workspace: shared-data
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jx-pipeline-git-github-github
+              key: password
       params:
         - name: BUILD_ID
           value: $(params.BUILD_ID)
@@ -139,6 +145,38 @@ spec:
         - name: IMAGE
           value: $(tasks.jx-setup.results.image)
 
+      workspaces:
+        - name: source
+          workspace: shared-data
+
+    - name: sonar-check
+      taskRef:
+        name: sonarqube-scanner
+      runAfter:
+        - "build"
+      params:
+        - name: SONAR_PROJECT_KEY
+          value: "$(params.REPO_OWNER):$(params.REPO_NAME)"
+        - name: SONAR_PROJECT_NAME
+          value: "$(params.REPO_NAME)"
+
+        - name: SONAR_PR_BRANCH
+          default: "$(tasks.jx-setup.results.source_branch)"
+        - name: SONAR_PR_BASE
+          default: "$(params.PULL_BASE_REF)"
+        - name: SONAR_PR_KEY
+          default: "$(params.PULL_NUMBER)"
+      env:
+        - name: SONAR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: sonar
+              key: sonar-login
+        - name: SONAR_ORGANIZATION
+          valueFrom:
+            secretKeyRef:
+              name: sonar
+              key: sonar-organization
       workspaces:
         - name: source
           workspace: shared-data
