@@ -79,6 +79,9 @@ spec:
             replaceValues $(workspaces.source.path)/sonar-project.properties sonar.projectName $(params.SONAR_PROJECT_NAME)
           fi
 
+          echo "Organization is: $SONAR_ORGANIZATION"
+          printenv
+
           if [[ -n "${SONAR_ORGANIZATION}" ]]; then
               replaceValues $(workspaces.source.path)/sonar-project.properties sonar.organization ${SONAR_ORGANIZATION}
             else
