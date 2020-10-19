@@ -163,7 +163,7 @@ spec:
         - name: SONAR_PR_KEY
           value: "$(params.PULL_NUMBER)"
         - params: SONAR_SECRET
-          value: sonar
+          value: "sonar"
       workspaces:
         - name: source
           workspace: shared-data
