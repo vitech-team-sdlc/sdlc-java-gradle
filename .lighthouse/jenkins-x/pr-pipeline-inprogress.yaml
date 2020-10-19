@@ -145,5 +145,6 @@ spec:
         outputs:
           - name: image
             resource: image
+      workspaces:
         - name: source
           workspace: shared-data
