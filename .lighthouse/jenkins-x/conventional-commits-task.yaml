@@ -23,6 +23,10 @@ spec:
       type: string
       description: Pull Request Number to left comment
       default: ""
+    - name: FAIL
+      type: string
+      description: Pull Request Number to left comment
+      default: "no"
   results:
     - name: report
       description: report of commits
@@ -65,6 +69,8 @@ spec:
       image: gcr.io/jenkinsxio/jx-cli:latest
       workingDir: $(workspaces.source.path)
       script: |
-        if [[ "$(cat $(results.passed.path))" == "no" ]]; then
+        #!/bin/bash
+
+        if [[ "$(params.FAIL)" == "yes" && "$(cat $(results.passed.path))" == "no" ]]; then
             exit 1
         fi
