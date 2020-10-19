@@ -38,9 +38,6 @@ spec:
     - name: PROCESS_TYPE
       description: The default process type to set on the image.
       default: "web"
-    - name: SOURCE_SUBPATH
-      description: A subpath within the `source` input where the source to build is located.
-      default: ""
     - name: SKIP_RESTORE
       description: Do not write layer metadata or restore cached layers
       default: "false"
@@ -49,6 +46,10 @@ spec:
       default: ""
     - name: IMAGE
       description: image name for build
+    - name: COPY_FOLDER
+      description: paketo cleaning directory after build, so we need copy sources and run build there
+      default: copy
+
 
   workspaces:
     - name: source
@@ -69,7 +70,8 @@ spec:
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
-          chown -R "$(params.USER_ID):$(params.GROUP_ID)" "$(workspaces.source.path)"
+          cp -R  "$(workspaces.source.path)" "$(workspaces.source.path)/$(params.COPY_FOLDER)" &&
+          chown -R "$(params.USER_ID):$(params.GROUP_ID)" "$(workspaces.source.path)/$(params.COPY_FOLDER)"
       volumeMounts:
         - name: layers-dir
           mountPath: /layers
@@ -83,7 +85,7 @@ spec:
       imagePullPolicy: Always
       command: ["/cnb/lifecycle/creator"]
       args:
-        - "-app=$(workspaces.source.path)/$(params.SOURCE_SUBPATH)"
+        - "-app=$(workspaces.source.path)/$(params.COPY_FOLDER)"
         - "-cache-dir=/cache"
         - "-cache-image=$(params.CACHE_IMAGE)"
         - "-gid=$(params.GROUP_ID)"
@@ -102,6 +104,14 @@ spec:
           mountPath: /cache
         - name: $(params.PLATFORM_DIR)
           mountPath: /platform
+
+    - name: cleanup
+      image: $(params.BUILDER_IMAGE)
+      command:
+        - rm
+      args:
+        - "-rf"
+        - "$(workspaces.source.path)/$(params.COPY_FOLDER)"
 
   volumes:
     - name: empty-dir
