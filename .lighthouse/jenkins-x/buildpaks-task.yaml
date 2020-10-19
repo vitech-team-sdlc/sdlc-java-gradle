@@ -48,8 +48,7 @@ spec:
       description: image name for build
     - name: COPY_FOLDER
       description: paketo cleaning directory after build, so we need copy sources and run build there
-      default: copy
-
+      default: "source_copy"
 
   workspaces:
     - name: source
@@ -70,13 +69,15 @@ spec:
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/tekton/home" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
-          cp -R  "$(workspaces.source.path)" "$(workspaces.source.path)/$(params.COPY_FOLDER)" &&
-          chown -R "$(params.USER_ID):$(params.GROUP_ID)" "$(workspaces.source.path)/$(params.COPY_FOLDER)"
+          cp -R  "$(workspaces.source.path)" "/$(params.COPY_FOLDER)" &&
+          chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/$(params.COPY_FOLDER)"
       volumeMounts:
         - name: layers-dir
           mountPath: /layers
         - name: $(params.CACHE)
           mountPath: /cache
+        - name: source-copy
+          mountPath: /$(params.COPY_FOLDER)
       securityContext:
         privileged: true
 
@@ -85,7 +86,7 @@ spec:
       imagePullPolicy: Always
       command: ["/cnb/lifecycle/creator"]
       args:
-        - "-app=$(workspaces.source.path)/$(params.COPY_FOLDER)"
+        - "-app=/$(params.COPY_FOLDER)"
         - "-cache-dir=/cache"
         - "-cache-image=$(params.CACHE_IMAGE)"
         - "-gid=$(params.GROUP_ID)"
@@ -104,6 +105,8 @@ spec:
           mountPath: /cache
         - name: $(params.PLATFORM_DIR)
           mountPath: /platform
+        - name: source-copy
+          mountPath: /$(params.COPY_FOLDER)
 
     - name: cleanup
       image: $(params.BUILDER_IMAGE)
@@ -112,9 +115,20 @@ spec:
       args:
         - "-rf"
         - "$(workspaces.source.path)/$(params.COPY_FOLDER)"
+      volumeMounts:
+        - name: layers-dir
+          mountPath: /layers
+        - name: $(params.CACHE)
+          mountPath: /cache
+        - name: $(params.PLATFORM_DIR)
+          mountPath: /platform
+        - name: source-copy
+          mountPath: /$(params.COPY_FOLDER)
 
   volumes:
     - name: empty-dir
+      emptyDir: {}
+    - name: source-copy
       emptyDir: {}
     - name: layers-dir
       emptyDir: {}
