@@ -5,9 +5,6 @@ metadata:
 spec:
   description: |
     description
-  resources:
-    - name: image
-      type: image
   params:
     - description: the unique build number
       name: BUILD_ID
@@ -128,6 +125,15 @@ spec:
           value: $(params.PULL_NUMBER)
 
     - name: container-build
+      taskSpec:
+        resources:
+          outputs:
+            - name: image
+              resourceSpec:
+                type: image
+                params:
+                  - name: url
+                    value: $(tasks.jx-setup.results.image)
       taskRef:
         name: buildpacks
       runAfter:
@@ -135,15 +141,6 @@ spec:
       params:
         - name: BUILDER_IMAGE
           value: paketobuildpacks/builder:base
-      resources:
-        outputs:
-          - name: image
-            resource: image
-            resourceSpec:
-              type: image
-              params:
-                - name: url
-                  value: $(tasks.jx-setup.results.image)
       workspaces:
         - name: source
           workspace: shared-data
