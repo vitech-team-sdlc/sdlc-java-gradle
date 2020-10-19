@@ -58,11 +58,6 @@ spec:
         This workspace will receive the cloned git repo and be passed
         to the next Task for the repo's README.md file to be read.
 
-  respurces:
-    - name: app-image
-      type: image
-      optional: true
-
   tasks:
     - name: fetch-repo
       taskRef:
@@ -143,7 +138,11 @@ spec:
       resources:
         outputs:
           - name: image
-            resource: app-image
+            resourceSpec:
+              type: image
+              params:
+                - name: url
+                  value: $(tasks.jx-setup.results.image)
       workspaces:
         - name: source
           workspace: shared-data
