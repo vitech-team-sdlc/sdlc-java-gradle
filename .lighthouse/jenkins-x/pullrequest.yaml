@@ -9,14 +9,6 @@ spec:
   pipelineRef:
     name: jx-pullrequest
 
-  resources:
-    - name: image
-      resourceSpec:
-        type: image
-        params:
-          - name: url
-            value: $(tasks.jx-setup.results.image)
-
   workspaces:
     - name: shared-data
       volumeClaimTemplate:
