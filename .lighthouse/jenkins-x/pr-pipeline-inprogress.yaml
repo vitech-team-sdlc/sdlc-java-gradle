@@ -5,9 +5,7 @@ metadata:
 spec:
   description: |
     description
-  resources:
-    - name: image
-      type: image
+
   params:
     - description: the unique build number
       name: BUILD_ID
@@ -53,6 +51,7 @@ spec:
     - description: git url to clone
       name: REPO_URL
       type: string
+
   workspaces:
     - name: shared-data
       description: |
@@ -62,6 +61,7 @@ spec:
   respurces:
     - name: image
       type: image
+      optional: true
 
   tasks:
     - name: fetch-repo
@@ -143,7 +143,11 @@ spec:
       resources:
         outputs:
           - name: image
-            resource: image
+            resourceSpec:
+              type: image
+              params:
+                - name: url
+                  value: $(tasks.jx-setup.results.image)
       workspaces:
         - name: source
           workspace: shared-data
