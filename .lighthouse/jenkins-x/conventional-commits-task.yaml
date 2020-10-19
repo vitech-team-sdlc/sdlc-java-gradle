@@ -48,7 +48,7 @@ spec:
       workingDir: $(workspaces.source.path)
       script: |
         echo "=== Report"
-        cat  $(results.report.path
+        cat  $(results.report.path)
         echo "=== Building mardown"
         echo -e "$(params.MARDOWN_HEADER) \n HASH | ERROR | MSG \n --|--|-- \n $(cat  $(results.report.path) | grep "|" | awk  -F"|" '{printf "%s | %s | %s", $2, $3, $4;} {print ""}' | grep -v -e '^[[:space:]]*$' | tail -n +2 | grep '[[:alnum:]]')" > $(results.mardown_report.path)
 
