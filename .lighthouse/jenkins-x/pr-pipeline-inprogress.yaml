@@ -59,7 +59,7 @@ spec:
         to the next Task for the repo's README.md file to be read.
 
   respurces:
-    - name: image
+    - name: app-image
       type: image
       optional: true
 
@@ -143,6 +143,7 @@ spec:
       resources:
         outputs:
           - name: image
+            resource: app-image
             resourceSpec:
               type: image
               params:
