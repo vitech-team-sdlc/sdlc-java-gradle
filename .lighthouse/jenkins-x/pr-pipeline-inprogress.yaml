@@ -136,7 +136,7 @@ spec:
       taskRef:
         name: buildpacks
       runAfter:
-        - "build"
+        - "jx-setup"
       params:
         - name: BUILDER_IMAGE
           value: paketobuildpacks/builder:base

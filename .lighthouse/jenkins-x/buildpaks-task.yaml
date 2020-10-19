@@ -1,4 +1,4 @@
-# TODO: try original image with Resource
+# TODO: try original task with Resource output
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
@@ -70,8 +70,7 @@ spec:
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/layers" &&
           chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/cache" &&
           cp -aR  "$(workspaces.source.path)/." "/$(params.COPY_FOLDER)" &&
-          chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/$(params.COPY_FOLDER)" &&
-          ls -la /$(params.COPY_FOLDER)
+          chown -R "$(params.USER_ID):$(params.GROUP_ID)" "/$(params.COPY_FOLDER)"
       volumeMounts:
         - name: layers-dir
           mountPath: /layers
