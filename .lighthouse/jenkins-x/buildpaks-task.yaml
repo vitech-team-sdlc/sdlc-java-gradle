@@ -61,7 +61,7 @@ spec:
 
   steps:
     - name: prepare
-      image: alpine
+      image: gcr.io/jenkinsxio/jx-cli:latest
       imagePullPolicy: Always
       command: ["/bin/sh"]
       args:
