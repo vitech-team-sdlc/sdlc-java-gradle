@@ -58,7 +58,7 @@ spec:
         if [ -z "$(params.PR_NUMBER)" ]; then
             echo "No PR_NUMBER parameter provider, skipping commet."
           else
-            jx gitops pr comment --pr="$PULL_NUMBER" --comment="$(cat $(results.mardown_report.path))"
+            jx gitops pr comment --pr="$(params.PR_NUMBER)" --comment="$(cat $(results.mardown_report.path))"
         fi
 
     - name: conventional-commits-final
