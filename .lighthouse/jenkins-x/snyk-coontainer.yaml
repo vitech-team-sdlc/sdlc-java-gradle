@@ -48,16 +48,22 @@ spec:
   steps:
     - name: snyk-container-monitor
       image: "snyk/snyk:docker"
-      script: |
-        echo -e "About to run ${YELLOW}snyk test ${NOCOLOR}for image: ${GREEN}$(params.MONITOR_ARGS[*])${NOCOLOR}"
-        snyk container monitor $(params.MONITOR_ARGS[*]) $(params.IMAGE) | grep -Eo '(http|https).+' > $(monitor-url)
+      command: [ "/bin/sh" ]
+        args:
+          - "-c"
+          - snyk
+          - container
+          - monitor
+          - $(params.MONITOR_ARGS)
+          - $(params.IMAGE)
+          - "&& | grep -Eo '(http|https).+' > $(monitor-url)"
 
     - name: snyk-container-test
       image: "snyk/snyk:docker"
       script: |
-        if snyk container test $ $(params.TEST_ARGS[*]) $(params.IMAGE); then
+        if snyk container test $(params.TEST_ARGS[*]) $(params.IMAGE); then
           echo "success" > $(results.status.path)
-          echo "${GREEN}No issues found for ${YELLOW}$(params.IMAGE) {NOCOLOR}with severity level ${YELLOW}$SEVERITY_THRESHOLD{NOCOLOR}"
+          echo "No issues found for $(params.IMAGE) with args $SEVERITY_THRESHOLD"
         else
           echo "failed" > $(results.status.path)
         fi
