@@ -21,6 +21,7 @@ spec:
   workspaces:
     - name: source
     - name: sonar-settings
+      optional: true
   params:
     - name: SONAR_HOST_URL
       description: Host URL where the sonarqube server is running
