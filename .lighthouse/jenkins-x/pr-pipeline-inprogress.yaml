@@ -161,11 +161,11 @@ spec:
           value: "$(params.REPO_NAME)"
 
         - name: SONAR_PR_BRANCH
-          default: "$(tasks.jx-setup.results.source_branch)"
+          value: "$(tasks.jx-setup.results.source_branch)"
         - name: SONAR_PR_BASE
-          default: "$(params.PULL_BASE_REF)"
+          value: "$(params.PULL_BASE_REF)"
         - name: SONAR_PR_KEY
-          default: "$(params.PULL_NUMBER)"
+          value: "$(params.PULL_NUMBER)"
       env:
         - name: SONAR_TOKEN
           valueFrom:
