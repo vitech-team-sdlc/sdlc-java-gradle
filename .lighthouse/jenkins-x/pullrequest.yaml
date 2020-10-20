@@ -9,6 +9,10 @@ spec:
   pipelineRef:
     name: jx-pullrequest
 
+  params:
+    - name: SNYK_IMAGE
+      value: "snyk/snyk:gradle-jdk11"
+
   workspaces:
     - name: shared-data
       volumeClaimTemplate:

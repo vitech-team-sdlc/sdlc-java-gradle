@@ -103,7 +103,11 @@ spec:
         if [[ $(cat $(results.status.path)) == "failed" ]]; then
           if [[ -n "$(params.PR_ID)" ]]; then
             SNYK_MONITOR_URL=$(cat $(results.monitor-url.path))
-            COMMENT_CONTENT=$(echo -e ":x: :cursing_face: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) \nImage: [$(params.IMAGE)]()")
+            if [[ -n "$(params.IMAGE)" ]]; then
+                export COMMENT_CONTENT=$(echo -e ":spider: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) \n :whale: Image: [$(params.IMAGE)]()")
+              else
+                export COMMENT_CONTENT=$(echo -e ":spider: [ Snyk Test Failed ]($SNYK_MONITOR_URL)")
+            fi
             jx gitops pr comment --comment="$COMMENT_CONTENT" --pr="$(params.PR_ID)"
           fi
           echo "${YELLOW}Failing step!${NOCOLOR}"

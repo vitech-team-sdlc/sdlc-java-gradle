@@ -51,6 +51,11 @@ spec:
       name: REPO_URL
       type: string
 
+    - name: SNYK_IMAGE
+      type: string
+      description: snyk image to scan dependencies
+
+
   workspaces:
     - name: shared-data
       description: |
@@ -202,12 +207,13 @@ spec:
         - "build"
       params:
         - name: SNYK_IMAGE
-          value: "snyk/snyk:gradle-jdk11"
+          value: "$(params.SNYK_IMAGE)"
         - name: SNYK_COMMAND
           value: ""
         - name: MONITOR_ARGS
           value:
-            - "--remote-repo-url=$(params.REPO_URL) --project-name=$(params.REPO_OWNER)/$(params.REPO_NAME)/$(tasks.jx-setup.results.source_branch)"
+            - "--remote-repo-url=$(params.REPO_URL)"
+            - "--project-name=$(params.REPO_OWNER)/$(params.REPO_NAME)/$(tasks.jx-setup.results.source_branch)"
         - name: TEST_ARGS
           value:
             - "--severity-threshold=medium"
