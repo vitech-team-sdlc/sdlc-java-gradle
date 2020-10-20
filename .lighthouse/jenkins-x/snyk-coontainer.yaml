@@ -52,6 +52,7 @@ spec:
         - "$(params.MONITOR_ARGS[*])"
       script: |
         echo -e "About to run snyk monitor for image: $(params.IMAGE) with args: ${1}"
+
         snyk container monitor ${1} $(params.IMAGE) | grep -Eo '(http|https).+' > $(results.monitor-url.path)
 
     - name: snyk-container-test
