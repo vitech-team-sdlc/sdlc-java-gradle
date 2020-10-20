@@ -121,12 +121,6 @@ spec:
               storage: 500Mi
   podTemplate:
     volumes:
-      - name: podinfo
-        downwardAPI:
-          items:
-            - fieldRef:
-                fieldPath: metadata.labels
-              path: labels
       - name: docker-socket
         hostPath:
           path: /var/run/docker.sock
