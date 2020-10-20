@@ -164,10 +164,6 @@ spec:
           value: "$(params.PULL_NUMBER)"
         - name: SONAR_SECRET
           value: "sonar"
-        - name: SNYK_IMAGE
-          value: "snyk/snyk:docker"
-        - name: SNYK_COMMAND
-          value: "container"
       workspaces:
         - name: source
           workspace: shared-data
@@ -190,6 +186,10 @@ spec:
           value: snyk
         - name: PR_ID
           value: "$(params.PULL_NUMBER)"
+        - name: SNYK_IMAGE
+          value: "snyk/snyk:docker"
+        - name: SNYK_COMMAND
+          value: "container"
       workspaces:
         - name: source
           workspace: shared-data
