@@ -44,6 +44,12 @@ spec:
           secretKeyRef:
             name: $(params.SNYK_SECRET)
             key: SNYK_TOKEN
+      - name: NOCOLOR
+        value: '\033[0m'
+      - name: YELLOW
+        value: '\033[1;33m'
+      - name: GREEN
+        value: '\033[0;32m'
     volumeMounts:
       - name: $(params.DOCKER_SOCKET_VOLUME)
         mountPath: /var/run/docker.sock
@@ -59,7 +65,7 @@ spec:
       args:
         - "$(params.MONITOR_ARGS[*])"
       script: |
-        echo -e "About to run snyk monitor for image: \033[1;33m$(params.IMAGE) with args: ${1}"
+        echo -e "About to run snyk monitor for image: ${YELLOW}$(params.IMAGE)${NOCOLOR} with args: ${YELLOW}${1}${NOCOLOR}"
 
         snyk container monitor ${1} $(params.IMAGE) | grep -Eo '(http|https).+' > $(results.monitor-url.path)
 
@@ -72,7 +78,7 @@ spec:
       script: |
         if snyk container test ${1} $(params.IMAGE); then
           echo "success" > $(results.status.path)
-          echo "No issues found for \033[1;33m$(params.IMAGE) \033[0mwith args \033[1;33m$SEVERITY_THRESHOLD"
+          echo "No issues found for ${GREEN}$(params.IMAGE)${NOCOLOR} with args ${GREEN}${1}${NOCOLOR}"
         else
           echo "failed" > $(results.status.path)
         fi
@@ -85,10 +91,10 @@ spec:
 
         if [[ $(cat $(results.status.path)) == "failed" ]]; then
           if [[ -n "$(params.PR_ID)" ]]; then
-            SNYK_MONITOR_URL=$(cat $(monitor-url))
+            SNYK_MONITOR_URL=$(cat $(results.monitor-url.path))
             COMMENT_CONTENT=$(echo -e ":x: :cursing_face: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) \nImage: [$(params.IMAGE)]()")
             jx gitops pr comment --comment="$(cat $COMMENT_CONTENT)" --pr="$(params.PR_ID)"
           fi
-          echo "\033[1;33mFailing step!"
+          echo "${YELLOW}Failing step!${NOCOLOR}"
           exit 1;
         fi
