@@ -1,7 +1,6 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  creationTimestamp: null
   labels:
     build: "1"
     jenkins.io/pipelineType: build
@@ -183,7 +182,6 @@ spec:
                 name: podinfo
                 readOnly: true
             workingDir: /workspace/source
-          serviceAccountName: tekton-bot
           steps:
             - args:
                 - -c
@@ -254,7 +252,6 @@ spec:
               secret:
                 secretName: tekton-container-registry-auth
   podTemplate:
-    ImagePullSecrets: null
     hostNetwork: false
     schedulerName: ""
   serviceAccountName: tekton-build-bot
