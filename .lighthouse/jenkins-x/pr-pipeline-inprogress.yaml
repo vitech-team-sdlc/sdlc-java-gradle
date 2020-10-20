@@ -187,6 +187,3 @@ spec:
       workspaces:
         - name: source
           workspace: shared-data
-      volumeMounts:
-        - name: docker-socket
-          mountPath: /var/run/docker.sock

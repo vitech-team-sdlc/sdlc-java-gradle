@@ -40,6 +40,10 @@ spec:
           secretKeyRef:
             name: $(params.SNYK_SECRET)
             key: SNYK_TOKEN
+    volumeMounts:
+      - name: docker-socket
+        mountPath: /var/run/docker.sock
+
   results:
     - name: monitor-url
       description: The precise URL that was fetched by this Task
@@ -80,3 +84,9 @@ spec:
           fi
           exit 1;
         fi
+
+  volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket
