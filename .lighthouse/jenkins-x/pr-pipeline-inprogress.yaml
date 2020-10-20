@@ -170,10 +170,14 @@ spec:
 
     - name: snyk-container-check
       taskRef:
-        name: snyk-container
+        name: snyk
       runAfter:
         - "container-build"
       params:
+        - name: SNYK_IMAGE
+          value: "snyk/snyk:docker"
+        - name: SNYK_COMMAND
+          value: "container"
         - name: IMAGE
           value: $(tasks.jx-setup.results.image)
         - name: MONITOR_ARGS
@@ -186,10 +190,8 @@ spec:
           value: snyk
         - name: PR_ID
           value: "$(params.PULL_NUMBER)"
-        - name: SNYK_IMAGE
-          value: "snyk/snyk:docker"
-        - name: SNYK_COMMAND
-          value: "container"
+
       workspaces:
         - name: source
           workspace: shared-data
+

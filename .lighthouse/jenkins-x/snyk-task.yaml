@@ -1,16 +1,16 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: snyk-container
+  name: snyk
   labels:
     app.kubernetes.io/version: "0.2"
   annotations:
     tekton.dev/pipelines.minVersion: "0.12.1"
     tekton.dev/tags: "snyk"
-    tekton.dev/displayName: "snyk-container"
+    tekton.dev/displayName: "snyk"
 spec:
   description: >-
-    Snyk container security check
+    Snyk security check
   workspaces:
     - name: source
       description: sources dir
@@ -69,7 +69,7 @@ spec:
     - name: status
       description: Excecution result
   steps:
-    - name: snyk-container-monitor
+    - name: snyk-monitor
       image: "$(params.SNYK_IMAGE)"
       args:
         - "$(params.MONITOR_ARGS[*])"
@@ -80,7 +80,7 @@ spec:
 
         cat $(results.monitor-url.path)
 
-    - name: snyk-container-test
+    - name: snyk-test
       image: "$(params.SNYK_IMAGE)"
       args:
         - "$(params.TEST_ARGS[*])"
@@ -92,7 +92,7 @@ spec:
           echo "failed" > $(results.status.path)
         fi
 
-    - name: snyk-container-test-comment
+    - name: snyk-comment
       image: gcr.io/jenkinsxio/jx-cli:latest
       workingDir: $(workspaces.source.path)
       script: |
@@ -102,7 +102,7 @@ spec:
           if [[ -n "$(params.PR_ID)" ]]; then
             SNYK_MONITOR_URL=$(cat $(results.monitor-url.path))
             COMMENT_CONTENT=$(echo -e ":x: :cursing_face: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) \nImage: [$(params.IMAGE)]()")
-            jx gitops pr comment --comment="$(cat $COMMENT_CONTENT)" --pr="$(params.PR_ID)"
+            jx gitops pr comment --comment="$COMMENT_CONTENT" --pr="$(params.PR_ID)"
           fi
           echo "${YELLOW}Failing step!${NOCOLOR}"
           exit 1;
