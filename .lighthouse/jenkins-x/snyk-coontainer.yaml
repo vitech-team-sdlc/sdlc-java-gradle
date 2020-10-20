@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/version: "0.2"
   annotations:
     tekton.dev/pipelines.minVersion: "0.12.1"
-    tekton.dev/tags: "gradle"
-    tekton.dev/displayName: "gradle"
+    tekton.dev/tags: "snyk"
+    tekton.dev/displayName: "snyk-container"
 spec:
   description: >-
     Snyk container security check
@@ -41,7 +41,7 @@ spec:
             name: $(params.SNYK_SECRET)
             key: SNYK_TOKEN
     volumeMounts:
-      - name: docker-socket
+      - name: docker-socket-step
         mountPath: /var/run/docker.sock
 
   results:
@@ -58,6 +58,8 @@ spec:
         echo -e "About to run snyk monitor for image: $(params.IMAGE) with args: ${1}"
 
         snyk container monitor ${1} $(params.IMAGE) | grep -Eo '(http|https).+' > $(results.monitor-url.path)
+
+        cat $(results.monitor-url.path)
 
     - name: snyk-container-test
       image: "snyk/snyk:docker"
@@ -86,7 +88,7 @@ spec:
         fi
 
   volumes:
-    - name: docker-socket
+    - name: docker-socket-step
       hostPath:
         path: /var/run/docker.sock
         type: Socket
