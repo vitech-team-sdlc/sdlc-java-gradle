@@ -13,9 +13,6 @@ spec:
     - name: SNYK_IMAGE
       value: "snyk/snyk:gradle-jdk11"
 
-    - name: BUILD_TASK_NAME
-      value: "gradle-build"
-
   workspaces:
     - name: shared-data
       volumeClaimTemplate:
