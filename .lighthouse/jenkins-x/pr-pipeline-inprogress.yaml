@@ -55,6 +55,9 @@ spec:
       type: string
       description: snyk image to scan dependencies
 
+    - name: BUILD_TASK_NAME
+      type: string
+      description: task ref name to execute build
 
   workspaces:
     - name: shared-data
@@ -118,7 +121,7 @@ spec:
 
     - name: build
       taskRef:
-        name: gradle-build
+        name: "$(params.BUILD_TASK_NAME)"
       runAfter:
         - "jx-setup"
       workspaces:
