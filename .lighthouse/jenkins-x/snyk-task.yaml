@@ -47,7 +47,6 @@ spec:
       type: string
       description: "snyk command to run, like: container"
   stepTemplate:
-    workingDir: $(workspaces.source.path)
     env:
       - name: SNYK_TOKEN
         valueFrom:
@@ -72,6 +71,7 @@ spec:
   steps:
     - name: snyk-monitor
       image: "$(params.SNYK_IMAGE)"
+      workingDir: $(workspaces.source.path)
       args:
         - "$(params.MONITOR_ARGS[*])"
       script: |
@@ -83,6 +83,7 @@ spec:
 
     - name: snyk-test
       image: "$(params.SNYK_IMAGE)"
+      workingDir: $(workspaces.source.path)
       args:
         - "$(params.TEST_ARGS[*])"
       script: |
