@@ -15,8 +15,25 @@ spec:
     - name: source
       description: sources dir
   params:
+    - name: PR_ID
+      type: string
+      description: Pull Request ID
+      default: ""
+
+    - name: DOCKER_SOCKET_VOLUME
+      type: string
+      description: "Name of docker-socket volume to mount: /var/run/docker.sock"
+      default: "docker-socket"
+
+    - name: SNYK_IMAGE
+      type: string
+      description: "Snyk image like: snyk/snyk:docker"
+    - name: SNYK_SECRET
+      type: string
+      description: Secret where SNYK_TOKEN is stored
     - name: IMAGE
       type: string
+      default: ""
       description: image what should be analyzed
     - name: MONITOR_ARGS
       type: array
@@ -26,17 +43,9 @@ spec:
       type: array
       description: snyk arguments
       default: [ ]
-    - name: PR_ID
+    - name: SNYK_COMMAND
       type: string
-      description: Pull Request ID
-      default: ""
-    - name: SNYK_SECRET
-      type: string
-      description: Secret where SNYK_TOKEN is stored
-    - name: DOCKER_SOCKET_VOLUME
-      type: string
-      description: "Name of docker-socket volume to mount: /var/run/docker.sock"
-      default: "docker-socket"
+      description: "snyk command to run, like: container"
   stepTemplate:
     env:
       - name: SNYK_TOKEN
@@ -61,22 +70,22 @@ spec:
       description: Excecution result
   steps:
     - name: snyk-container-monitor
-      image: "snyk/snyk:docker"
+      image: "$(params.SNYK_IMAGE)"
       args:
         - "$(params.MONITOR_ARGS[*])"
       script: |
         echo -e "About to run snyk monitor for image: ${YELLOW}$(params.IMAGE)${NOCOLOR} with args: ${YELLOW}${1}${NOCOLOR}"
 
-        snyk container monitor ${1} $(params.IMAGE) | grep -Eo '(http|https).+' > $(results.monitor-url.path)
+        snyk $(params.SNYK_COMMAND) monitor ${1} $(params.IMAGE) | grep -Eo '(http|https).+' > $(results.monitor-url.path)
 
         cat $(results.monitor-url.path)
 
     - name: snyk-container-test
-      image: "snyk/snyk:docker"
+      image: "$(params.SNYK_IMAGE)"
       args:
         - "$(params.TEST_ARGS[*])"
       script: |
-        if snyk container test ${1} $(params.IMAGE); then
+        if snyk $(params.SNYK_COMMAND) test ${1} $(params.IMAGE); then
           echo "success" > $(results.status.path)
           echo "No issues found for ${GREEN}$(params.IMAGE)${NOCOLOR} with args ${GREEN}${1}${NOCOLOR}"
         else
