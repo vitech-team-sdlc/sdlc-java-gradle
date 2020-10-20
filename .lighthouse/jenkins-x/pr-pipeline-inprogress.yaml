@@ -196,7 +196,7 @@ spec:
         - name: PR_ID
           value: "$(params.PULL_NUMBER)"
         - name: FAIL
-          value: false
+          value: "false"
 
       workspaces:
         - name: source
@@ -224,10 +224,11 @@ spec:
         - name: PR_ID
           value: "$(params.PULL_NUMBER)"
         - name: FAIL
-          value: false
+          value: "false"
       workspaces:
         - name: source
           workspace: shared-data
+
     - name: jx-finish
       taskRef:
         name: jx-finish

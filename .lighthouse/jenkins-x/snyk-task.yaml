@@ -48,7 +48,7 @@ spec:
       description: "snyk command to run, like: container"
     - name: FAIL
       type: string
-      default: true
+      default: "true"
       description: "if task need to failed in case of found vulnerabilities"
   stepTemplate:
     env:
