@@ -33,6 +33,10 @@ spec:
     - name: SNYK_SECRET
       type: string
       description: Secret where SNYK_TOKEN is stored
+    - name: DOCKER_SOCKET_VOLUME
+      type: string
+      description: "Name of docker-socket volume to mount: /var/run/docker.sock"
+      default: "docker-socket"
   stepTemplate:
     env:
       - name: SNYK_TOKEN
@@ -41,7 +45,7 @@ spec:
             name: $(params.SNYK_SECRET)
             key: SNYK_TOKEN
     volumeMounts:
-      - name: docker-socket-step
+      - name: $(params.DOCKER_SOCKET_VOLUME)
         mountPath: /var/run/docker.sock
 
   results:
@@ -55,7 +59,7 @@ spec:
       args:
         - "$(params.MONITOR_ARGS[*])"
       script: |
-        echo -e "About to run snyk monitor for image: $(params.IMAGE) with args: ${1}"
+        echo -e "About to run snyk monitor for image: \033[1;33m$(params.IMAGE) with args: ${1}"
 
         snyk container monitor ${1} $(params.IMAGE) | grep -Eo '(http|https).+' > $(results.monitor-url.path)
 
@@ -68,13 +72,14 @@ spec:
       script: |
         if snyk container test ${1} $(params.IMAGE); then
           echo "success" > $(results.status.path)
-          echo "No issues found for $(params.IMAGE) with args $SEVERITY_THRESHOLD"
+          echo "No issues found for \033[1;33m$(params.IMAGE) \033[0mwith args \033[1;33m$SEVERITY_THRESHOLD"
         else
           echo "failed" > $(results.status.path)
         fi
 
     - name: snyk-container-test-comment
       image: gcr.io/jenkinsxio/jx-cli:latest
+      workingDir: $(workspaces.source.path)
       script: |
         #!/usr/bin/env bash
 
@@ -84,11 +89,6 @@ spec:
             COMMENT_CONTENT=$(echo -e ":x: :cursing_face: [ Snyk Container Test Failed ]($SNYK_MONITOR_URL) \nImage: [$(params.IMAGE)]()")
             jx gitops pr comment --comment="$(cat $COMMENT_CONTENT)" --pr="$(params.PR_ID)"
           fi
+          echo "\033[1;33mFailing step!"
           exit 1;
         fi
-
-  volumes:
-    - name: docker-socket-step
-      hostPath:
-        path: /var/run/docker.sock
-        type: Socket

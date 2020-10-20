@@ -184,6 +184,8 @@ spec:
             - "--severity-threshold=medium"
         - name: SNYK_SECRET
           value: snyk
+        - name: PR_ID
+          value: "$(params.PULL_NUMBER)"
       workspaces:
         - name: source
           workspace: shared-data
