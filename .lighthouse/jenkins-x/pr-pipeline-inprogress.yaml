@@ -195,6 +195,8 @@ spec:
           value: snyk
         - name: PR_ID
           value: "$(params.PULL_NUMBER)"
+        - name: FAIL
+          value: false
 
       workspaces:
         - name: source
@@ -221,6 +223,8 @@ spec:
           value: snyk
         - name: PR_ID
           value: "$(params.PULL_NUMBER)"
+        - name: FAIL
+          value: false
       workspaces:
         - name: source
           workspace: shared-data

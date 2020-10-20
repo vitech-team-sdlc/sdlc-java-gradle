@@ -46,6 +46,10 @@ spec:
     - name: SNYK_COMMAND
       type: string
       description: "snyk command to run, like: container"
+    - name: FAIL
+      type: string
+      default: true
+      description: "if task need to failed in case of found vulnerabilities"
   stepTemplate:
     env:
       - name: SNYK_TOKEN
@@ -110,6 +114,8 @@ spec:
             fi
             jx gitops pr comment --comment="$COMMENT_CONTENT" --pr="$(params.PR_ID)"
           fi
-          echo "${YELLOW}Failing step!${NOCOLOR}"
-          exit 1;
+          if $(params.FAIL); then
+            echo "${YELLOW}Failing step!${NOCOLOR}"
+            exit 1;
+          fi
         fi
