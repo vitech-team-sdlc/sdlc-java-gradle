@@ -47,6 +47,7 @@ spec:
       type: string
       description: "snyk command to run, like: container"
   stepTemplate:
+    workingDir: $(workspaces.source.path)
     env:
       - name: SNYK_TOKEN
         valueFrom:
