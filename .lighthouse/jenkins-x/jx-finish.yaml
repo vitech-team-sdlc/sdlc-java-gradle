@@ -1,0 +1,103 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: jx-finish
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: "jx"
+    tekton.dev/displayName: "jx-finish"
+spec:
+  description: >-
+    Creating preview environment
+  workspaces:
+    - name: source
+      description: sources dir
+  params:
+    - description: git url to clone
+      name: REPO_URL
+      type: string
+    - default: master
+      description: git revision to checkout (branch, tag, sha, ref…)
+      name: PULL_PULL_SHA
+      type: string
+    - description: the unique build number
+      name: BUILD_ID
+      type: string
+    - description: the name of the job which is the trigger context name
+      name: JOB_NAME
+      type: string
+    - description: the specification of the job
+      name: JOB_SPEC
+      type: string
+    - description: 'the kind of job: postsubmit or presubmit'
+      name: JOB_TYPE
+      type: string
+    - default: master
+      description: the base git reference of the pull request
+      name: PULL_BASE_REF
+      type: string
+    - description: the git sha of the base of the pull request
+      name: PULL_BASE_SHA
+      type: string
+    - default: ""
+      description: git pull request number
+      name: PULL_NUMBER
+      type: string
+    - default: ""
+      description: git pull request ref in the form 'refs/pull/$PULL_NUMBER/head'
+      name: PULL_PULL_REF
+      type: string
+    - description: git pull reference strings of base and latest in the form 'master:$PULL_BASE_SHA,$PULL_NUMBER:$PULL_PULL_SHA:refs/pull/$PULL_NUMBER/head'
+      name: PULL_REFS
+      type: string
+    - description: git repository name
+      name: REPO_NAME
+      type: string
+    - description: git repository owner (user or organisation)
+      name: REPO_OWNER
+      type: string
+  results:
+    - name: image
+      description: Name of the image which should be builded
+    - name: source_branch
+      description: name of the source branch
+  stepTemplate:
+    env:
+      - name: BUILD_ID
+        value: $(params.BUILD_ID)
+      - name: JOB_NAME
+        value: $(params.JOB_NAME)
+      - name: JOB_SPEC
+        value: $(params.JOB_SPEC)
+      - name: JOB_TYPE
+        value: $(params.JOB_TYPE)
+      - name: PULL_BASE_REF
+        value: $(params.PULL_BASE_REF)
+      - name: PULL_BASE_SHA
+        value: $(params.PULL_BASE_SHA)
+      - name: PULL_NUMBER
+        value: $(params.PULL_NUMBER)
+      - name: PULL_PULL_REF
+        value: $(params.PULL_PULL_REF)
+      - name: PULL_PULL_SHA
+        value: $(params.PULL_PULL_SHA)
+      - name: PULL_REFS
+        value: $(params.PULL_REFS)
+      - name: REPO_NAME
+        value: $(params.REPO_NAME)
+      - name: REPO_OWNER
+        value: $(params.REPO_OWNER)
+      - name: REPO_URL
+        value: $(params.REPO_URL)
+  steps:
+    - name: promote-jx-preview
+      image: gcr.io/jenkinsxio/jx-cli:latest
+      workingDir: $(workspaces.source.path)
+      command:
+        - /bin/bash
+        - -c
+      args:
+        - source /workspace/source/.jx/variables.sh && jx preview create
+
