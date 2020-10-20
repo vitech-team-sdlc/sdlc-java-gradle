@@ -228,7 +228,6 @@ spec:
       workspaces:
         - name: source
           workspace: shared-data
-
     - name: jx-finish
       taskRef:
         name: jx-finish
