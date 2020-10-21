@@ -1,0 +1,11 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: pipeline
+upstream:
+  type: git
+  git:
+    commit: 3e1751ce3ee1e017ab3edc086fcde071eb16c4ef
+    repo: https://github.com/vitech-team/tekton-pipelines-catalog
+    directory: pipelineRuns/gradle/.lighthouse
+    ref: master
