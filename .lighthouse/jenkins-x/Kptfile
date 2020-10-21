@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: c585f006a79f34b39980809e4e69fe090f29b785
+    commit: 2847ef2ebf9c13867729af46b835e5ddf7151b6d
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
     directory: /pipelineRuns/gradle/jenkins-x
     ref: master
