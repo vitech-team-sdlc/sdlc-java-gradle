@@ -7,5 +7,5 @@ upstream:
   git:
     commit: 2847ef2ebf9c13867729af46b835e5ddf7151b6d
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
-    directory: /pipelineRuns/gradle/jenkins-x
+    directory: /pipelineRuns/gradle/.lighthouse
     ref: master
