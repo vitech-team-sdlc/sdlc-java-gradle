@@ -8,4 +8,4 @@ upstream:
     commit: 012caa3159b7c524336e6453a0ddfb5fa0037bfe
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
     directory: /pipelineRuns/gradle/jenkins-x
-    ref: main
+    ref: master
