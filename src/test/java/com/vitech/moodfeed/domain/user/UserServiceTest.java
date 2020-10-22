@@ -8,6 +8,7 @@ import org.mockito.Mock;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -21,14 +22,14 @@ public class UserServiceTest extends SmallTest {
     private UserService userService;
 
     @Test
-    void testGetLoggedUser() {
+    void testGetUsers() {
         // mock
         List<User> allUsers = TestData.users();
         when(userRepoMock.findAll()).thenReturn(allUsers);
         // test
-        User loggedUser = userService.getLoggedUser();
+        List<User> loggedUser = userService.getUsers();
         // verify
         assertNotNull(loggedUser);
-        assertTrue(allUsers.contains(loggedUser));
+        assertEquals(allUsers.size(), loggedUser.size());
     }
 }

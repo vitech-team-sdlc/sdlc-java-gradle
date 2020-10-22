@@ -2,16 +2,26 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mood_feed
-    username: root
-    password: 123qweasd
+    username: moodfeed
+    password: 123QWEasd
     hikari:
       data-source-properties:
         serverTimezone: UTC
   liquibase:
     change-log: classpath:/db/db.changelog-master.xml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8180/auth/realms/mood-feed/protocol/openid-connect/certs
 
 server:
   port: 8080
+  compression:
+    enabled: true
+  servlet.session:
+    # Session timeout after 1 minute. In case somehow sessions get still opened for stateless application.
+    timeout: 120
 
 management:
   endpoint:

@@ -65,6 +65,9 @@ bootJar {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.liquibase:liquibase-core:3.10.2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'com.google.guava:guava:29.0-jre'
@@ -72,6 +75,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "org.testcontainers:mysql:1.14.3"
     testImplementation 'com.tngtech.archunit:archunit-junit5:0.14.1'
 }
