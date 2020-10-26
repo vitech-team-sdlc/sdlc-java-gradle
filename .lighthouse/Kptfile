@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: 9b36a8c2db0a5c8d7a894c86b9ee5c435b24fd85
+    commit: cf4b506f1ca737ceaaa79a1b54574204926b788f
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
     directory: pipelineRuns/gradle/.lighthouse
     ref: master

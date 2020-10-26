@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: jx-pullrequest
+  labels:
+    jenkins.io/pipelineType: build
+    owner: vitech-team
+spec:
+  pipelineRef:
+    name: jx-sonar-gradle-pullrequest
+  workspaces:
+    - name: shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 250Mi
+  podTemplate:
+    volumes:
+      - name: podinfo
+        downwardAPI:
+          items:
+            - fieldRef:
+                fieldPath: metadata.labels
+              path: labels
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+          type: Socket
+  serviceAccountName: tekton-bot
+  timeout: 1h
