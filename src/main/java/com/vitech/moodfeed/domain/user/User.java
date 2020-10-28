@@ -6,11 +6,12 @@ import lombok.Value;
 import org.springframework.data.annotation.Id;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
 @DomainEntity
 public class User {
 
     @Id Long id;
+    String authId;
     String firstName;
     String lastName;
     String logoColor;

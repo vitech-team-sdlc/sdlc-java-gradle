@@ -1,6 +1,8 @@
 package com.vitech.moodfeed.config;
 
-import org.springframework.context.annotation.Bean;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -17,8 +19,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
+@EnableConfigurationProperties(CorsEndpointProperties.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final CorsEndpointProperties corsEndpointProperties;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,14 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return jwtConverter;
     }
 
-    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setMaxAge(8000L);
-        corsConfig.addAllowedOrigin("*");
-        corsConfig.addAllowedMethod("*");
-        corsConfig.addAllowedHeader("*");
+        CorsConfiguration corsConfig = this.corsEndpointProperties.toCorsConfiguration();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }

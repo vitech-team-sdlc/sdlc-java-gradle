@@ -19,6 +19,10 @@ GET http://localhost:8080/users
 Authorization: Bearer {{accessToken}}
 
 ###
+GET http://localhost:8080/users/current
+Authorization: Bearer {{accessToken}}
+
+###
 GET http://localhost:8080/
 
 > {%  client.global.clearAll(); %}

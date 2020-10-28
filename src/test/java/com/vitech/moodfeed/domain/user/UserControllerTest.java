@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,5 +42,17 @@ class UserControllerTest extends WebSmallTest {
                 .perform(get("/users").with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk())
                 .andExpect(content().string(toJson(expectedUser)));
+    }
+
+    @Test
+    void testGetOrCreate() throws Exception {
+        User expectedUser = TestData.users().get(0);
+        when(userServiceMock.getOrCreate(any())).thenReturn(expectedUser);
+        // test and verify
+        mockMvc()
+                .perform(get("/users/current"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(toJson(expectedUser)));
+
     }
 }
