@@ -64,4 +64,16 @@ public class Message {
         return result;
     }
 
+    private Set<Hashtag> extractByPattern2(char start) {
+        Set<Hashtag> result = new HashSet<>();
+        Matcher matcher = Pattern.compile(start + REFERENCED_TEXT).matcher(message);
+        while (matcher.find()) {
+            String text = matcher.group(0);
+            //for some reason both @ and # are a part of a caught group text
+            String tag = text.charAt(0) == start ? text.substring(1) : text;
+            result.add(Hashtag.builder().messageId(id).tag(tag).build());
+        }
+        return result;
+    }
+
 }
