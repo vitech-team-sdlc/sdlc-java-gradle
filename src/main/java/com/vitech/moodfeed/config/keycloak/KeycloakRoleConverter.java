@@ -1,4 +1,4 @@
-package com.vitech.moodfeed.config;
+package com.vitech.moodfeed.config.keycloak;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     @Override
     @SuppressWarnings("unchecked")
