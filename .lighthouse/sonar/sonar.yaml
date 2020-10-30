@@ -29,5 +29,5 @@ spec:
         hostPath:
           path: /var/run/docker.sock
           type: Socket
-  serviceAccountName: tekton-bot
+  serviceAccountName: tekton-build-bot
   timeout: 1h
