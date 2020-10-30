@@ -7,5 +7,5 @@ upstream:
   git:
     commit: 557141803a968a7dec74eb1d657d596604d3629e
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
-    directory: pipelineRuns/gradle/.lighthouse
+    directory: /packs/gradle/.lighthouse
     ref: master
