@@ -13,7 +13,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8180/auth/realms/mood-feed/protocol/openid-connect/certs
+          jwk-set-uri: http://keycloak.35.195.151.253.nip.io/auth/realms/mood-feed/protocol/openid-connect/certs
 
 security:
   provider: keycloak
