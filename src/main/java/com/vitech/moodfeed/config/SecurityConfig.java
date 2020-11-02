@@ -11,12 +11,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.util.Assert;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Collection;
 
 @EnableWebSecurity
 @AllArgsConstructor
@@ -25,6 +29,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsEndpointProperties corsEndpointProperties;
+    private final Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -47,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
-        jwtConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
+        Assert.notNull(this.jwtGrantedAuthoritiesConverter, "JwtGrantedAuthoritiesConverter is required.");
+        jwtConverter.setJwtGrantedAuthoritiesConverter(this.jwtGrantedAuthoritiesConverter);
         return jwtConverter;
     }
 

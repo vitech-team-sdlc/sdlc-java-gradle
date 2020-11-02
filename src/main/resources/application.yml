@@ -15,6 +15,9 @@ spring:
         jwt:
           jwk-set-uri: http://localhost:8180/auth/realms/mood-feed/protocol/openid-connect/certs
 
+security:
+  provider: keycloak
+
 server:
   port: 8080
   compression:
