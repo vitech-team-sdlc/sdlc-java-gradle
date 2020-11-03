@@ -47,7 +47,7 @@ spec:
         {{ if .Values.metrics.enabled }}
         - name: {{ .Values.metrics.name | quote}}
           containerPort: {{ .Values.metrics.port }}
-        {{ end }}    -
+        {{ end }}
         livenessProbe:
           httpGet:
             path: {{ .Values.probePathLiveness }}
