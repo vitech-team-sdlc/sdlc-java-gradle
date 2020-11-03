@@ -21,7 +21,7 @@ spec:
         draft: {{ default "draft-app" .Values.draft }}
         app: {{ template "fullname" . }}
         appName: {{ template "name" . }}
-        spring-monitoring: true
+        spring-monitoring: "true"
 {{- if .Values.podAnnotations }}
       annotations:
 {{ toYaml .Values.podAnnotations | indent 8 }}
