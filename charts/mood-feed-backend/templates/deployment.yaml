@@ -46,8 +46,8 @@ spec:
           containerPort: {{ int .Values.service.internalPort }}
         {{ if .Values.metrics.enabled }}
         - name: {{ .Values.metrics.name | quote}}
-          containerPort: {{ int .Values.metrics.port }}
-        {{ end }}    -
+          containerPort: {{ .Values.metrics.port }}
+        {{ end }}
         livenessProbe:
           httpGet:
             path: {{ .Values.probePathLiveness }}
