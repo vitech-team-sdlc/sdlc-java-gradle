@@ -43,7 +43,7 @@ spec:
 {{ toYaml .Values.envFrom | indent 10 }}
         ports:
         - name: http
-          containerPort: {{ .Values.service.internalPort }}
+          containerPort: {{ int .Values.service.internalPort }}
         {{ if .Values.metrics.enabled }}
         - name: {{ .Values.metrics.name | quote}}
           containerPort: {{ .Values.metrics.port }}
