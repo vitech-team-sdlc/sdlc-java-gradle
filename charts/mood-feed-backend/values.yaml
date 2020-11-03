@@ -83,6 +83,11 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
+metrics:
+  enabled: true
+  port: 8081
+  name: metrics
+
 
 # custom ingress annotations on this service
 ingress:

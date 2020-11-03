@@ -20,6 +20,8 @@ spec:
       labels:
         draft: {{ default "draft-app" .Values.draft }}
         app: {{ template "fullname" . }}
+        appName: {{ template "name" . }}
+        spring-monitoring: true
 {{- if .Values.podAnnotations }}
       annotations:
 {{ toYaml .Values.podAnnotations | indent 8 }}
@@ -40,7 +42,12 @@ spec:
         envFrom:
 {{ toYaml .Values.envFrom | indent 10 }}
         ports:
-        - containerPort: {{ .Values.service.internalPort }}
+        - name: http
+          containerPort: {{ .Values.service.internalPort }}
+        {{ if .Values.metrics.enabled }}
+        - name: {{ .Values.metrics.name | quote}}
+          containerPort: {{ .Values.metrics.port }}
+        {{ end }}    -
         livenessProbe:
           httpGet:
             path: {{ .Values.probePathLiveness }}
