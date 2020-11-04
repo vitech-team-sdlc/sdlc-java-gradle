@@ -9,7 +9,8 @@ image:
 
 # optional list of image pull secrets to use to pull images
 jx:
-  imagePullSecrets: []
+  imagePullSecrets:
+    - name: tekton-container-registry-auth
 
 # define environment variables here as a map of key: value
 envValueFrom:
