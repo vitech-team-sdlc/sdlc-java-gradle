@@ -20,6 +20,8 @@ spec:
       labels:
         draft: {{ default "draft-app" .Values.draft }}
         app: {{ template "fullname" . }}
+        appName: {{ template "name" . }}
+        spring-actuator: "true"
 {{- if .Values.podAnnotations }}
       annotations:
 {{ toYaml .Values.podAnnotations | indent 8 }}
@@ -40,19 +42,24 @@ spec:
         envFrom:
 {{ toYaml .Values.envFrom | indent 10 }}
         ports:
-        - containerPort: {{ .Values.service.internalPort }}
+        - name: http
+          containerPort: {{ int .Values.service.internalPort }}
+        {{ if .Values.actuator.enabled }}
+        - name: {{ .Values.actuator.name | quote}}
+          containerPort: {{ .Values.actuator.port }}
+        {{ end }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.probePathLiveness }}
-            port: {{ .Values.service.internalPort }}
+            path: {{ .Values.actuator.probePathLiveness }}
+            port: {{ .Values.actuator.port }}
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.probePathReadiness }}
-            port: {{ .Values.service.internalPort }}
+            path: {{ .Values.actuator.probePathReadiness }}
+            port: {{ .Values.actuator.port }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           successThreshold: {{ .Values.readinessProbe.successThreshold }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}

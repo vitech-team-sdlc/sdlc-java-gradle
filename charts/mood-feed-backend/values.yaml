@@ -9,7 +9,8 @@ image:
 
 # optional list of image pull secrets to use to pull images
 jx:
-  imagePullSecrets: []
+  imagePullSecrets:
+    - name: tekton-container-registry-auth
 
 # define environment variables here as a map of key: value
 envValueFrom:
@@ -70,8 +71,7 @@ resources:
   requests:
     cpu: 200m
     memory: 256Mi
-probePathLiveness: actuator/health/liveness
-probePathReadiness: actuator/health/readiness
+
 livenessProbe:
   initialDelaySeconds: 60
   periodSeconds: 10
@@ -83,6 +83,12 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
+actuator:
+  enabled: true
+  port: 8081
+  name: metrics
+  probePathLiveness: /health/liveness
+  probePathReadiness: /health/readiness
 
 # custom ingress annotations on this service
 ingress:
