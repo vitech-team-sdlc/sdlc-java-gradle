@@ -90,7 +90,6 @@ actuator:
   probePathLiveness: /health/liveness
   probePathReadiness: /health/readiness
 
-
 # custom ingress annotations on this service
 ingress:
   annotations:
