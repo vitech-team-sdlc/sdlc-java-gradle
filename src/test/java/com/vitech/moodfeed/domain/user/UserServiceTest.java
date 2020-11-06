@@ -10,6 +10,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class UserServiceTest extends SmallTest {
+class UserServiceTest extends SmallTest {
 
     private static final String TEST_AUTH_ID = "test_auth_id";
 
@@ -114,7 +115,8 @@ public class UserServiceTest extends SmallTest {
                 .put("given_name", testUser.getFirstName())
                 .put("family_name", testUser.getLastName())
                 .build();
-        return new Jwt("test_token_value", Instant.now(), Instant.now(), headers, claims);
+        Instant now = Instant.now();
+        return new Jwt("test_token_value", now, now.plus(1, ChronoUnit.MINUTES), headers, claims);
     }
 
 }
