@@ -37,9 +37,9 @@ management:
     web:
       base-path: /
       exposure:
-        include: "*"
+        include: '*'
       cors:
-        allowed-origins: "*"
+        allowed-origins: '*'
         allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
         exposed-headers: Authorization,content-type
         allowed-headers: Authorization,content-type
