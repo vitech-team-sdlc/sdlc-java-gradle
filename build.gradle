@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'org.modelmapper:modelmapper:2.3.8'
     runtimeOnly 'mysql:mysql-connector-java'
+    compile 'io.micrometer:micrometer-registry-prometheus'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

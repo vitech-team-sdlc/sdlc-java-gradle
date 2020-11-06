@@ -27,6 +27,13 @@ server:
     timeout: 120
 
 management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
   endpoint:
     health:
       probes:
