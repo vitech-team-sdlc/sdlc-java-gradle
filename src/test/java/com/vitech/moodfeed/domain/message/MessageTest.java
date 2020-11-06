@@ -13,8 +13,9 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MessageTest extends SmallTest {
+class MessageTest extends SmallTest {
 
     @Test
     void testFromRequest() {
@@ -43,6 +44,32 @@ public class MessageTest extends SmallTest {
         assertEquals(message.getCreatedAt(), messageResponse.getCreatedAt());
         assertSame(user, messageResponse.getCreator());
         assertEquals(TestData.hashtagsSet(), messageResponse.getHashtags());
+    }
+
+    @Test
+    void testExtractHashTags() {
+        long testMessageId = 101L;
+        Message testMessage = Message.builder()
+                .id(testMessageId)
+                .message("Massage with #tag1 and #tag2 and @user1")
+                .build();
+        Set<Hashtag> hashtags = testMessage.extractHashTags();
+        assertEquals(2, hashtags.size());
+        assertTrue(hashtags.contains(Hashtag.builder().messageId(testMessageId).tag("tag1").build()));
+        assertTrue(hashtags.contains(Hashtag.builder().messageId(testMessageId).tag("tag2").build()));
+    }
+
+    @Test
+    void testExtractMentionedUsers() {
+        long testMessageId = 101L;
+        Message testMessage = Message.builder()
+                .id(testMessageId)
+                .message("Massage with @user1 and @user2 and #tag1")
+                .build();
+        Set<Hashtag> hashtags = testMessage.extractMentionedUsers();
+        assertEquals(2, hashtags.size());
+        assertTrue(hashtags.contains(Hashtag.builder().messageId(testMessageId).tag("user1").build()));
+        assertTrue(hashtags.contains(Hashtag.builder().messageId(testMessageId).tag("user2").build()));
     }
 
 }

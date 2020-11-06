@@ -3,3 +3,7 @@ spring:
     url: jdbc:mysql://mysql:3306/mood_feed
     username: ${MYSQL_USER:moodfeed}
     password: ${MYSQL_PASSWORD:fake}
+
+security:
+  cors:
+    allowed-origins: http://mood-feed-frontend-jx-staging.35.195.151.253.nip.io

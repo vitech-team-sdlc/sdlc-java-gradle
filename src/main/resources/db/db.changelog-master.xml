@@ -7,5 +7,6 @@
 
     <include file="db/0001-schema.sql"/>
     <include file="db/0002-users.sql"/>
+    <include file="db/0003-users.sql"/>
 
 </databaseChangeLog>

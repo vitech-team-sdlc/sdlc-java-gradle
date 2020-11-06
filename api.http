@@ -1,1 +1,28 @@
 GET http://127.0.0.1:8080/actuator/health/readiness
+
+###
+# Login and store AccessToken
+# use username "lisa" (ADMIN role) and "homer" (USER role) as loged in users
+POST http://localhost:8180/auth/realms/mood-feed/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=mood-feed-login&username=lisa&password=123QWEasd
+
+> {% client.global.set("accessToken", response.body.access_token); %}
+
+###
+GET http://localhost:8080/messages
+Authorization: Bearer {{accessToken}}
+
+###
+GET http://localhost:8080/users
+Authorization: Bearer {{accessToken}}
+
+###
+GET http://localhost:8080/users/current
+Authorization: Bearer {{accessToken}}
+
+###
+GET http://localhost:8080/
+
+> {%  client.global.clearAll(); %}
