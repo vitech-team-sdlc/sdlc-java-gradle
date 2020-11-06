@@ -1,8 +1,8 @@
 package com.vitech.moodfeed.config;
 
 import lombok.AllArgsConstructor;
-import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -20,10 +20,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @AllArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
-@EnableConfigurationProperties(CorsEndpointProperties.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CorsEndpointProperties corsEndpointProperties;
     private final Converter<Jwt, AbstractAuthenticationToken> authenticationConverter;
 
     @Override
@@ -44,9 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfig = this.corsEndpointProperties.toCorsConfiguration();
+        CorsConfiguration corsConfig = this.securityCorsConfiguration();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "security.cors")
+    CorsConfiguration securityCorsConfiguration() {
+        return new CorsConfiguration();
     }
 
 }
