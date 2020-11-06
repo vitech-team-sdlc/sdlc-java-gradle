@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors(configurer -> configurer.configurationSource(corsConfigurationSource()))
                 .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                 .authorizeRequests()
+                .antMatchers("/health").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -42,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfig = this.securityCorsConfiguration();
+        CorsConfiguration corsConfig = new CorsConfiguration(this.securityCorsConfiguration());
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
