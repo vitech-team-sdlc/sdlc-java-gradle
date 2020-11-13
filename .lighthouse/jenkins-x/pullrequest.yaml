@@ -4,6 +4,7 @@ metadata:
   name: jx-pullrequest
   labels:
     jenkins.io/pipelineType: build
+    lighthouse.jenkins-x.io/loadFileRefs: ".*"
     owner: vitech-team
 spec:
   pipelineRef:
