@@ -1,11 +1,11 @@
 apiVersion: kpt.dev/v1alpha1
 kind: Kptfile
 metadata:
-  name: pipeline
+  name: .lighthouse
 upstream:
   type: git
   git:
-    commit: 2dd74e5408c3c8e828e55029ad01327d5735b5b4
+    commit: 482f88dab771d15104acf07d4d7b6764fafab4fb
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
     directory: /packs/spring-gradle/.lighthouse
     ref: master

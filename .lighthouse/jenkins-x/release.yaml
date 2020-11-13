@@ -9,25 +9,25 @@ spec:
   pipelineRef:
     name: jx-gradle-release
   workspaces:
-    - name: shared-data
-      volumeClaimTemplate:
-        spec:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 200Mi
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 200Mi
   podTemplate:
     volumes:
-      - name: podinfo
-        downwardAPI:
-          items:
-            - fieldRef:
-                fieldPath: metadata.labels
-              path: labels
-      - name: docker-socket
-        hostPath:
-          path: /var/run/docker.sock
-          type: Socket
+    - name: podinfo
+      downwardAPI:
+        items:
+        - fieldRef:
+            fieldPath: metadata.labels
+          path: labels
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket
   serviceAccountName: tekton-build-bot
   timeout: 1h
