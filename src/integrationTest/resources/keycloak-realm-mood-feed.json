@@ -22,9 +22,7 @@
     "lastName" : "Simpson",
     "credentials" : [ {
       "type" : "password",
-      "createdDate" : 1604310644981,
-      "secretData" : "{\"value\":\"e7MWazykhPsbw8IDLDkgKf+3cIkTU2XRUjTTt3p1khzxNONl7NzwynjsvzoKbAIA6girVRBn5u9z/0I0bLVHaQ==\",\"salt\":\"T/+RZp2WkXk+6ImUnwjSQw==\"}",
-      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+      "value": "123qweasd"
     } ],
     "realmRoles" : [ "USER" ],
     "clientRoles" : {
@@ -39,9 +37,7 @@
     "lastName" : "Simpson",
     "credentials" : [ {
       "type" : "password",
-      "createdDate" : 1604310679933,
-      "secretData" : "{\"value\":\"0U4tqcPtUyECOaNFZZdp8nHfZJpuv+g7gG0CdRYTs0eFsjXVUHFuK1HtpeNl5b2X23fE8GSaenE8n7DBvmjPVw==\",\"salt\":\"9ytHYXHEUN6YkUFec9OTZw==\"}",
-      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+      "value": "123qweasd"
     } ],
     "realmRoles" : [ "ADMIN" ],
     "clientRoles" : {
@@ -75,52 +71,8 @@
           "jsonType.label" : "String"
         }
       } ]
-    }, {
-      "clientId" : "mood-feed-staging",
-      "enabled" : true,
-      "baseUrl" : "http://mood-feed-frontend-jx-staging.35.195.151.253.nip.io/feed",
-      "redirectUris" : [ "http://mood-feed-frontend-jx-staging.35.195.151.253.nip.io/*" ],
-      "webOrigins" : [ "http://mood-feed-frontend-jx-staging.35.195.151.253.nip.io" ],
-      "standardFlowEnabled" : true,
-      "implicitFlowEnabled" : false,
-      "directAccessGrantsEnabled" : true,
-      "publicClient" : true,
-      "fullScopeAllowed" : true,
-      "protocol" : "openid-connect",
-      "protocolMappers" : [ {
-        "name" : "realm roles",
-        "protocol" : "openid-connect",
-        "protocolMapper" : "oidc-usermodel-realm-role-mapper",
-        "consentRequired" : false,
-        "config" : {
-          "multivalued" : "true",
-          "user.attribute" : "foo",
-          "id.token.claim" : "true",
-          "access.token.claim" : "true",
-          "claim.name" : "realm_access.roles",
-          "jsonType.label" : "String"
-        }
-      } ]
     }
   ],
-  "identityProviders" : [ {
-    "alias" : "github",
-    "providerId" : "github",
-    "enabled" : true,
-    "updateProfileFirstLoginMode" : "on",
-    "trustEmail" : false,
-    "storeToken" : false,
-    "addReadTokenRoleOnCreate" : false,
-    "authenticateByDefault" : false,
-    "linkOnly" : false,
-    "firstBrokerLoginFlowAlias" : "first broker login",
-    "config" : {
-      "syncMode" : "IMPORT",
-      "clientSecret" : "c6992d5bdf4fdb993e7e79acc405df8a84cd3ffc",
-      "clientId" : "b234c602e5d215230e21",
-      "useJwksUrl" : "true"
-    }
-  } ],
   "browserFlow" : "browser",
   "registrationFlow" : "registration",
   "directGrantFlow" : "direct grant",
