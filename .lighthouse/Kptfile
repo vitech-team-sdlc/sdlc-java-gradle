@@ -5,7 +5,7 @@ metadata:
 upstream:
   type: git
   git:
-    commit: f8c8e078b216b4f594331da5a0526462493af92a
+    commit: 619d3e5678d1c6447bf1b3b31eb0714d9de8323d
     repo: https://github.com/vitech-team/tekton-pipelines-catalog
     directory: /packs/spring-gradle/.lighthouse
     ref: master
