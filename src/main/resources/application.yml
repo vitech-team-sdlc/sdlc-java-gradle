@@ -13,10 +13,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://keycloak.35.195.151.253.nip.io/auth/realms/sdlc/protocol/openid-connect/certs
+          jwk-set-uri: ${security.providerUrl}/auth/realms/${providerRealm}/protocol/openid-connect/certs
 
 security:
   provider: keycloak
+  providerUrl: http://keycloak.35.195.151.253.nip.io
+  providerRealm: sdlc
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:*}
     allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS

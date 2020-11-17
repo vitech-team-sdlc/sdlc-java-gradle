@@ -3,7 +3,7 @@ image:
     tag: "{{ requiredEnv "VERSION" }}"
 
 env:
-    "SPRING_PROFILES_ACTIVE": "production"
+    "SPRING_PROFILES_ACTIVE": "preview"
 
 envFrom:
     - secretRef:

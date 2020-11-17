@@ -5,6 +5,8 @@ environments:
 repositories:
   - name: stable
     url: https://charts.helm.sh/stable
+  - name: dev
+    url: '{{ .Values | get "jxRequirements.cluster.chartRepository" " " }}'
 releases:
   - chart: '../charts/{{ requiredEnv "APP_NAME" }}'
     name: preview
