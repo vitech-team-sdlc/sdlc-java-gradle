@@ -18,7 +18,7 @@ spring:
 security:
   provider: keycloak
   cors:
-    allowed-origins: http://localhost:4200
+    allowed-origins: ${ALLOWED_ORIGINS:*}
     allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
     exposed-headers: Authorization,content-type
     allowed-headers: Authorization,content-type
