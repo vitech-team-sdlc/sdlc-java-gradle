@@ -17,7 +17,7 @@ spring:
 
 security:
   provider: keycloak
-  providerUrl: http://keycloak.35.195.151.253.nip.io
+  providerUrl: http://keycloak-http:80
   providerRealm: sdlc
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:*}
