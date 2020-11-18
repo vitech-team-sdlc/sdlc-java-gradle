@@ -13,7 +13,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: ${security.providerUrl}/auth/realms/${providerRealm}/protocol/openid-connect/certs
+          jwk-set-uri: "${security.providerUrl}/auth/realms/${security.providerRealm}/protocol/openid-connect/certs"
 
 security:
   provider: keycloak
