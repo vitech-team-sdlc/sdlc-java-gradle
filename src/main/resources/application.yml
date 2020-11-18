@@ -16,9 +16,9 @@ spring:
           jwk-set-uri: "${security.providerUrl}/auth/realms/${security.providerRealm}/protocol/openid-connect/certs"
 
 security:
-  provider: keycloak
-  providerUrl: http://keycloak-http:80
-  providerRealm: sdlc
+  provider: ${SECURITY_PROVIDER:keycloak}
+  providerUrl: ${SECURITY_PROVIDER_URL:http://keycloak-http.keycloak.svc.cluster.local:80}
+  providerRealm: ${SECURITY_PROVIDER_REALM:sdlc}
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:*}
     allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
