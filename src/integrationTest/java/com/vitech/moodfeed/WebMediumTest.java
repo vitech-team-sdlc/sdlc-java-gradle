@@ -55,9 +55,11 @@ public class WebMediumTest extends MediumTest {
 
     @AfterEach
     public void afterEach(@Autowired DataSource dataSource) throws SQLException, LiquibaseException {
-        initLiquibase(dataSource.getConnection());
-        liquibase.dropAll();
-        liquibase.update((String) null);
+        try (Connection connection = dataSource.getConnection()) {
+            initLiquibase(connection);
+            liquibase.dropAll();
+            liquibase.update((String) null);
+        }
     }
 
     private void initLiquibase(Connection connection) throws LiquibaseException {
