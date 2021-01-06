@@ -1,3 +1,26 @@
+buildscript {
+
+    def artifactUrl = System.getenv("ARTIFACT_REGISTRY_URL") ?: project.findProperty("artifacts.url").toString()
+    def artifactUser = System.getenv("ARTIFACT_REGISTRY_USER") ?: project.findProperty("artifacts.user").toString()
+    def artifactPassword = System.getenv("ARTIFACT_REGISTRY_PASSWORD") ?: project.findProperty("artifacts.password").toString()
+
+    repositories {
+        def isMirrorEnabled = System.getenv("ARTIFACT_REGISTRY_PASSWORD") != null || project.hasProperty("artifacts.url")
+        if (isMirrorEnabled) {
+            maven {
+                url = artifactUrl
+                credentials {
+                    username artifactUser
+                    password artifactPassword
+                }
+            }
+        } else {
+            mavenCentral()
+        }
+    }
+
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.4.0'
